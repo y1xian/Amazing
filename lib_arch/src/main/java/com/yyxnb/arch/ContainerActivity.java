@@ -34,9 +34,11 @@ public class ContainerActivity extends BaseActivity {
     public void initView(Bundle savedInstanceState) {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
 
+    @Override
+    public void initViewData() {
         try {
-
             Intent intent = getIntent();
 
             if (intent == null) {
@@ -70,6 +72,5 @@ public class ContainerActivity extends BaseActivity {
             e.printStackTrace();
             AppConfig.getInstance().log(e.getMessage());
         }
-
     }
 }

@@ -3,6 +3,7 @@ package com.yyxnb.utils;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityGroup;
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
 import android.content.ContentResolver;
@@ -15,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -24,10 +26,12 @@ import android.os.Build;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.util.Xml;
 import android.view.Surface;
 import android.view.View;
@@ -1059,4 +1063,72 @@ public class DeviceUtils {
         }
         return false;
     }
+
+    /**
+     * 获取当前屏幕截图，不包含状态栏
+     * @param activity
+     * @return bp
+     */
+    public static Bitmap snapShotWithoutStatusBar(Activity activity) {
+        View view = activity.getWindow().getDecorView();
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+        Bitmap bmp = view.getDrawingCache();
+        if (bmp == null) {
+            return null;
+        }
+        Rect frame = new Rect();
+        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        int statusBarHeight = frame.top;
+        Bitmap bp = Bitmap.createBitmap(bmp, 0, statusBarHeight, bmp.getWidth(), bmp.getHeight() - statusBarHeight);
+        view.destroyDrawingCache();
+        view.setDrawingCacheEnabled(false);
+
+        return bp;
+    }
+
+    /**
+     * 获取actionbar的像素高度，默认使用android官方兼容包做actionbar兼容
+     *
+     * @return
+     */
+    @SuppressLint("ObsoleteSdkInt")
+    @SuppressWarnings("ConstantConditions")
+    public static int getActionBarHeight(Context context) {
+        int actionBarHeight=0;
+        if(context instanceof AppCompatActivity &&((AppCompatActivity) context).getSupportActionBar()!=null) {
+            Log.d("isAppCompatActivity", "==AppCompatActivity");
+            actionBarHeight = ((AppCompatActivity) context).getSupportActionBar().getHeight();
+        }else if(context instanceof Activity && ((Activity) context).getActionBar()!=null) {
+            Log.d("isActivity","==Activity");
+            actionBarHeight = ((Activity) context).getActionBar().getHeight();
+        }else if(context instanceof ActivityGroup){
+            Log.d("ActivityGroup","==ActivityGroup");
+            if (((ActivityGroup) context).getCurrentActivity() instanceof AppCompatActivity && ((AppCompatActivity) ((ActivityGroup) context).getCurrentActivity()).getSupportActionBar()!=null){
+                actionBarHeight = ((AppCompatActivity) ((ActivityGroup) context).getCurrentActivity()).getSupportActionBar().getHeight();
+            }else if (((ActivityGroup) context).getCurrentActivity() instanceof Activity && ((Activity) ((ActivityGroup) context).getCurrentActivity()).getActionBar()!=null){
+                actionBarHeight = ((Activity) ((ActivityGroup) context).getCurrentActivity()).getActionBar().getHeight();
+            }
+        }
+        if (actionBarHeight != 0) {
+            return actionBarHeight;
+        }
+        final TypedValue tv = new TypedValue();
+        if(context.getTheme().resolveAttribute( android.support.v7.appcompat.R.attr.actionBarSize, tv, true)){
+            if (context.getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, tv, true)) {
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
+            }
+        }else {
+            if (context.getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, tv, true)) {
+                actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
+            }
+        }
+        Log.d("actionBarHeight","===="+actionBarHeight);
+        return actionBarHeight;
+    }
+
 }

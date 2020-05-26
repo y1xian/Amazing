@@ -4,7 +4,7 @@ ext {
             compileSdkVersion: 28,
             buildToolsVersion: '28.0.3',
             minSdkVersion    : 21,
-            applicationId    : "com.yyxnb.emmm",
+            applicationId    : "com.yyxnb.amazing",
             targetSdkVersion : 28,
             versionCode      : 1,
             versionName      : '1.0.1'
@@ -22,16 +22,20 @@ ext {
             arch_comp_paging    : '1.0.1',
             arch_comp_work      : '1.0.1',
 
-            retrofit            : '2.6.0',
-            okhttp              : '4.2.2',
+            retrofit            : '2.5.0',
+            okhttp              : '3.12.0',
             kodein              : '6.1.0',
             glide               : '4.6.1',
 
-            rxjava              : '2.2.12',
-            rxkotlin            : '2.3.0',
-            rxandroid           : '2.1.1',
-            rxbinding           : '2.2.0',
+            rxjava2              : '2.2.19',
+            rxkotlin2            : '2.3.0',
+            rxandroid2           : '2.1.1',
+            rxbinding2           : '2.2.0',
             autodispose         : '1.2.0',
+
+            rxjava3              : '3.0.2',
+            rxandroid3           : '3.0.0',
+            rxbinding3           : '3.1.0',
 
             gson                : '2.8.6',
 
@@ -117,21 +121,28 @@ ext {
             //https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter
             retrofit2_kotlin_coroutines    : [group: 'com.jakewharton.retrofit', name: 'retrofit2-kotlin-coroutines-adapter', version: '0.9.2'],
 
-            //rxjava2       https://github.com/ReactiveX/RxJava
-            rxjava2                        : [group: 'io.reactivex.rxjava2', name: 'rxjava', version: versions.rxjava],
+            //rxjava2
+            // https://github.com/ReactiveX/RxJava
+            rxjava2                        : [group: 'io.reactivex.rxjava2', name: 'rxjava', version: versions.rxjava2],
             //  https://github.com/ReactiveX/RxKotlin
-            rxkotlin2                      : [group: 'io.reactivex.rxjava2', name: 'rxkotlin', version: versions.rxkotlin],
+            rxkotlin2                      : [group: 'io.reactivex.rxjava2', name: 'rxkotlin', version: versions.rxkotlin2],
             //  https://github.com/ReactiveX/RxAndroid
-            rxandroid2                     : [group: 'io.reactivex.rxjava2', name: 'rxandroid', version: versions.rxandroid],
+            rxandroid2                     : [group: 'io.reactivex.rxjava2', name: 'rxandroid', version: versions.rxandroid2],
+
+            // rxjava3
+            rxjava3                        : [group: 'io.reactivex.rxjava3', name: 'rxjava', version: versions.rxjava3],
+            rxandroid3                     : [group: 'io.reactivex.rxjava3', name: 'rxandroid', version: versions.rxandroid3],
+            rxbinding3                     : [group: 'com.jakewharton.rxbinding3', name: 'rxbinding', version: versions.rxbinding3],
+
             //  https://github.com/tbruyelle/RxPermissions
             rxpermissions                  : [group: 'com.github.tbruyelle', name: 'rxpermissions', version: '0.10.2'],
 
             rximagepicker                  : [group: 'com.github.qingmei2', name: 'rximagepicker', version: '2.3.0-alpha03'],
             rxweaver                       : [group: 'com.github.qingmei2.rxweaver', name: 'rxweaver', version: '0.3.0'],
             //  https://github.com/JakeWharton/RxBinding
-            rxbinding2                     : [group: 'com.jakewharton.rxbinding2', name: 'rxbinding', version: versions.rxbinding],
-            rxbinding2_v7                  : [group: 'com.jakewharton.rxbinding2', name: 'rxbinding-appcompat-v7', version: versions.rxbinding],
-            rxbinding2_kt                  : [group: 'com.jakewharton.rxbinding2', name: 'rxbinding-kotlin', version: versions.rxbinding],
+            rxbinding2                     : [group: 'com.jakewharton.rxbinding2', name: 'rxbinding', version: versions.rxbinding2],
+            rxbinding2_v7                  : [group: 'com.jakewharton.rxbinding2', name: 'rxbinding-appcompat-v7', version: versions.rxbinding2],
+            rxbinding2_kt                  : [group: 'com.jakewharton.rxbinding2', name: 'rxbinding-kotlin', version: versions.rxbinding2],
 
             //https://github.com/uber/AutoDispose
             autodispose                    : [group: 'com.uber.autodispose', name: 'autodispose-android', version: versions.autodispose],

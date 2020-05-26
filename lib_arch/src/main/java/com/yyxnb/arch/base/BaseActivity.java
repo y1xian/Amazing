@@ -20,8 +20,10 @@ import com.yyxnb.arch.annotations.SwipeStyle;
 import com.yyxnb.arch.common.ArchConfig;
 import com.yyxnb.arch.delegate.ActivityDelegate;
 import com.yyxnb.arch.utils.FragmentManagerUtils;
+import com.yyxnb.common.AppConfig;
 import com.yyxnb.common.KeyboardUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import me.jessyan.autosize.AutoSizeCompat;
@@ -34,10 +36,14 @@ import me.jessyan.autosize.AutoSizeCompat;
 public abstract class BaseActivity extends AppCompatActivity implements IActivity {
 
     protected final String TAG = getClass().getCanonicalName();
-    protected Context mContext;
+    protected WeakReference<Context> mContext;
 
     private Java8Observer java8Observer;
     protected ActivityDelegate mActivityDelegate;
+
+    public Context getContext() {
+        return mContext.get();
+    }
 
     @Override
     public ActivityDelegate getBaseDelegate() {
@@ -52,7 +58,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        mContext = this;
+        getWindow().setBackgroundDrawable(null);
+        mContext = new WeakReference<>(this);
         // 在界面未初始化之前调用的初始化窗口
         initWindows();
         super.onCreate(savedInstanceState);
@@ -60,8 +67,13 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
         initAttributes();
         setContentView(initLayoutResId());
-
         initView(savedInstanceState);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        mActivityDelegate.onWindowFocusChanged(hasFocus);
     }
 
     private void initAttributes() {
@@ -95,6 +107,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         super.onDestroy();
         mActivityDelegate.onDestroy();
         getLifecycle().removeObserver(java8Observer);
+        mContext.clear();
+        mContext = null;
+        mActivityDelegate = null;
     }
 
     @Override
@@ -148,7 +163,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     }
 
     public <T extends BaseFragment> void startFragment(T targetFragment, int requestCode) {
-//        scheduleTaskAtStarted(Runnable {
         Intent intent = new Intent(this, ContainerActivity.class);
         Bundle bundle = targetFragment.initArguments();
         bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
@@ -156,16 +170,12 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
         intent.putExtra(ArchConfig.BUNDLE, bundle);
         startActivityForResult(intent, requestCode);
-
-//        })
     }
 
     public void setRootFragment(BaseFragment fragment, int containerId) {
-//        scheduleTaskAtStarted(Runnable {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(containerId, fragment, fragment.sceneId());
         transaction.addToBackStack(fragment.sceneId());
         transaction.commitAllowingStateLoss();
-//        })
     }
 }

@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
-import android.util.Log;
-import android.widget.Toast;
+
+import com.yyxnb.common.log.LogUtils;
 
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
@@ -16,6 +16,9 @@ public final class AppConfig implements Serializable {
 
     @SuppressLint("StaticFieldLeak")
     private volatile static AppConfig appConfig;
+
+    private AppConfig() {
+    }
 
     public static AppConfig getInstance() {
         if (appConfig == null) {
@@ -28,6 +31,9 @@ public final class AppConfig implements Serializable {
         return appConfig;
     }
 
+    private Object readResolve(){
+        return appConfig;
+    }
 
     private WeakReference<Application> app;
 
@@ -61,13 +67,12 @@ public final class AppConfig implements Serializable {
     }
 
     public void toast(String s) {
-        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+        ToastUtils.normal(s);
     }
-
 
     public void log(String tag, String s) {
         if (isDebug()) {
-            Log.e(tag, s);
+            LogUtils.w(s, tag);
         }
     }
 

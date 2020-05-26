@@ -1,5 +1,6 @@
 package com.yyxnb.arch.delegate;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModel;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -35,9 +36,6 @@ import java.lang.reflect.Field;
 public class FragmentDelegate {
 
     public FragmentDelegate(IFragment iFragment) {
-        if (!(iFragment instanceof Fragment)){
-            throw new IllegalArgumentException("Fragment请实现IFragment接口");
-        }
         this.iFragment = iFragment;
         this.mFragment = (Fragment) iFragment;
         mLazyDelegate = new FragmentLazyDelegate(mFragment);
@@ -53,28 +51,24 @@ public class FragmentDelegate {
 
     private FragmentLazyDelegate mLazyDelegate;
 
-    int layoutRes = 0;
-    boolean statusBarTranslucent = ArchConfig.statusBarTranslucent;
-    boolean fitsSystemWindows = ArchConfig.fitsSystemWindows;
-    boolean statusBarHidden = ArchConfig.statusBarHidden;
-    int statusBarColor = ArchConfig.statusBarColor;
-    int statusBarDarkTheme = ArchConfig.statusBarStyle;
-    int swipeBack = SwipeStyle.Edge;
-    boolean subPage = false;
-    int group = -1;
-    boolean needLogin = false;
-
-    {
-//        mFragment = (Fragment) iFragment;
-//        mLazyDelegate = new FragmentLazyDelegate(mFragment);
-    }
+    private int layoutRes = 0;
+    private boolean statusBarTranslucent = ArchConfig.statusBarTranslucent;
+    private boolean fitsSystemWindows = ArchConfig.fitsSystemWindows;
+    private boolean statusBarHidden = ArchConfig.statusBarHidden;
+    private int statusBarColor = ArchConfig.statusBarColor;
+    private int statusBarDarkTheme = ArchConfig.statusBarStyle;
+    private int swipeBack = SwipeStyle.Edge;
+    private boolean subPage = false;
+    private int group = -1;
+    private boolean needLogin = false;
 
     public void onAttach(AppCompatActivity activity) {
 
-        mActivity = activity;
-        if (activity instanceof IActivity) {
-            iActivity = (IActivity) activity;
+        if (!(activity instanceof IActivity)) {
+            throw new IllegalArgumentException("AppCompatActivity请实现IActivity接口");
         }
+        mActivity = activity;
+        iActivity = (IActivity) activity;
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +76,7 @@ public class FragmentDelegate {
         FragmentManagerUtils.getInstance().pushFragment(mFragment);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         initAttributes();
         if (null == mRootView) {
@@ -125,6 +120,11 @@ public class FragmentDelegate {
 
     public void onDestroy() {
         mLazyDelegate.onDestroy();
+        iFragment = null;
+        iActivity = null;
+        mActivity = null;
+        mFragment = null;
+        mRootView = null;
     }
 
     public void onDestroyView() {
@@ -136,9 +136,7 @@ public class FragmentDelegate {
      */
     public void initAttributes() {
         MainThreadUtils.post(() -> {
-
             BindFragment bindFragment = iFragment.getClass().getAnnotation(BindFragment.class);
-
             if (bindFragment != null) {
                 layoutRes = bindFragment.layoutRes();
                 fitsSystemWindows = bindFragment.fitsSystemWindows();
@@ -158,7 +156,6 @@ public class FragmentDelegate {
 //                    ArchConfig.NEED_LOGIN.bus(needLogin);
                 }
             }
-
             if (!subPage) {
                 setNeedsStatusBarAppearanceUpdate();
             }
@@ -200,7 +197,6 @@ public class FragmentDelegate {
         if (subPage) {
             return;
         }
-
         // 侧滑返回
         iActivity.setSwipeBack(swipeBack);
 

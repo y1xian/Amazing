@@ -15,6 +15,7 @@ import com.github.anzewei.parallaxbacklayout.ParallaxHelper;
 import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.yyxnb.common.AppConfig;
 import com.yyxnb.common.BuildConfig;
+import com.yyxnb.common.log.LogUtils;
 
 import me.jessyan.autosize.AutoSizeConfig;
 
@@ -28,7 +29,7 @@ public class LibraryInitializer extends ContentProvider {
 
         Context context = AppConfig.getInstance().getContext();
 
-        if (context != null){
+        if (context != null) {
 
             AutoSizeConfig.getInstance().setCustomFragment(true);
 
@@ -44,8 +45,14 @@ public class LibraryInitializer extends ContentProvider {
                     .config()
                     .enableLogger(BuildConfig.DEBUG);
 
-        }
+            LogUtils.init()
+                    //设置全局tag
+                    .setTag("Arch")
+                    //是否显示日志，默认true，发布时最好关闭
+                    .setShowThreadInfo(true)
+                    .setDebug(AppConfig.getInstance().isDebug());
 
+        }
 
 
         return true;

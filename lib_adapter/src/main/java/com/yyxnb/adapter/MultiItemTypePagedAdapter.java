@@ -150,7 +150,7 @@ public class MultiItemTypePagedAdapter<T> extends PagedListAdapter<T, BaseViewHo
     protected void onViewHolderCreated(BaseViewHolder holder, ViewGroup parent, int viewType) {
     }
 
-    void convert(BaseViewHolder holder, T t) {
+    protected void convert(BaseViewHolder holder, T t) {
         mItemDelegateManager.convert(holder, t, holder.getAdapterPosition());
     }
 
@@ -194,7 +194,7 @@ public class MultiItemTypePagedAdapter<T> extends PagedListAdapter<T, BaseViewHo
     /**
      * 设置需要点击事件的子view
      */
-    public void addChildClickViewIds(BaseViewHolder holder, int... viewIds) {
+    protected void addChildClickViewIds(BaseViewHolder holder, int... viewIds) {
 
         if (mOnItemClickListener != null) {
             for (int id : viewIds) {
@@ -219,7 +219,7 @@ public class MultiItemTypePagedAdapter<T> extends PagedListAdapter<T, BaseViewHo
     /**
      * 设置需要长按点击事件的子view
      */
-    void addChildLongClickViewIds(BaseViewHolder holder, int... viewIds) {
+    protected void addChildLongClickViewIds(BaseViewHolder holder, int... viewIds) {
 
         if (mOnItemClickListener != null) {
             for (int id : viewIds) {
@@ -248,7 +248,7 @@ public class MultiItemTypePagedAdapter<T> extends PagedListAdapter<T, BaseViewHo
         }
     }
 
-    public void onViewAttachedToWindow2(BaseViewHolder holder) {
+    protected void onViewAttachedToWindow2(BaseViewHolder holder) {
 
     }
 
@@ -259,7 +259,7 @@ public class MultiItemTypePagedAdapter<T> extends PagedListAdapter<T, BaseViewHo
         }
     }
 
-    public void onViewDetachedFromWindow2(BaseViewHolder holder) {
+    protected void onViewDetachedFromWindow2(BaseViewHolder holder) {
 
     }
 

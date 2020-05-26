@@ -9,11 +9,12 @@ public interface IActivity extends IView {
 
     ActivityDelegate getBaseDelegate();
 
-    default void initWindows() {}
+    default void initWindows() {
+    }
 
-    default boolean initArgs(Bundle extras){
+    default boolean initArgs(Bundle extras) {
         return true;
     }
 
-    default void setSwipeBack(@SwipeStyle int mSwipeBack){}
+    void setSwipeBack(@SwipeStyle int mSwipeBack);
 }

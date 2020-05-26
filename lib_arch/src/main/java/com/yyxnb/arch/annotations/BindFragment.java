@@ -36,11 +36,11 @@ public @interface BindFragment {
 
     boolean statusBarTranslucent() default true;
 
-    @BarStyle int statusBarStyle() default 0;
+    @BarStyle int statusBarStyle() default BarStyle.DarkContent;
 
     int statusBarColor() default 0;
 
-    @SwipeStyle int swipeBack() default 0;
+    @SwipeStyle int swipeBack() default SwipeStyle.Edge;
 
     boolean needLogin() default false;
 

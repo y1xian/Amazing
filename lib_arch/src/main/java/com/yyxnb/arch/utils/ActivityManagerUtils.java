@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * 管理所有activity
+ */
 public final class ActivityManagerUtils implements Serializable {
 
     private volatile static ActivityManagerUtils activityManagerUtils;

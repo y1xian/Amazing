@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * 管理所有fragment
+ */
 public final class FragmentManagerUtils implements Serializable {
 
     private volatile static FragmentManagerUtils fragmentManagerUtils;

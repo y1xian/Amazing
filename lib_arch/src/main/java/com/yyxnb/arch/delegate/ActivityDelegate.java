@@ -9,13 +9,11 @@ import android.widget.EditText;
 
 import com.yyxnb.arch.base.IActivity;
 import com.yyxnb.arch.utils.ActivityManagerUtils;
+import com.yyxnb.common.AppConfig;
 
 public class ActivityDelegate {
 
     public ActivityDelegate(IActivity iActivity) {
-        if (!(iActivity instanceof AppCompatActivity)){
-            throw new IllegalArgumentException("Activity请实现IActivity接口");
-        }
         this.iActivity = iActivity;
         this.mActivity = (AppCompatActivity) iActivity;
     }
@@ -23,24 +21,37 @@ public class ActivityDelegate {
     private IActivity iActivity;
     private AppCompatActivity mActivity;
 
+    /**
+     * 是否第一次加载
+     */
+    private boolean mIsFirstVisible = true;
+
+
     public void onCreate(@Nullable Bundle savedInstanceState) {
         ActivityManagerUtils.getInstance().pushActivity(mActivity);
     }
 
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if (mIsFirstVisible && hasFocus) {
+            mIsFirstVisible = false;
+            iActivity.initViewData();
+        }
+    }
+
     public void onDestroy() {
+        mIsFirstVisible = true;
         ActivityManagerUtils.getInstance().killActivity(mActivity);
+        iActivity = null;
+        mActivity = null;
     }
 
     /**
      * 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘，因为当用户点击EditText时则不能隐藏
-     *
-     * @param v       View
-     * @param event 事件
-     * @return boolean
      */
+    @SuppressWarnings("AlibabaAvoidNegationOperator")
     public boolean isShouldHideKeyboard(View v, MotionEvent event) {
 
-        if (v != null && (v instanceof EditText)) {
+        if ((v instanceof EditText)) {
             int[] l = {0, 0};
             v.getLocationInWindow(l);
             int left = l[0], top = l[1], bottom = top + v.getHeight(), right = left + v.getWidth();

@@ -18,17 +18,12 @@ import java.util.List;
 public class FragmentLazyDelegate {
 
     public FragmentLazyDelegate(Fragment mFragment) {
-
-        //        if (this.mFragment instanceof IFragment) {
         if (mFragment instanceof IFragment) {
-            this.mILazy = (IFragment) mFragment;
+            this.iFragment = (IFragment) mFragment;
         } else {
             throw new IllegalArgumentException("Fragment请实现IFragment接口");
         }
-
         this.mFragment = mFragment;
-
-
     }
 
     private Fragment mFragment;
@@ -51,7 +46,7 @@ public class FragmentLazyDelegate {
      */
     private boolean mIsSubPage = false;
 
-    private IFragment mILazy;
+    private IFragment iFragment;
 
     /**
      * @param isVisibleToUser true 界面可见
@@ -76,7 +71,7 @@ public class FragmentLazyDelegate {
     void onActivityCreated(Bundle savedInstanceState, boolean subPage) {
         mIsSubPage = subPage;
         isViewCreated = true;
-        mILazy.initView(savedInstanceState);
+        iFragment.initView(savedInstanceState);
         // !isHidden() 默认为 true  在调用 hide show 的时候可以使用
         if (!mFragment.isHidden() && mFragment.getUserVisibleHint()) {
             // 这里的限制只能限制 A - > B 两层嵌套
@@ -103,14 +98,14 @@ public class FragmentLazyDelegate {
 
     void onDestroy() {
         mFragment = null;
-        mILazy = null;
+        iFragment = null;
         mIsFirstVisible = true;
         isViewCreated = false;
     }
 
     void onConfigurationChanged(Configuration newConfig) {
         if (mFragment.getUserVisibleHint()) {
-            mILazy.onVisible();
+            iFragment.onVisible();
         }
     }
 
@@ -146,15 +141,15 @@ public class FragmentLazyDelegate {
 
         if (!visible) {
             dispatchChildVisibleState(false);
-            mILazy.onInVisible();
+            iFragment.onInVisible();
         } else {
             if (mIsFirstVisible) {
                 mIsFirstVisible = false;
-                mILazy.initViewData();
-                mILazy.initObservable();
+                iFragment.initViewData();
+                iFragment.initObservable();
             }
             if (isFragmentVisible(mFragment)) {
-                mILazy.onVisible();
+                iFragment.onVisible();
                 dispatchChildVisibleState(true);
             }
         }
@@ -197,6 +192,7 @@ public class FragmentLazyDelegate {
      *
      * @param visible
      */
+    @SuppressWarnings("RedundantOperationOnEmptyContainer")
     private void dispatchChildVisibleState(boolean visible) {
         FragmentManager childFragmentManager = mFragment.getChildFragmentManager();
         List<Fragment> fragments = (childFragmentManager).getFragments();

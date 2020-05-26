@@ -3,6 +3,7 @@ package com.yyxnb.arch.base;
 import android.arch.lifecycle.DefaultLifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.yyxnb.common.AppConfig;
 
@@ -18,31 +19,31 @@ public class Java8Observer implements DefaultLifecycleObserver, Serializable {
 
     @Override
     public void onCreate(@NonNull LifecycleOwner owner) {
-        AppConfig.getInstance().log(tag, owner.getLifecycle().getCurrentState().name());
+        Log.e(tag, owner.getLifecycle().getCurrentState().name());
     }
 
     @Override
     public void onStart(@NonNull LifecycleOwner owner) {
-        AppConfig.getInstance().log(tag, owner.getLifecycle().getCurrentState().name());
+        Log.w(tag, owner.getLifecycle().getCurrentState().name());
     }
 
     @Override
     public void onResume(@NonNull LifecycleOwner owner) {
-        AppConfig.getInstance().log(tag, owner.getLifecycle().getCurrentState().name());
+        Log.w(tag, owner.getLifecycle().getCurrentState().name());
     }
 
     @Override
     public void onPause(@NonNull LifecycleOwner owner) {
-        AppConfig.getInstance().log(tag, owner.getLifecycle().getCurrentState().name());
+        Log.w(tag, owner.getLifecycle().getCurrentState().name());
     }
 
     @Override
     public void onStop(@NonNull LifecycleOwner owner) {
-        AppConfig.getInstance().log(tag, owner.getLifecycle().getCurrentState().name());
+        Log.w(tag, owner.getLifecycle().getCurrentState().name());
     }
 
     @Override
     public void onDestroy(@NonNull LifecycleOwner owner) {
-        AppConfig.getInstance().log(tag, owner.getLifecycle().getCurrentState().name());
+        Log.e(tag, owner.getLifecycle().getCurrentState().name());
     }
 }

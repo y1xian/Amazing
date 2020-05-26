@@ -4,12 +4,7 @@ public abstract class BaseAdapter<T> extends MultiItemTypeAdapter<T> {
 
     public BaseAdapter(int mLayoutId) {
         this.mLayoutId = mLayoutId;
-    }
 
-    protected int mLayoutId;
-
-    {
-        //noinspection InfiniteRecursion
         addItemDelegate(new ItemDelegate<T>() {
             @Override
             public int layoutId() {
@@ -27,6 +22,8 @@ public abstract class BaseAdapter<T> extends MultiItemTypeAdapter<T> {
             }
         });
     }
+
+    protected int mLayoutId;
 
     protected abstract void bind(BaseViewHolder holder, T t, int position);
 }
