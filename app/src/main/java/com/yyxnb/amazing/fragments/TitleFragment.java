@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.yyxnb.arch.annotations.BindFragment;
 import com.yyxnb.arch.base.BaseFragment;
 import com.yyxnb.amazing.R;
+import com.yyxnb.arch.delegate.IFragment;
 import com.yyxnb.view.titlebar.TitleBar;
 
 
@@ -14,7 +15,7 @@ import com.yyxnb.view.titlebar.TitleBar;
  * 标题栏.
  */
 @BindFragment(layoutRes = R.layout.fragment_title)
-public class TitleFragment extends BaseFragment {
+public class TitleFragment extends BaseFragment implements IFragment {
 
 //    @BindViewModel(isActivity = true)
 //    NetWorkViewModel mViewModel;
@@ -95,5 +96,20 @@ public class TitleFragment extends BaseFragment {
     public void onInVisible() {
         super.onInVisible();
 //        LogUtils.INSTANCE.e("onInVisible");
+    }
+
+    @Override
+    public int getLayoutId() {
+        return 0;
+    }
+
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initData() {
+
     }
 }

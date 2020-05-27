@@ -6,13 +6,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
 
 import com.github.anzewei.parallaxbacklayout.ParallaxHelper;
 import com.jeremyliao.liveeventbus.LiveEventBus;
+import com.yyxnb.arch.delegate.ActivityLifecycle;
 import com.yyxnb.common.AppConfig;
 import com.yyxnb.common.BuildConfig;
 import com.yyxnb.common.log.LogUtils;
@@ -37,6 +37,7 @@ public class LibraryInitializer extends ContentProvider {
             MultiDex.install(context);
 
             //系统会在每个 Activity 执行完对应的生命周期后都调用这个实现类中对应的方法
+            AppConfig.getInstance().getApp().registerActivityLifecycleCallbacks(ActivityLifecycle.getInstance());
             AppConfig.getInstance().getApp().registerActivityLifecycleCallbacks(ParallaxHelper.getInstance());
 //                it.registerActivityLifecycleCallbacks(ActivityLifecycle)
             ProcessLifecycleOwner.get().getLifecycle().addObserver(new AppLifeObserver());

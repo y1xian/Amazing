@@ -2,6 +2,7 @@ package com.yyxnb.amazing.fragments;
 
 
 import android.arch.paging.PagedListAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.View;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.yyxnb.adapter.BaseViewHolder;
 import com.yyxnb.adapter.MultiItemTypePagedAdapter;
+import com.yyxnb.amazing.TestActivity;
 import com.yyxnb.arch.annotations.BindFragment;
 import com.yyxnb.amazing.adapter.MainListAdapter;
 import com.yyxnb.amazing.bean.MainBean;
@@ -57,6 +59,7 @@ public class HomeFragment extends AbsListFragment<MainBean, MainViewModel> {
         switch (position) {
             case 0:
                 startFragment(TitleFragment.newInstance());
+                startActivity(new Intent(getContext(), TestActivity.class));
                 break;
             case 1:
                 startFragment(NetWorkFragment.newInstance());
