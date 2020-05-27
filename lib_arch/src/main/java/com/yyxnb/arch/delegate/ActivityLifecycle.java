@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.LruCache;
 
+import com.yyxnb.arch.base.IActivity;
 import com.yyxnb.arch.utils.ActivityManagerUtils;
-import com.yyxnb.common.AppConfig;
 
 public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks {
 
@@ -47,8 +47,6 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
             activityDelegate.onCreate(savedInstanceState);
 
             registerFragmentCallback(activity);
-        } else {
-            AppConfig.getInstance().log(" no IActivity ");
         }
 
     }
@@ -116,7 +114,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
 
     private IActivityDelegate newDelegate(Activity activity) {
 
-        return new ActivityDelegateImpl(activity);
+        return new ActivityDelegateImpl((FragmentActivity) activity);
     }
 
     private String getKey(Activity activity) {

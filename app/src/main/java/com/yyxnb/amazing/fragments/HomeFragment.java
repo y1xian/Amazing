@@ -12,6 +12,7 @@ import android.view.View;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.yyxnb.adapter.BaseViewHolder;
 import com.yyxnb.adapter.MultiItemTypePagedAdapter;
+import com.yyxnb.amazing.Test2Activity;
 import com.yyxnb.amazing.TestActivity;
 import com.yyxnb.arch.annotations.BindFragment;
 import com.yyxnb.amazing.adapter.MainListAdapter;
@@ -58,15 +59,16 @@ public class HomeFragment extends AbsListFragment<MainBean, MainViewModel> {
     private void setMenu(int position) {
         switch (position) {
             case 0:
-                startFragment(TitleFragment.newInstance());
+//                startFragment(TitleFragment.newInstance());
                 startActivity(new Intent(getContext(), TestActivity.class));
                 break;
             case 1:
                 startFragment(NetWorkFragment.newInstance());
                 break;
-//            case 2:
+            case 2:
 //                startFragment(FragmentListFragment.newInstance());
-//                break;
+                startActivity(new Intent(getContext(), Test2Activity.class));
+                break;
 //            case 3:
 //                startFragment(AdapterListFragment.newInstance());
 //                break;

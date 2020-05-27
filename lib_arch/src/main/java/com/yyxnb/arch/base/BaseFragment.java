@@ -23,6 +23,11 @@ import com.yyxnb.arch.delegate.FragmentDelegate;
 import java.lang.ref.WeakReference;
 import java.util.UUID;
 
+/**
+ * 懒加载
+ *
+ * @author yyx
+ */
 public abstract class BaseFragment extends Fragment implements IFragment {
 
     protected final String TAG = getClass().getCanonicalName();
@@ -57,6 +62,7 @@ public abstract class BaseFragment extends Fragment implements IFragment {
         return DataBindingUtil.getBinding(mRootView);
     }
 
+    @Override
     public String sceneId() {
         return UUID.randomUUID().toString();
     }
@@ -66,6 +72,7 @@ public abstract class BaseFragment extends Fragment implements IFragment {
         return Math.abs(TAG.hashCode());
     }
 
+    @Override
     public Bundle initArguments() {
         return mFragmentDelegate.initArguments();
     }
@@ -157,10 +164,10 @@ public abstract class BaseFragment extends Fragment implements IFragment {
         getLifecycle().removeObserver(java8Observer);
     }
 
-    @Override
-    public void initViewData() {
-        mFragmentDelegate.initDeclaredFields();
-    }
+//    @Override
+//    public void initViewData() {
+//        mFragmentDelegate.initDeclaredFields();
+//    }
 
     @SuppressWarnings("unchecked")
     public <T> T findViewById(@IdRes int resId) {
@@ -174,11 +181,11 @@ public abstract class BaseFragment extends Fragment implements IFragment {
         mActivity.get().onBackPressed();
     }
 
-    public <T extends BaseFragment> void startFragment(T targetFragment) {
+    public <T extends IFragment> void startFragment(T targetFragment) {
         startFragment(targetFragment, 0);
     }
 
-    public <T extends BaseFragment> void startFragment(T targetFragment, int requestCode) {
+    public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {
         mFragmentDelegate.startFragment(targetFragment, requestCode);
     }
 

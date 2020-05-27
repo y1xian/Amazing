@@ -21,7 +21,7 @@ public interface IView {
     /**
      * 处理重量级数据、逻辑
      */
-    void initViewData();
+    default void initViewData(){}
 
     /**
      * 初始化界面观察者的监听

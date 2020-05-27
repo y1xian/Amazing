@@ -7,14 +7,19 @@ import com.yyxnb.arch.delegate.ActivityDelegate;
 
 public interface IActivity extends IView {
 
-    ActivityDelegate getBaseDelegate();
+    default ActivityDelegate getBaseDelegate() {
+        return null;
+    }
 
     default void initWindows() {
     }
 
-    default boolean initArgs(Bundle extras) {
-        return true;
+//    default boolean initArgs(Bundle extras) {
+//        return true;
+//    }
+
+    default void setSwipeBack(@SwipeStyle int mSwipeBack) {
     }
 
-    void setSwipeBack(@SwipeStyle int mSwipeBack);
+    default <T> void startFragment(T fragment){}
 }

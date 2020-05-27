@@ -30,6 +30,6 @@ public interface IFragmentDelegate {
 
     void onDetached();
 
-    Boolean isAdd();
+    boolean isAdd();
 
 }

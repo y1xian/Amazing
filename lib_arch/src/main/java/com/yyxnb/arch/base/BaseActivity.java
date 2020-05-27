@@ -61,23 +61,18 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         getWindow().setBackgroundDrawable(null);
         mContext = new WeakReference<>(this);
         // 在界面未初始化之前调用的初始化窗口
-        initWindows();
+//        initWindows();
         super.onCreate(savedInstanceState);
         mActivityDelegate.onCreate(savedInstanceState);
 
-        initAttributes();
-        setContentView(initLayoutResId());
-        initView(savedInstanceState);
+//        setContentView(initLayoutResId());
+//        initView(savedInstanceState);
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         mActivityDelegate.onWindowFocusChanged(hasFocus);
-    }
-
-    private void initAttributes() {
-
     }
 
     @Override
@@ -158,11 +153,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         return super.onTouchEvent(event);
     }
 
-    public <T extends BaseFragment> void startFragment(T targetFragment) {
+    public <T extends IFragment> void startFragment(T targetFragment) {
         startFragment(targetFragment, 0);
     }
 
-    public <T extends BaseFragment> void startFragment(T targetFragment, int requestCode) {
+    public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {
         Intent intent = new Intent(this, ContainerActivity.class);
         Bundle bundle = targetFragment.initArguments();
         bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
@@ -172,9 +167,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         startActivityForResult(intent, requestCode);
     }
 
-    public void setRootFragment(BaseFragment fragment, int containerId) {
+    public <T extends IFragment> void setRootFragment(T fragment, int containerId) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(containerId, fragment, fragment.sceneId());
+        transaction.replace(containerId, (Fragment) fragment, fragment.sceneId());
         transaction.addToBackStack(fragment.sceneId());
         transaction.commitAllowingStateLoss();
     }

@@ -1,25 +1,23 @@
 package com.yyxnb.arch.delegate;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 
 import com.yyxnb.arch.base.IActivity;
-import com.yyxnb.arch.utils.ActivityManagerUtils;
-import com.yyxnb.common.AppConfig;
 
 public class ActivityDelegate {
 
     public ActivityDelegate(IActivity iActivity) {
         this.iActivity = iActivity;
-        this.mActivity = (AppCompatActivity) iActivity;
+        this.mActivity = (Activity) iActivity;
     }
 
     private IActivity iActivity;
-    private AppCompatActivity mActivity;
+    private Activity mActivity;
 
     /**
      * 是否第一次加载
@@ -28,7 +26,7 @@ public class ActivityDelegate {
 
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        ActivityManagerUtils.getInstance().pushActivity(mActivity);
+//        ActivityManagerUtils.getInstance().pushActivity(mActivity);
     }
 
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -40,7 +38,7 @@ public class ActivityDelegate {
 
     public void onDestroy() {
         mIsFirstVisible = true;
-        ActivityManagerUtils.getInstance().killActivity(mActivity);
+//        ActivityManagerUtils.getInstance().killActivity(mActivity);
         iActivity = null;
         mActivity = null;
     }

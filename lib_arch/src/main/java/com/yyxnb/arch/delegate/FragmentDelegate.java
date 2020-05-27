@@ -166,28 +166,28 @@ public class FragmentDelegate {
     /**
      * 获得成员变量
      */
-    public void initDeclaredFields() {
-        MainThreadUtils.post(() -> {
-            Field[] declaredFields = iFragment.getClass().getDeclaredFields();
-            for (Field field : declaredFields) {
-                // 允许修改反射属性
-                field.setAccessible(true);
-
-                /**
-                 *  根据 @BindViewModel 注解, 查找注解标示的变量（ViewModel）
-                 *  并且 创建 ViewModel 实例, 注入到变量中
-                 */
-                BindViewModel annotation = field.getAnnotation(BindViewModel.class);
-                if (annotation != null) {
-                    try {
-                        field.set(iFragment, getViewModel(field, annotation.isActivity()));
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-    }
+//    public void initDeclaredFields() {
+//        MainThreadUtils.post(() -> {
+//            Field[] declaredFields = iFragment.getClass().getDeclaredFields();
+//            for (Field field : declaredFields) {
+//                // 允许修改反射属性
+//                field.setAccessible(true);
+//
+//                /**
+//                 *  根据 @BindViewModel 注解, 查找注解标示的变量（ViewModel）
+//                 *  并且 创建 ViewModel 实例, 注入到变量中
+//                 */
+//                BindViewModel annotation = field.getAnnotation(BindViewModel.class);
+//                if (annotation != null) {
+//                    try {
+//                        field.set(iFragment, getViewModel(field, annotation.isActivity()));
+//                    } catch (IllegalAccessException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
+//    }
 
     /**
      * 更新状态栏样式
@@ -234,13 +234,13 @@ public class FragmentDelegate {
         return mActivity.getWindow();
     }
 
-    public ViewModel getViewModel(Field field, boolean activity) {
-        if (activity) {
-            return ViewModelFactory.createViewModel(mActivity, field);
-        } else {
-            return ViewModelFactory.createViewModel(mFragment, field);
-        }
-    }
+//    public ViewModel getViewModel(Field field, boolean activity) {
+//        if (activity) {
+//            return ViewModelFactory.createViewModel(mActivity, field);
+//        } else {
+//            return ViewModelFactory.createViewModel(mFragment, field);
+//        }
+//    }
 
     public Bundle initArguments() {
         Bundle args = mFragment.getArguments();
@@ -251,7 +251,7 @@ public class FragmentDelegate {
         return args;
     }
 
-    public <T extends BaseFragment> void startFragment(T targetFragment, int requestCode) {
+    public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {
         Bundle bundle = initArguments();
         Intent intent = new Intent(mActivity, ContainerActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

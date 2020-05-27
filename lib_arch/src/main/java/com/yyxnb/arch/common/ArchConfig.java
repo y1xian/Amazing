@@ -18,14 +18,6 @@ public class ArchConfig implements Serializable {
     public static final String NEED_LOGIN = "NEED_LOGIN";
 
     /**
-     * 重连次数
-     */
-    public static int retryMaxTime = 3;
-    /**
-     * 重连间隔时间 ms
-     */
-    public static Long retryDelay = 3000L;
-    /**
      * 侧滑
      */
     public static int swipeBack = SwipeStyle.Edge;
