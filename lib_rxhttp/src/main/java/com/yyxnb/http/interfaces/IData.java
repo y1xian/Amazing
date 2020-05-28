@@ -11,4 +11,6 @@ public interface IData<T> {
     String getMsg();
 
     T getResult();
+
+    boolean isSuccess();
 }

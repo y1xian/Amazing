@@ -29,6 +29,11 @@ public class BaseData<T> implements IData<T>, Serializable {
         return data;
     }
 
+    @Override
+    public boolean isSuccess() {
+        return "200".equals(status);
+    }
+
 //    public void setMsg(String msg) {
 //        this.msg = msg;
 //    }

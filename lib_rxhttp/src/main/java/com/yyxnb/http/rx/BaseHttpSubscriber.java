@@ -1,6 +1,8 @@
 package com.yyxnb.http.rx;
 
+import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.util.Log;
 
 import com.yyxnb.http.interfaces.IData;
 
@@ -12,16 +14,18 @@ import org.reactivestreams.Subscription;
  *
  * @param <T>
  */
-public class BaseHttpSubscriber<T> implements Subscriber<T> {
+public class BaseHttpSubscriber<T extends IData> implements Subscriber<T> {
 
     //异常类
     private ApiException ex;
 
+    private Subscription subscription;
+
     public BaseHttpSubscriber() {
-        data = new MutableLiveData();
+        data = new MediatorLiveData<>();
     }
 
-    private MutableLiveData<T> data;
+    private MediatorLiveData<T> data;
 
     public MutableLiveData<T> get() {
         return data;
@@ -32,26 +36,25 @@ public class BaseHttpSubscriber<T> implements Subscriber<T> {
     }
 
     public void onFinish(T t) {
-        set(t);
+        if (t != null){
+            set(t);
+        }
     }
 
     @Override
     public void onSubscribe(Subscription s) {
+        subscription = s;
         // 观察者接收事件 = 1个
-        s.request(1);
+        subscription.request(1);
     }
 
     @Override
     public void onNext(T t) {
-//        onFinish(t);
-        if (t instanceof IData) {
-            IData tt = (IData) t;
-            if (tt.getCode().equals("200")) {
-                onFinish((T) tt);
-            } else {
-                ex = ExceptionEngine.handleException(new ServerException(tt.getCode(), tt.getMsg()));
-                getErrorDto(ex);
-            }
+        if (t.isSuccess()) {
+            onFinish(t);
+        } else {
+            ex = ExceptionEngine.handleException(new ServerException(t.getCode(), t.getMsg()));
+            getErrorDto(t, ex);
         }
 
     }
@@ -59,7 +62,8 @@ public class BaseHttpSubscriber<T> implements Subscriber<T> {
     @Override
     public void onError(Throwable t) {
         ex = ExceptionEngine.handleException(t);
-        getErrorDto(ex);
+        getErrorDto(null, ex);
+        Log.d("BaseHttpSubscriber", "onError " + ex.getStatusDesc());
     }
 
     /**
@@ -67,30 +71,20 @@ public class BaseHttpSubscriber<T> implements Subscriber<T> {
      *
      * @param ex
      */
-    private void getErrorDto(ApiException ex) {
-        final IData dto = new IData() {
-            @Override
-            public String getCode() {
-                return ex.getStatusCode();
-            }
-
-            @Override
-            public String getMsg() {
-                return ex.getStatusDesc();
-            }
-
-            @Override
-            public Object getResult() {
-                return null;
-            }
-        };
-//        dto.setStatusCode(ex.getStatusCode());
-//        dto.setStatusDesc(ex.getStatusDesc());
-//        onFinish(dto.getResult());
+    private void getErrorDto(T t, ApiException ex) {
+        try {
+            onFinish(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            subscription.cancel();
+            Log.d("BaseHttpSubscriber", "getErrorDto " + ex.getStatusDesc());
+        }
     }
 
     @Override
     public void onComplete() {
+        subscription.cancel();
     }
 
 }

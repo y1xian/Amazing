@@ -102,11 +102,13 @@ public class NetWorkFragment extends BaseFragment/*VM<NetWorkViewModel>*/ {
 
         mViewModel.reqTeam2();
 
-        mViewModel.getList().observe(this,data->{
-//            AppConfig.getInstance().log(" getList " + data.getResult().list.size());
-            LogUtils.list(data.getResult().list);
-            mAdapter.setDataItems(data.getResult().list);
-        });
+        mViewModel.getList3();
+
+//        mViewModel.getList().observe(this,data->{
+////            AppConfig.getInstance().log(" getList " + data.getResult().list.size());
+//            LogUtils.list(data.getResult().list);
+//            mAdapter.setDataItems(data.getResult().list);
+//        });
 
 //        LogUtils.INSTANCE.e(CacheManager.cacheSize() + " 条");
 
@@ -157,20 +159,29 @@ public class NetWorkFragment extends BaseFragment/*VM<NetWorkViewModel>*/ {
 //        });
 
 
-//        mViewModel.result.observe(this, t -> {
-////                    page++;
-//            mRefreshLayout.finishRefresh();
-//            if (t != null && t.data != null) {
-//                AppConfig.getInstance().log(" SUCCESS   " + (t.data.list.size()));
-//                //                        LogUtils.INSTANCE.list(t.data.getData());
-//                mAdapter.setDataItems(t.data.list);
-//            }
-//        });
         mViewModel.result.observe(this, t -> {
 //                    page++;
             mRefreshLayout.finishRefresh();
-            if (t != null && t.list != null) {
+            if (t != null ) {
                 AppConfig.getInstance().log(" SUCCESS   " + (t.list.size()));
+                //                        LogUtils.INSTANCE.list(t.data.getData());
+                mAdapter.setDataItems(t.list);
+            }
+        });
+//        mViewModel.result.observe(this, t -> {
+////                    page++;
+//            mRefreshLayout.finishRefresh();
+//            if (t != null && t.list != null) {
+//                AppConfig.getInstance().log(" SUCCESS   " + (t.list.size()));
+//                //                        LogUtils.INSTANCE.list(t.data.getData());
+//                mAdapter.setDataItems(t.list);
+//            }
+//        });
+        mViewModel.result2.observe(this, t -> {
+//                    page++;
+            mRefreshLayout.finishRefresh();
+            if (t != null && t.list != null) {
+                AppConfig.getInstance().log(" SUCCESS1   " + (t.list.size()));
                 //                        LogUtils.INSTANCE.list(t.data.getData());
                 mAdapter.setDataItems(t.list);
             }
