@@ -7,9 +7,9 @@ import java.util.List;
 
 public class DataConfig {
 
-//    public static final String BASE_URL = "http://192.168.8.103:7879/";
+    public static final String BASE_URL = "http://192.168.8.103:7879/";
 //    public static final String BASE_URL = "http://192.168.0.98:7879/";
-    public static final String BASE_URL = " http://www.mocky.io/";
+//    public static final String BASE_URL = " http://www.mocky.io/";
 
 
     public static List<MainBean> getDataMain() {
