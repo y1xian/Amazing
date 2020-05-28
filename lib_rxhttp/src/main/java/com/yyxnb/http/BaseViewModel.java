@@ -1,24 +1,12 @@
 package com.yyxnb.http;
 
 import android.arch.lifecycle.DefaultLifecycleObserver;
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
 
 import com.yyxnb.common.log.LogUtils;
-import com.yyxnb.http.interfaces.IData;
 import com.yyxnb.http.rx.BaseHttpSubscriber;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -43,7 +31,7 @@ public abstract class BaseViewModel extends ViewModel implements DefaultLifecycl
      * @return
      */
     public <T> BaseHttpSubscriber<T> request(Flowable<T> flowable){
-        BaseHttpSubscriber<T> baseHttpSubscriber = new BaseHttpSubscriber<T>(); //RxJava Subscriber回调
+        final BaseHttpSubscriber<T> baseHttpSubscriber = new BaseHttpSubscriber<T>(); //RxJava Subscriber回调
         flowable.subscribeOn(Schedulers.io()) //解决背压
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(baseHttpSubscriber);

@@ -20,6 +20,7 @@ import com.yyxnb.arch.annotations.BindFragment;
 import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.BaseFragment;
 import com.yyxnb.common.AppConfig;
+import com.yyxnb.common.log.LogUtils;
 
 
 /**
@@ -101,11 +102,11 @@ public class NetWorkFragment extends BaseFragment/*VM<NetWorkViewModel>*/ {
 
         mViewModel.reqTeam2();
 
-//        mViewModel.getList().observe(this,data->{
-////            AppConfig.getInstance().log(" getList " + data.getResult().list.size());
-//            LogUtils.list(data.getResult().list);
-//            mAdapter.setDataItems(data.getResult().list);
-//        });
+        mViewModel.getList().observe(this,data->{
+//            AppConfig.getInstance().log(" getList " + data.getResult().list.size());
+            LogUtils.list(data.getResult().list);
+            mAdapter.setDataItems(data.getResult().list);
+        });
 
 //        LogUtils.INSTANCE.e(CacheManager.cacheSize() + " 条");
 

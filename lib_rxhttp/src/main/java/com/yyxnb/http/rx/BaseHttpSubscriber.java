@@ -1,9 +1,7 @@
 package com.yyxnb.http.rx;
 
-import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.yyxnb.http.HttpConfig;
 import com.yyxnb.http.interfaces.IData;
 
 import org.reactivestreams.Subscriber;
@@ -45,6 +43,7 @@ public class BaseHttpSubscriber<T> implements Subscriber<T> {
 
     @Override
     public void onNext(T t) {
+//        onFinish(t);
         if (t instanceof IData) {
             IData tt = (IData) t;
             if (tt.getCode().equals("200")) {

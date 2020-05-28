@@ -4,6 +4,7 @@ import com.yyxnb.http.interceptor.HeaderInterceptor;
 import com.yyxnb.http.interceptor.LoggingInterceptor;
 import com.yyxnb.http.interceptor.UrlInterceptor;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -37,7 +38,7 @@ public class BaseOkHttpClient {
         final HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new LoggingInterceptor());
         logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        builder.addInterceptor(new HeaderInterceptor())
+        builder.addInterceptor(new HeaderInterceptor(new HashMap<>()))
                 .addInterceptor(new UrlInterceptor())
                 .readTimeout(HttpConfig.READ_TIME_OUT, TimeUnit.SECONDS)
                 .writeTimeout(HttpConfig.WRITE_TIME_OUT, TimeUnit.SECONDS)

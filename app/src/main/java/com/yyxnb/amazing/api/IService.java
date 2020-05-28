@@ -9,6 +9,7 @@ import com.yyxnb.http.ApiResponse;
 
 import java.util.Map;
 
+import io.reactivex.Flowable;
 import retrofit2.http.GET;
 import retrofit2.http.QueryMap;
 
@@ -24,6 +25,6 @@ public interface IService {
     @GET("video/query")
     LiveData<BaseData<StateData<TikTokBean>>> getVideoList2(@QueryMap Map<String,String> map);
 
-//    @GET("video/query")
-//    Flowable<BaseData<StateData<TikTokBean>>> getVideoList3(@QueryMap Map<String,String> map);
+    @GET("video/query")
+    Flowable<BaseData<StateData<TikTokBean>>> getVideoList3(@QueryMap Map<String,String> map);
 }

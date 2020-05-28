@@ -26,8 +26,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':lib_arch')
-//    implementation project(':lib_rxhttp')
-    implementation project(':lib_http')
+    implementation project(':lib_rxhttp')
+//    implementation project(':lib_http')
     implementation project(':lib_view')
     implementation project(':lib_utils')
     implementation project(':lib_adapter')

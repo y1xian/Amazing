@@ -10,7 +10,6 @@ import com.yyxnb.amazing.bean.BaseData;
 import com.yyxnb.amazing.bean.StateData;
 import com.yyxnb.amazing.bean.TikTokBean;
 import com.yyxnb.amazing.data.Http;
-import com.yyxnb.common.AppConfig;
 import com.yyxnb.common.log.LogUtils;
 import com.yyxnb.http.ApiResponse;
 import com.yyxnb.http.BaseViewModel;
@@ -68,10 +67,10 @@ public class NetWorkViewModel extends BaseViewModel {
         }.getAsLiveData());
     }
 
-//    public MutableLiveData<BaseData<StateData<TikTokBean>>> getList(){
-//        Map<String,String> map = new HashMap<>();
-//        return request(mApi.getVideoList3(map)).get();
-//    }
+    public MutableLiveData<BaseData<StateData<TikTokBean>>> getList(){
+        Map<String,String> map = new HashMap<>();
+        return request(mApi.getVideoList3(map)).get();
+    }
 
 //    public MutableLiveData<StateData<TikTokBean>> getList2(){
 //        Map<String,String> map = new HashMap<>();
@@ -106,18 +105,18 @@ public class NetWorkViewModel extends BaseViewModel {
 //            }
 //        });
 
-        launchOnlyresult(mApi.getVideoList2(map), new OnHandleException<BaseData<StateData<TikTokBean>>>() {
-            @Override
-            public void success(BaseData<StateData<TikTokBean>> data) {
-                AppConfig.getInstance().log(" ----data --- " + data.toString());
-//                result.postValue(data.getResult());
-            }
-
-            @Override
-            public void error(String msg) {
-                AppConfig.getInstance().log(" ----msg --- " + msg);
-            }
-        });
+//        launchOnlyresult(mApi.getVideoList2(map), new OnHandleException<BaseData<StateData<TikTokBean>>>() {
+//            @Override
+//            public void success(BaseData<StateData<TikTokBean>> data) {
+//                AppConfig.getInstance().log(" ----data --- " + data.toString());
+////                result.postValue(data.getResult());
+//            }
+//
+//            @Override
+//            public void error(String msg) {
+//                AppConfig.getInstance().log(" ----msg --- " + msg);
+//            }
+//        });
 
 
     }

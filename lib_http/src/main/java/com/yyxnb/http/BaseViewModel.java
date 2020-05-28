@@ -47,7 +47,7 @@ public abstract class BaseViewModel extends ViewModel implements DefaultLifecycl
 
 //            executeResponse(data);
         };
-//        call.observeForever(apiResponseObserver);
+        call.observeForever(apiResponseObserver);
 //        call.removeObserver(apiResponseObserver);
 
 
