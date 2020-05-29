@@ -20,7 +20,6 @@ import com.yyxnb.arch.annotations.SwipeStyle;
 import com.yyxnb.arch.common.ArchConfig;
 import com.yyxnb.arch.delegate.ActivityDelegate;
 import com.yyxnb.arch.utils.FragmentManagerUtils;
-import com.yyxnb.common.AppConfig;
 import com.yyxnb.common.KeyboardUtils;
 
 import java.lang.ref.WeakReference;

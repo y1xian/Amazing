@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentActivity;
 import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.IActivity;
 import com.yyxnb.arch.livedata.ViewModelFactory;
-import com.yyxnb.common.AppConfig;
 import com.yyxnb.common.MainThreadUtils;
 
 import java.lang.reflect.Field;
@@ -32,11 +31,10 @@ public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserve
 
             iActivity.initWindows();
 
-            AppConfig.getInstance().log("activity.getIntent().getExtras() " + activity.getIntent().getExtras());
-
             if (iActivity.initLayoutResId() != 0) {
                 activity.setContentView(iActivity.initLayoutResId());
             }
+            iActivity.getBaseDelegate().onCreate(savedInstanceState);
             initDeclaredFields();
             iActivity.initView(savedInstanceState);
         }
@@ -45,7 +43,6 @@ public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserve
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     @Override
     public void onStart() {
-
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)

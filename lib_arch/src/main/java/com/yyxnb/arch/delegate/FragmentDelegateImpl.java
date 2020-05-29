@@ -38,20 +38,6 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     @Override
     public void onCreated(Bundle savedInstanceState) {
-//        Class clazz = fragment.getClass().getSuperclass();
-//        if (clazz != null) {
-//            while (!(clazz.getName()).equals(Fragment.class.getName())) {
-//                clazz = clazz.getSuperclass();
-//            }
-//            try {
-//                Field field = clazz.getDeclaredField("mContentLayoutId");
-//                field.setAccessible(true);
-//                field.set(fragment, iFragment.initLayoutResId());
-//            } catch (NoSuchFieldException | IllegalAccessException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
