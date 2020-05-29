@@ -1,10 +1,7 @@
 package com.yyxnb.amazing.vm;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
-import android.support.annotation.NonNull;
 
 import com.yyxnb.amazing.api.IService;
 import com.yyxnb.amazing.bean.BaseData;
@@ -13,10 +10,7 @@ import com.yyxnb.amazing.bean.TikTokBean;
 import com.yyxnb.amazing.data.Http;
 import com.yyxnb.common.AppConfig;
 import com.yyxnb.common.log.LogUtils;
-import com.yyxnb.http.ApiResponse;
 import com.yyxnb.http.BaseViewModel;
-import com.yyxnb.http.NetworkResource;
-import com.yyxnb.http.Resource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,40 +30,6 @@ public class NetWorkViewModel extends BaseViewModel {
     public MutableLiveData<StateData<TikTokBean>> result = new MutableLiveData();
     public MediatorLiveData<StateData<TikTokBean>> result1 = new MediatorLiveData<>();
     public MediatorLiveData<StateData<TikTokBean>> result2 = new MediatorLiveData<>();
-//    public MutableLiveData<StateData<TikTokBean>> result2 = Transformations.map(getList(),input -> {
-//        return input.getResult();
-//    });
-
-//    public MutableLiveData<StateData<TikTokBean>> result1 = Transformations.switchMap(reqTeam,input ->
-//            new NetworkData<BaseData<StateData<TikTokBean>>,StateData<TikTokBean>>(){
-//
-//                @NonNull
-//                @Override
-//                protected LiveData<BaseData<StateData<TikTokBean>>> createCall() {
-//                    return mApi.getVideoList2(input);
-//                }
-//            }.getAsLiveData());
-
-    public LiveData<Resource<BaseData<StateData<TikTokBean>>>> getTestList(){
-//        return Transformations.switchMap(reqTeam, input -> new NetworkBoundResource<BaseListData<TikTokBean>>(){
-//
-//            @NonNull
-//            @Override
-//            protected LiveData<ApiResponse<BaseListData<TikTokBean>>> createCall() {
-//                return mApi.getVideoList(input);
-//            }
-//
-//        }.getAsLiveData());
-        return Transformations.switchMap(reqTeam, input -> new NetworkResource<BaseData<StateData<TikTokBean>>>(){
-
-            @NonNull
-            @Override
-            protected LiveData<ApiResponse<BaseData<StateData<TikTokBean>>>> createCall() {
-                return mApi.getVideoList(input);
-            }
-
-        }.getAsLiveData());
-    }
 
     public MutableLiveData<BaseData<StateData<TikTokBean>>> getList(){
         Map<String,String> map = new HashMap<>();

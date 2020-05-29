@@ -12,6 +12,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 
+@SuppressWarnings("rawtypes")
 public final class AppConfig implements Serializable {
 
     @SuppressLint("StaticFieldLeak")
@@ -31,6 +32,9 @@ public final class AppConfig implements Serializable {
         return appConfig;
     }
 
+    /**
+     * 避免序列化破坏单例模式
+     */
     private Object readResolve(){
         return appConfig;
     }

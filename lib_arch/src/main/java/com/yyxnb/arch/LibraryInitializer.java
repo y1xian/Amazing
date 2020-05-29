@@ -26,20 +26,19 @@ public class LibraryInitializer extends ContentProvider {
     @Override
     public boolean onCreate() {
         // 初始化
-
         Context context = AppConfig.getInstance().getContext();
 
         if (context != null) {
 
+            // 布局
             AutoSizeConfig.getInstance().setCustomFragment(true);
 
-            //突破65535的限制
+            // 突破65535的限制
             MultiDex.install(context);
 
-            //系统会在每个 Activity 执行完对应的生命周期后都调用这个实现类中对应的方法
+            // 系统会在每个 Activity 执行完对应的生命周期后都调用这个实现类中对应的方法
             AppConfig.getInstance().getApp().registerActivityLifecycleCallbacks(ActivityLifecycle.getInstance());
             AppConfig.getInstance().getApp().registerActivityLifecycleCallbacks(ParallaxHelper.getInstance());
-//                it.registerActivityLifecycleCallbacks(ActivityLifecycle)
             ProcessLifecycleOwner.get().getLifecycle().addObserver(new AppLifeObserver());
 
             LiveEventBus
@@ -48,7 +47,7 @@ public class LibraryInitializer extends ContentProvider {
 
             LogUtils.init()
                     //设置全局tag
-                    .setTag("Arch")
+                    .setTag("--Amazing--")
                     //是否显示日志，默认true，发布时最好关闭
                     .setShowThreadInfo(true)
                     .setDebug(AppConfig.getInstance().isDebug());

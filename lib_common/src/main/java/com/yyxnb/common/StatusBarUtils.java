@@ -24,10 +24,14 @@ import android.widget.FrameLayout;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
+/**
+ * 状态栏工具
+ */
 public class StatusBarUtils implements Serializable {
 
     /**
      * 是否深色
+     *
      * @param color
      * @param level 255/2 （>176) 为浅色
      * @return
@@ -64,8 +68,9 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 开启沉浸式
+     *
      * @param window
-     * @param translucent   透明
+     * @param translucent       透明
      * @param fitsSystemWindows 触发View的padding属性来给系统窗口留出空间
      */
     public static void setStatusBarTranslucent(Window window, boolean translucent, boolean fitsSystemWindows) {
@@ -108,6 +113,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 虚拟导航栏颜色
+     *
      * @param window
      * @param color
      */
@@ -120,8 +126,9 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 虚拟导航栏文字颜色
+     *
      * @param window
-     * @param dark  是否深色
+     * @param dark   是否深色
      */
     public static void setNavigationBarStyle(Window window, boolean dark) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -138,6 +145,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 导航栏文字是否深色
+     *
      * @param window
      * @return
      */
@@ -150,6 +158,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 隐藏导航栏
+     *
      * @param window
      * @param hidden
      */
@@ -170,6 +179,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 状态栏颜色
+     *
      * @param window
      * @param color
      */
@@ -179,6 +189,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 状态栏颜色
+     *
      * @param window
      * @param color
      * @param animated 是否有动画
@@ -234,6 +245,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 获取状态栏颜色
+     *
      * @param window
      * @return
      */
@@ -256,8 +268,9 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 状态栏字体颜色 6.0
+     *
      * @param window
-     * @param dark 是否深色
+     * @param dark   是否深色
      */
     public static void setStatusBarStyle(Window window, boolean dark) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -274,6 +287,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 是否深色
+     *
      * @param window
      * @return
      */
@@ -286,6 +300,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 隐藏状态栏
+     *
      * @param window
      * @param hidden
      */
@@ -330,6 +345,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 状态栏是否隐藏
+     *
      * @param window
      * @return
      */
@@ -339,6 +355,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 增加View的paddingTop,增加的值为状态栏高度
+     *
      * @param context
      * @param view
      */
@@ -358,6 +375,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 删除View的paddingTop,增加的值为状态栏高度
+     *
      * @param context
      * @param view
      */
@@ -390,6 +408,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 获取状态栏高度
+     *
      * @param context
      * @return
      */
@@ -412,6 +431,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 是否刘海屏
+     *
      * @param activity
      * @return
      */
@@ -537,6 +557,7 @@ public class StatusBarUtils implements Serializable {
 
     /**
      * 安全区域
+     *
      * @param window
      * @param shortEdges
      */

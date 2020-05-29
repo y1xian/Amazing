@@ -1,4 +1,4 @@
-package com.yyxnb.common;
+package com.yyxnb.utils;
 
 import android.annotation.TargetApi;
 import android.graphics.drawable.ColorDrawable;
@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.yyxnb.common.DpUtils;
 
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
@@ -262,7 +264,7 @@ public class SnackbarUtils implements Serializable {
      */
     public SnackbarUtils messageColor(@ColorInt int messageColor){
         if(getSnackbar()!=null){
-            ((TextView)getSnackbar().getView().findViewById(R.id.snackbar_text)).setTextColor(messageColor);
+            ((TextView)getSnackbar().getView().findViewById(com.yyxnb.common.R.id.snackbar_text)).setTextColor(messageColor);
         }
         return this;
     }
@@ -273,7 +275,7 @@ public class SnackbarUtils implements Serializable {
      */
     public SnackbarUtils actionColor(@ColorInt int actionTextColor){
         if(getSnackbar()!=null){
-            ((Button)getSnackbar().getView().findViewById(R.id.snackbar_action)).setTextColor(actionTextColor);
+            ((Button)getSnackbar().getView().findViewById(com.yyxnb.common.R.id.snackbar_action)).setTextColor(actionTextColor);
         }
         return this;
     }
@@ -287,8 +289,8 @@ public class SnackbarUtils implements Serializable {
     public SnackbarUtils colors(@ColorInt int backgroundColor, @ColorInt int messageColor, @ColorInt int actionTextColor){
         if(getSnackbar()!=null){
             getSnackbar().getView().setBackgroundColor(backgroundColor);
-            ((TextView)getSnackbar().getView().findViewById(R.id.snackbar_text)).setTextColor(messageColor);
-            ((Button)getSnackbar().getView().findViewById(R.id.snackbar_action)).setTextColor(actionTextColor);
+            ((TextView)getSnackbar().getView().findViewById(com.yyxnb.common.R.id.snackbar_text)).setTextColor(messageColor);
+            ((Button)getSnackbar().getView().findViewById(com.yyxnb.common.R.id.snackbar_action)).setTextColor(actionTextColor);
         }
         return this;
     }
@@ -409,7 +411,7 @@ public class SnackbarUtils implements Serializable {
      */
     public SnackbarUtils leftAndRightDrawable(@Nullable Drawable leftDrawable, @Nullable Drawable rightDrawable){
         if(getSnackbar()!=null){
-            TextView message = (TextView) getSnackbar().getView().findViewById(R.id.snackbar_text);
+            TextView message = (TextView) getSnackbar().getView().findViewById(com.yyxnb.common.R.id.snackbar_text);
             LinearLayout.LayoutParams paramsMessage = (LinearLayout.LayoutParams) message.getLayoutParams();
             paramsMessage = new LinearLayout.LayoutParams(paramsMessage.width, paramsMessage.height,0.0f);
             message.setLayoutParams(paramsMessage);
@@ -437,7 +439,7 @@ public class SnackbarUtils implements Serializable {
     public SnackbarUtils messageCenter(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
             if(getSnackbar()!=null){
-                TextView message = (TextView) getSnackbar().getView().findViewById(R.id.snackbar_text);
+                TextView message = (TextView) getSnackbar().getView().findViewById(com.yyxnb.common.R.id.snackbar_text);
                 //View.setTextAlignment需要SDK>=17
                 message.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
                 message.setGravity(Gravity.CENTER);
@@ -454,7 +456,7 @@ public class SnackbarUtils implements Serializable {
     public SnackbarUtils messageRight(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
             if(getSnackbar()!=null){
-                TextView message = (TextView) getSnackbar().getView().findViewById(R.id.snackbar_text);
+                TextView message = (TextView) getSnackbar().getView().findViewById(com.yyxnb.common.R.id.snackbar_text);
                 //View.setTextAlignment需要SDK>=17
                 message.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
                 message.setGravity(Gravity.CENTER_VERTICAL|Gravity.RIGHT);
@@ -601,7 +603,7 @@ public class SnackbarUtils implements Serializable {
             GradientDrawable background = getRadiusDrawable(getSnackbar().getView().getBackground());
             if(background != null){
                 radius = radius<=0?12:radius;
-                strokeWidth = strokeWidth<=0?1:(strokeWidth>=getSnackbar().getView().findViewById(R.id.snackbar_text).getPaddingTop()?2:strokeWidth);
+                strokeWidth = strokeWidth<=0?1:(strokeWidth>=getSnackbar().getView().findViewById(com.yyxnb.common.R.id.snackbar_text).getPaddingTop()?2:strokeWidth);
                 background.setCornerRadius(radius);
                 background.setStroke(strokeWidth,strokeColor);
                 getSnackbar().getView().setBackgroundDrawable(background);
@@ -633,7 +635,7 @@ public class SnackbarUtils implements Serializable {
         */
         //文字高度+paddingTop+paddingBottom : 14sp + 14dp*2
         int SnackbarHeight = DpUtils.dp2px(getSnackbar().getView().getContext(),28) + DpUtils.sp2px(getSnackbar().getView().getContext(),14);
-        Log.e("Jet","直接获取MessageView高度:"+getSnackbar().getView().findViewById(R.id.snackbar_text).getHeight());
+        Log.e("Jet","直接获取MessageView高度:"+getSnackbar().getView().findViewById(com.yyxnb.common.R.id.snackbar_text).getHeight());
         return SnackbarHeight;
     }
 
