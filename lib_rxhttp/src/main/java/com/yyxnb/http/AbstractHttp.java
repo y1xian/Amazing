@@ -83,7 +83,7 @@ public abstract class AbstractHttp {
      * 缓存
      */
     protected Boolean saveCache() {
-        return false;
+        return true;
     }
 
     /**
@@ -140,7 +140,6 @@ public abstract class AbstractHttp {
         }
 
         builder.baseUrl(baseUrl())
-//                .addCallAdapterFactory(new LiveDataCallAdapterFactory())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(GsonUtils.getGson()))
                 .client(okHttpClient());
