@@ -7,7 +7,7 @@ import com.yyxnb.arch.delegate.FragmentDelegate;
 public interface IFragment extends IView {
 
     default FragmentDelegate getBaseDelegate() {
-        return null;
+        return new FragmentDelegate(this);
     }
 
     /**

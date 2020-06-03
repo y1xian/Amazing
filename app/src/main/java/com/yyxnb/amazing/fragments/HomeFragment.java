@@ -13,11 +13,10 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.yyxnb.adapter.BaseViewHolder;
 import com.yyxnb.adapter.MultiItemTypePagedAdapter;
 import com.yyxnb.amazing.Test2Activity;
-import com.yyxnb.amazing.TestActivity;
-import com.yyxnb.arch.annotations.BindFragment;
 import com.yyxnb.amazing.adapter.MainListAdapter;
 import com.yyxnb.amazing.bean.MainBean;
 import com.yyxnb.amazing.vm.MainViewModel;
+import com.yyxnb.arch.annotations.BindFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,8 +58,8 @@ public class HomeFragment extends AbsListFragment<MainBean, MainViewModel> {
     private void setMenu(int position) {
         switch (position) {
             case 0:
-//                startFragment(TitleFragment.newInstance());
-                startActivity(new Intent(getContext(), TestActivity.class));
+                startFragment(TitleFragment.newInstance());
+//                startActivity(new Intent(getContext(), TestActivity.class));
                 break;
             case 1:
                 startFragment(NetWorkFragment.newInstance());

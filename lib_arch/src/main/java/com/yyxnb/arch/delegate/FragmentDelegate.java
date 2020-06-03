@@ -1,8 +1,7 @@
 package com.yyxnb.arch.delegate;
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.ViewModel;
-import android.content.Intent;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
@@ -12,28 +11,24 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import com.yyxnb.arch.ContainerActivity;
 import com.yyxnb.arch.annotations.BarStyle;
 import com.yyxnb.arch.annotations.BindFragment;
-import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.annotations.SwipeStyle;
-import com.yyxnb.arch.base.BaseFragment;
 import com.yyxnb.arch.base.IActivity;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.common.ArchConfig;
-import com.yyxnb.arch.livedata.ViewModelFactory;
-import com.yyxnb.arch.utils.FragmentManagerUtils;
 import com.yyxnb.common.MainThreadUtils;
 import com.yyxnb.common.StatusBarUtils;
+import com.yyxnb.common.log.LogUtils;
 
-import java.lang.reflect.Field;
+import java.io.Serializable;
+import java.util.Objects;
 
-public class FragmentDelegate {
+public class FragmentDelegate implements Serializable {
 
     public FragmentDelegate(IFragment iFragment) {
         this.iFragment = iFragment;
@@ -62,18 +57,31 @@ public class FragmentDelegate {
     private int group = -1;
     private boolean needLogin = false;
 
-    public void onAttach(AppCompatActivity activity) {
+    public AppCompatActivity getActivity() {
+        return mActivity;
+    }
 
-        if (!(activity instanceof IActivity)) {
+    public void onAttach(Context context) {
+        mActivity = (AppCompatActivity) context;
+        if (!(mActivity instanceof IActivity)) {
             throw new IllegalArgumentException("AppCompatActivity请实现IActivity接口");
         }
-        mActivity = activity;
-        iActivity = (IActivity) activity;
+        iActivity = (IActivity) mActivity;
+        LogUtils.e( "mActivity " + mActivity + " , " + (mActivity == null));
     }
+
+//    public void onAttach(AppCompatActivity activity) {
+//
+//        if (!(activity instanceof IActivity)) {
+//            throw new IllegalArgumentException("AppCompatActivity请实现IActivity接口");
+//        }
+//        mActivity = activity;
+//        iActivity = (IActivity) activity;
+//    }
 
     public void onCreate(Bundle savedInstanceState) {
         mLazyDelegate.onCreate(savedInstanceState);
-        FragmentManagerUtils.getInstance().pushFragment(mFragment);
+//        FragmentManagerUtils.getInstance().pushFragment(mFragment);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -96,6 +104,7 @@ public class FragmentDelegate {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         mLazyDelegate.onActivityCreated(savedInstanceState, subPage);
+        iFragment.initView(savedInstanceState);
     }
 
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -128,7 +137,7 @@ public class FragmentDelegate {
     }
 
     public void onDestroyView() {
-        FragmentManagerUtils.getInstance().killFragment(mFragment);
+//        FragmentManagerUtils.getInstance().killFragment(mFragment);
     }
 
     /**
@@ -157,7 +166,7 @@ public class FragmentDelegate {
                 }
             }
             if (!subPage) {
-                setNeedsStatusBarAppearanceUpdate();
+//                setNeedsStatusBarAppearanceUpdate();
             }
         });
 
@@ -198,7 +207,7 @@ public class FragmentDelegate {
             return;
         }
         // 侧滑返回
-        iActivity.setSwipeBack(swipeBack);
+//        iActivity.setSwipeBack(swipeBack);
 
         // 隐藏
         boolean hidden = statusBarHidden;
@@ -252,13 +261,26 @@ public class FragmentDelegate {
     }
 
     public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {
-        Bundle bundle = initArguments();
-        Intent intent = new Intent(mActivity, ContainerActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
-        bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
-        intent.putExtra(ArchConfig.BUNDLE, bundle);
-        mActivity.startActivityForResult(intent, requestCode);
+        LogUtils.e(" mmmm " + mActivity + " , " + getActivity());
+//        Bundle bundle = initArguments();
+//        Intent intent = new Intent(mActivity, ContainerActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
+//        bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
+//        intent.putExtra(ArchConfig.BUNDLE, bundle);
+//        mActivity.startActivityForResult(intent, requestCode);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FragmentDelegate that = (FragmentDelegate) o;
+        return iFragment.equals(that.iFragment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(iFragment);
+    }
 }

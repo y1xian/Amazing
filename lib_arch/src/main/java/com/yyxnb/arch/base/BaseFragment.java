@@ -1,14 +1,11 @@
 package com.yyxnb.arch.base;
 
-import android.arch.lifecycle.DefaultLifecycleObserver;
-import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,12 +28,13 @@ import java.util.UUID;
 public abstract class BaseFragment extends Fragment implements IFragment {
 
     protected final String TAG = getClass().getCanonicalName();
+    private FragmentDelegate mFragmentDelegate = getBaseDelegate();
 
-    protected WeakReference<AppCompatActivity> mActivity;
-    protected WeakReference<Context> mContext;
+    protected WeakReference<Context> mContext = new WeakReference<>(mFragmentDelegate.getActivity());
+    protected WeakReference<AppCompatActivity> mActivity = new WeakReference<>((AppCompatActivity) mContext.get());
     protected View mRootView;
 
-    private FragmentDelegate mFragmentDelegate;
+
     private Java8Observer java8Observer;
 
     @Nullable
@@ -45,15 +43,15 @@ public abstract class BaseFragment extends Fragment implements IFragment {
         return mContext.get();
     }
 
-    @Override
-    public FragmentDelegate getBaseDelegate() {
-        return mFragmentDelegate;
-    }
+//    @Override
+//    public FragmentDelegate getBaseDelegate() {
+//        return mFragmentDelegate;
+//    }
 
     public BaseFragment() {
         java8Observer = new Java8Observer(TAG);
         getLifecycle().addObserver(java8Observer);
-        mFragmentDelegate = new FragmentDelegate(this);
+//        mFragmentDelegate = new FragmentDelegate(this);
     }
 
     public <B extends ViewDataBinding> B getBinding() {
@@ -80,23 +78,28 @@ public abstract class BaseFragment extends Fragment implements IFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        requireActivity().getLifecycle().addObserver(new DefaultLifecycleObserver() {
-            @Override
-            public void onCreate(@NonNull LifecycleOwner owner) {
-                mContext = new WeakReference<>(context);
-                mActivity = new WeakReference<>((AppCompatActivity) mContext.get());
-                mFragmentDelegate.onAttach(mActivity.get());
-                owner.getLifecycle().removeObserver(this);
-            }
-        });
+
+        mContext = new WeakReference<>(context);
+        mActivity = new WeakReference<>((AppCompatActivity) mContext.get());
+
+//        requireActivity().getLifecycle().addObserver(new DefaultLifecycleObserver() {
+//            @Override
+//            public void onCreate(@NonNull LifecycleOwner owner) {
+//                mContext = new WeakReference<>(context);
+//                mActivity = new WeakReference<>((AppCompatActivity) mContext.get());
+//                mFragmentDelegate.onAttach(mContext.get());
+////                mFragmentDelegate.onAttach(mActivity.get());
+//                owner.getLifecycle().removeObserver(this);
+//            }
+//        });
 
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mFragmentDelegate.onCreate(savedInstanceState);
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        mFragmentDelegate.onCreate(savedInstanceState);
+//    }
 
     @Nullable
     @Override
@@ -109,7 +112,7 @@ public abstract class BaseFragment extends Fragment implements IFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mFragmentDelegate.onActivityCreated(savedInstanceState);
+//        mFragmentDelegate.onActivityCreated(savedInstanceState);
         //当设备旋转时，fragment会随托管activity一起销毁并重建。
 //        retainInstance = true
     }
@@ -135,19 +138,19 @@ public abstract class BaseFragment extends Fragment implements IFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mFragmentDelegate.onResume();
+//        mFragmentDelegate.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mFragmentDelegate.onPause();
+//        mFragmentDelegate.onPause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mFragmentDelegate.onDestroy();
+//        mFragmentDelegate.onDestroy();
         mFragmentDelegate = null;
         result = null;
         mContext.clear();
@@ -160,7 +163,7 @@ public abstract class BaseFragment extends Fragment implements IFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mFragmentDelegate.onDestroyView();
+//        mFragmentDelegate.onDestroyView();
         getLifecycle().removeObserver(java8Observer);
     }
 

@@ -23,7 +23,7 @@ public class TestFragment extends Fragment implements IFragment {
     }
 
     @BindViewModel(isActivity = true)
-    private TestViewModel viewModel;
+    TestViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

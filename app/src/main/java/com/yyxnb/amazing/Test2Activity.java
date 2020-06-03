@@ -19,7 +19,7 @@ public class Test2Activity extends AppCompatActivity implements IActivity {
 //    }
 
     @BindViewModel
-    private TestViewModel viewModel;
+    TestViewModel viewModel;
 
     @Override
     public int initLayoutResId() {
@@ -41,4 +41,14 @@ public class Test2Activity extends AppCompatActivity implements IActivity {
                 .commitAllowingStateLoss();
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        getBaseDelegate().onWindowFocusChanged(hasFocus);
+    }
+
+    @Override
+    public void initViewData() {
+        LogUtils.e(":initViewData");
+    }
 }

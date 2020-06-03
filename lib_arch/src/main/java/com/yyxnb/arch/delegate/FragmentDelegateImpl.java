@@ -14,6 +14,7 @@ import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.livedata.ViewModelFactory;
 import com.yyxnb.common.MainThreadUtils;
+import com.yyxnb.common.log.LogUtils;
 
 import java.lang.reflect.Field;
 
@@ -32,12 +33,14 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
 
     @Override
     public void onAttached(Context context) {
-
+        iFragment.getBaseDelegate().onAttach(context);
+        LogUtils.e("  onAttached ");
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     @Override
     public void onCreated(Bundle savedInstanceState) {
+        iFragment.getBaseDelegate().onCreate(savedInstanceState);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
@@ -49,48 +52,47 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        iFragment.initView(savedInstanceState);
+        iFragment.getBaseDelegate().onActivityCreated(savedInstanceState);
+//        iFragment.initView(savedInstanceState);
 //        iFragment.initViewData();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     @Override
     public void onStarted() {
-
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     @Override
     public void onResumed() {
-
+        iFragment.getBaseDelegate().onResume();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     @Override
     public void onPaused() {
-
+        iFragment.getBaseDelegate().onPause();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     @Override
     public void onStoped() {
-
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     @Override
     public void onViewDestroyed() {
-
+        iFragment.getBaseDelegate().onDestroyView();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     @Override
     public void onDestroyed() {
+        iFragment.getBaseDelegate().onDestroy();
         this.fragmentManager = null;
         this.fragment = null;
         this.iFragment = null;
@@ -99,7 +101,6 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     @Override
     public void onDetached() {
-
     }
 
     @Override

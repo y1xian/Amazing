@@ -21,6 +21,7 @@ import com.yyxnb.arch.common.ArchConfig;
 import com.yyxnb.arch.delegate.ActivityDelegate;
 import com.yyxnb.arch.utils.FragmentManagerUtils;
 import com.yyxnb.common.KeyboardUtils;
+import com.yyxnb.common.log.LogUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -38,21 +39,21 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     protected WeakReference<Context> mContext;
 
     private Java8Observer java8Observer;
-    protected ActivityDelegate mActivityDelegate;
+    protected ActivityDelegate mActivityDelegate = getBaseDelegate();
 
     public Context getContext() {
         return mContext.get();
     }
 
-    @Override
-    public ActivityDelegate getBaseDelegate() {
-        return mActivityDelegate;
-    }
+//    @Override
+//    public ActivityDelegate getBaseDelegate() {
+//        return mActivityDelegate;
+//    }
 
     public BaseActivity() {
         java8Observer = new Java8Observer(TAG);
         getLifecycle().addObserver(java8Observer);
-        mActivityDelegate = new ActivityDelegate(this);
+//        mActivityDelegate = new ActivityDelegate(this);
     }
 
     @Override
@@ -62,7 +63,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
         // 在界面未初始化之前调用的初始化窗口
 //        initWindows();
         super.onCreate(savedInstanceState);
-        mActivityDelegate.onCreate(savedInstanceState);
+//        mActivityDelegate.onCreate(savedInstanceState);
+        LogUtils.e(" base " + getBaseDelegate().hashCode());
 
 //        setContentView(initLayoutResId());
 //        initView(savedInstanceState);

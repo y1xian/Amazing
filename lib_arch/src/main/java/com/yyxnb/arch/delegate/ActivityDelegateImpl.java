@@ -11,6 +11,7 @@ import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.IActivity;
 import com.yyxnb.arch.livedata.ViewModelFactory;
 import com.yyxnb.common.MainThreadUtils;
+import com.yyxnb.common.log.LogUtils;
 
 import java.lang.reflect.Field;
 
@@ -34,8 +35,9 @@ public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserve
             if (iActivity.initLayoutResId() != 0) {
                 activity.setContentView(iActivity.initLayoutResId());
             }
-            iActivity.getBaseDelegate().onCreate(savedInstanceState);
             initDeclaredFields();
+            iActivity.getBaseDelegate().onCreate(savedInstanceState);
+            LogUtils.w(" - -  - " + iActivity.getBaseDelegate().hashCode());
             iActivity.initView(savedInstanceState);
         }
     }
@@ -71,6 +73,7 @@ public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserve
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     @Override
     public void onDestroy() {
+        iActivity.getBaseDelegate().onDestroy();
         this.activity = null;
         this.iActivity = null;
     }
