@@ -1,15 +1,29 @@
 package com.yyxnb.amazing.fragments.vp;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.yyxnb.amazing.R;
+import com.yyxnb.amazing.widget.BaseFragmentPagerAdapter;
 import com.yyxnb.arch.base.BaseFragment;
+import com.yyxnb.common.DpUtils;
 import com.yyxnb.common.log.LogUtils;
+
+import net.lucode.hackware.magicindicator.MagicIndicator;
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,9 +31,10 @@ import com.yyxnb.common.log.LogUtils;
  */
 public class VpMainFragment extends BaseFragment {
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+    private MagicIndicator mIndicator;
+    private ViewPager mViewPager;
     private String[] titles = {"1111", "2222", "3333"};
+    private List<Fragment> fragments = new ArrayList<>();
 
     @Override
     public int initLayoutResId() {
@@ -35,91 +50,67 @@ public class VpMainFragment extends BaseFragment {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-        tabLayout = findViewById(R.id.tab_layout);
-        viewPager = findViewById(R.id.page);
+        mIndicator = findViewById(R.id.mIndicator);
+        mViewPager = findViewById(R.id.page);
 //        tabLayout = getView().findViewById(R.id.tab_layout);
 //        viewPager = getView().findViewById(R.id.page);
 
-        viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
-            @Override
-            public Fragment getItem(int i) {
-                if (i == 0) {
-                    return Vp1Fragment.newInstance();
-                } else if (i == 1) {
-                    return Vp2Fragment.newInstance();
-                } else if (i == 2) {
-                    return Vp3Fragment.newInstance();
-                }
-                return Vp1Fragment.newInstance();
-            }
+//        fragments.add(Vp1Fragment.newInstance());
+//        fragments.add(Vp2Fragment.newInstance());
+//        fragments.add(Vp3Fragment.newInstance());
+
+//        fragments.add(new Vp3Fragment());
+//        fragments.add(new Vp3Fragment());
+//        fragments.add(new Vp3Fragment());
+
+        fragments.add(new Vp1Fragment());
+        fragments.add(new Vp1Fragment());
+        fragments.add(new Vp1Fragment());
+
+        CommonNavigator commonNavigator = new CommonNavigator(getContext());
+        //ture 即标题平分屏幕宽度的模式
+        commonNavigator.setAdjustMode(true);
+        commonNavigator.setAdapter(new CommonNavigatorAdapter() {
 
             @Override
             public int getCount() {
                 return titles.length;
             }
 
-            @Nullable
             @Override
-            public CharSequence getPageTitle(int position) {
-                return titles[position];
+            public IPagerTitleView getTitleView(Context context, final int index) {
+                ColorTransitionPagerTitleView colorTransitionPagerTitleView = new ColorTransitionPagerTitleView(context);
+                colorTransitionPagerTitleView.setNormalColor(Color.GRAY);
+                colorTransitionPagerTitleView.setSelectedColor(Color.BLACK);
+                colorTransitionPagerTitleView.setText(titles[index]);
+                colorTransitionPagerTitleView.setOnClickListener(view -> mViewPager.setCurrentItem(index));
+                return colorTransitionPagerTitleView;
+            }
+
+            @Override
+            public IPagerIndicator getIndicator(Context context) {
+                LinePagerIndicator indicator = new LinePagerIndicator(context);
+                //设置宽度
+//                indicator.setLineWidth(DpUtils.dp2px(mContext,30));
+                //设置高度
+                indicator.setLineHeight(DpUtils.dp2px(getContext(), 5));
+                //设置颜色
+                indicator.setColors(Color.parseColor("#FF9241"));
+                //设置圆角
+                indicator.setRoundRadius(5);
+                //设置模式
+                indicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
+                return indicator;
             }
         });
+        mIndicator.setNavigator(commonNavigator);
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                tabLayout.getTabAt(i).select();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        tabLayout.setupWithViewPager(viewPager);
+        mViewPager.setOffscreenPageLimit(titles.length - 1);
+        mViewPager.setAdapter(new BaseFragmentPagerAdapter(getChildFragmentManager(), fragments, Arrays.asList(titles)));
+        //与ViewPagger联动
+        ViewPagerHelper.bind(mIndicator, mViewPager);
 
     }
-
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        getBaseDelegate().setUserVisibleHint(isVisibleToUser);
-//    }
-//
-//    @Override
-//    public void onHiddenChanged(boolean hidden) {
-//        super.onHiddenChanged(hidden);
-//        getBaseDelegate().onHiddenChanged(hidden);
-//    }
-//
-//    @Override
-//    public void onConfigurationChanged(Configuration newConfig) {
-//        super.onConfigurationChanged(newConfig);
-//        getBaseDelegate().onConfigurationChanged(newConfig);
-//    }
 
     @Override
     public void initViewData() {

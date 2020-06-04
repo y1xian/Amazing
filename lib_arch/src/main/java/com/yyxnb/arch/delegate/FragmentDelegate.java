@@ -26,6 +26,7 @@ import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.common.ArchConfig;
 import com.yyxnb.common.MainThreadUtils;
 import com.yyxnb.common.StatusBarUtils;
+import com.yyxnb.common.log.LogUtils;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -73,12 +74,12 @@ public class FragmentDelegate implements Serializable {
 
 
     public void onCreate(Bundle savedInstanceState) {
+        initAttributes();
         mLazyDelegate.onCreate(savedInstanceState);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initAttributes();
         if (null == mRootView) {
             mRootView = inflater.inflate(layoutRes == 0 ? iFragment.initLayoutResId()
                     : layoutRes, container, false);
@@ -95,6 +96,7 @@ public class FragmentDelegate implements Serializable {
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
+//        LogUtils.w( "onActivityCreated   sub " + subPage + " , " + hashCode());
         mLazyDelegate.onActivityCreated(savedInstanceState, subPage);
         if (!subPage) {
             setNeedsStatusBarAppearanceUpdate();
@@ -103,6 +105,7 @@ public class FragmentDelegate implements Serializable {
 
     public void setUserVisibleHint(boolean isVisibleToUser) {
         mLazyDelegate.setUserVisibleHint(isVisibleToUser);
+//        LogUtils.w( "isVisibleToUser   sub " + subPage + " , " + hashCode() +  " , " + isVisibleToUser);
     }
 
     public void onHiddenChanged(boolean hidden) {
@@ -159,7 +162,7 @@ public class FragmentDelegate implements Serializable {
                 }
             }
         });
-
+        LogUtils.w( " sub " + subPage + " , " + hashCode());
     }
 
     /**
