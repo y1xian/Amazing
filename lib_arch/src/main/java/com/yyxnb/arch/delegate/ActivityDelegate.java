@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.yyxnb.arch.base.IActivity;
-import com.yyxnb.common.log.LogUtils;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -30,22 +29,18 @@ public class ActivityDelegate implements Serializable {
 
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
-//        ActivityManagerUtils.getInstance().pushActivity(mActivity);
-        LogUtils.e("onCreate "+getClass() + " , " + getClass().hashCode() + " ,  " + System.identityHashCode(getClass())+
-                " , " + iActivity.getBaseDelegate().getClass().hashCode());
     }
 
     public void onWindowFocusChanged(boolean hasFocus) {
         if (mIsFirstVisible && hasFocus) {
             mIsFirstVisible = false;
             iActivity.initViewData();
+            iActivity.initObservable();
         }
     }
 
     public void onDestroy() {
-        LogUtils.e(" ondestroy - ---- ");
         mIsFirstVisible = true;
-//        ActivityManagerUtils.getInstance().killActivity(mActivity);
         iActivity = null;
         mActivity = null;
     }
@@ -69,8 +64,12 @@ public class ActivityDelegate implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ActivityDelegate that = (ActivityDelegate) o;
         return iActivity.equals(that.iActivity);
     }

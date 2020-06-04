@@ -1,5 +1,7 @@
 package com.yyxnb.amazing;
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -10,7 +12,7 @@ import com.yyxnb.arch.base.IActivity;
 import com.yyxnb.arch.utils.ActivityManagerUtils;
 import com.yyxnb.common.log.LogUtils;
 
-public class Test2Activity extends AppCompatActivity implements IActivity {
+public class Test2Activity extends AppCompatActivity implements IActivity , LoaderManager.LoaderCallbacks<Void>{
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
@@ -33,22 +35,33 @@ public class Test2Activity extends AppCompatActivity implements IActivity {
         LogUtils.list(ActivityManagerUtils.getInstance().getActivityList());
 
         viewModel.result.observe(this, s -> {
-            LogUtils.e(s);
+//            LogUtils.e(s);
         });
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.mFrameLayout, new TestFragment(),"ggg")
                 .commitAllowingStateLoss();
-    }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        getBaseDelegate().onWindowFocusChanged(hasFocus);
+
     }
 
     @Override
     public void initViewData() {
         LogUtils.e(":initViewData");
+    }
+
+    @Override
+    public Loader<Void> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Void> loader, Void data) {
+        reportFullyDrawn();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Void> loader) {
+
     }
 }

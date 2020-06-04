@@ -86,7 +86,7 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
     @Override
     public void onFragmentStopped(@NonNull FragmentManager fm, @NonNull Fragment f) {
         if (fetchFragmentDelegateFromCache(f) != null) {
-            fetchFragmentDelegateFromCache(f).onStoped();
+            fetchFragmentDelegateFromCache(f).onStopped();
         }
     }
 

@@ -17,9 +17,7 @@ public class ViewModelFactory implements Serializable {
      */
     public static ViewModel createViewModel(Fragment fragment, Field field) {
         Class<ViewModel> viewModelClass = AppConfig.getInstance().getFiledClazz(field);
-        ViewModel viewModel = ViewModelProviders.of(fragment).get(viewModelClass);
-//        initSharedData(fragment as IFragment, viewModel)
-        return viewModel;
+        return ViewModelProviders.of(fragment).get(viewModelClass);
     }
 
     /**
@@ -27,18 +25,6 @@ public class ViewModelFactory implements Serializable {
      */
     public static ViewModel createViewModel(FragmentActivity activity, Field field) {
         Class<ViewModel> viewModelClass = AppConfig.getInstance().getFiledClazz(field);
-        ViewModel viewModel = ViewModelProviders.of(activity).get(viewModelClass);
-//        initSharedData(fragment as IFragment, viewModel)
-        return viewModel;
+        return ViewModelProviders.of(activity).get(viewModelClass);
     }
-
-//    private fun initSharedData(view:IView, viewModel: BaseViewModel) {
-//        viewModel.defUI.toastEvent.observe(view as LifecycleOwner, Observer {
-//            AppConfig.toast(it.toString())
-//        })
-//        // 订阅通用 observer
-//        viewModel.defUI.msgEvent.observe(view as LifecycleOwner, Observer {
-//            view.handleEvent(it)
-//        })
-//    }
 }

@@ -21,7 +21,8 @@ public interface IView {
     /**
      * 处理重量级数据、逻辑
      */
-    default void initViewData(){}
+    default void initViewData() {
+    }
 
     /**
      * 初始化界面观察者的监听
@@ -29,9 +30,4 @@ public interface IView {
      */
     default void initObservable() {
     }
-
-    /**
-     * 接收信息
-     */
-//    void handleEvent(msg: MsgEvent?){}
 }

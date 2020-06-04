@@ -34,10 +34,6 @@ public class ContainerActivity extends BaseActivity {
     public void initView(Bundle savedInstanceState) {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-    }
-
-    @Override
-    public void initViewData() {
         try {
             Intent intent = getIntent();
 
@@ -58,7 +54,7 @@ public class ContainerActivity extends BaseActivity {
                 throw new IllegalArgumentException("can not find page fragmentName");
             }
 
-            Class fragmentClass = Class.forName(fragmentName);
+            Class<?> fragmentClass = Class.forName(fragmentName);
 
             BaseFragment fragment = (BaseFragment) fragmentClass.newInstance();
 

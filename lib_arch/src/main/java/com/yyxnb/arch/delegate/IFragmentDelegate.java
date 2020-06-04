@@ -20,7 +20,7 @@ public interface IFragmentDelegate {
 
     void onPaused();
 
-    void onStoped();
+    void onStopped();
 
     void onSaveInstanceState(Bundle outState);
 

@@ -38,7 +38,9 @@ public class LibraryInitializer extends ContentProvider {
 
             // 系统会在每个 Activity 执行完对应的生命周期后都调用这个实现类中对应的方法
             AppConfig.getInstance().getApp().registerActivityLifecycleCallbacks(ActivityLifecycle.getInstance());
+            // 侧滑监听
             AppConfig.getInstance().getApp().registerActivityLifecycleCallbacks(ParallaxHelper.getInstance());
+            // 应用监听
             ProcessLifecycleOwner.get().getLifecycle().addObserver(new AppLifeObserver());
 
             LiveEventBus
@@ -47,9 +49,9 @@ public class LibraryInitializer extends ContentProvider {
 
             LogUtils.init()
                     //设置全局tag
-                    .setTag("--Amazing--")
+                    .setTag("---Amazing---")
                     //是否显示日志，默认true，发布时最好关闭
-                    .setShowThreadInfo(true)
+                    .setShowThreadInfo(BuildConfig.DEBUG)
                     .setDebug(AppConfig.getInstance().isDebug());
 
         }

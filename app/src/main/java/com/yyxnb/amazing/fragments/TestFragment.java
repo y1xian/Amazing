@@ -44,7 +44,22 @@ public class TestFragment extends Fragment implements IFragment {
 //        viewModel.result.setValue("333333");
 
         viewModel.result.observe(this, s -> {
-            LogUtils.e("test : " + s);
+//            LogUtils.e("test : " + s);
         });
+    }
+
+    @Override
+    public void initViewData() {
+        LogUtils.w("initViewData : " + hashCode());
+    }
+
+    @Override
+    public void onVisible() {
+        LogUtils.w("onVisible : " + hashCode());
+    }
+
+    @Override
+    public void onInVisible() {
+        LogUtils.w("onInVisible : " + hashCode());
     }
 }

@@ -14,10 +14,13 @@ import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.livedata.ViewModelFactory;
 import com.yyxnb.common.MainThreadUtils;
-import com.yyxnb.common.log.LogUtils;
 
 import java.lang.reflect.Field;
 
+/**
+ * FragmentLifecycleCallbacks 监听 Fragment 生命周期
+ * PS ：先走 Fragment 再走 FragmentLifecycleCallbacks
+ */
 public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserver {
 
     private Fragment fragment = null;
@@ -31,16 +34,22 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
         this.iFragment = (IFragment) fragment;
     }
 
+    private FragmentDelegate delegate;
+
     @Override
     public void onAttached(Context context) {
-        iFragment.getBaseDelegate().onAttach(context);
-        LogUtils.e("  onAttached ");
+        delegate = iFragment.getBaseDelegate();
+        if (delegate != null) {
+            delegate.onAttach(context);
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     @Override
     public void onCreated(Bundle savedInstanceState) {
-        iFragment.getBaseDelegate().onCreate(savedInstanceState);
+        if (delegate != null) {
+            delegate.onCreate(savedInstanceState);
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
@@ -52,9 +61,9 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        iFragment.getBaseDelegate().onActivityCreated(savedInstanceState);
-//        iFragment.initView(savedInstanceState);
-//        iFragment.initViewData();
+        if (delegate != null) {
+            delegate.onActivityCreated(savedInstanceState);
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -65,18 +74,22 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     @Override
     public void onResumed() {
-        iFragment.getBaseDelegate().onResume();
+        if (delegate != null) {
+            delegate.onResume();
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     @Override
     public void onPaused() {
-        iFragment.getBaseDelegate().onPause();
+        if (delegate != null) {
+            delegate.onPause();
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     @Override
-    public void onStoped() {
+    public void onStopped() {
     }
 
     @Override
@@ -86,13 +99,18 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     @Override
     public void onViewDestroyed() {
-        iFragment.getBaseDelegate().onDestroyView();
+        if (delegate != null) {
+            delegate.onDestroyView();
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     @Override
     public void onDestroyed() {
-        iFragment.getBaseDelegate().onDestroy();
+        if (delegate != null) {
+            delegate.onDestroy();
+            delegate = null;
+        }
         this.fragmentManager = null;
         this.fragment = null;
         this.iFragment = null;

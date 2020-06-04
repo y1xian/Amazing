@@ -2,6 +2,7 @@ package com.yyxnb.arch.delegate;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
@@ -15,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import com.jeremyliao.liveeventbus.LiveEventBus;
+import com.yyxnb.arch.ContainerActivity;
 import com.yyxnb.arch.annotations.BarStyle;
 import com.yyxnb.arch.annotations.BindFragment;
 import com.yyxnb.arch.annotations.SwipeStyle;
@@ -23,7 +26,6 @@ import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.common.ArchConfig;
 import com.yyxnb.common.MainThreadUtils;
 import com.yyxnb.common.StatusBarUtils;
-import com.yyxnb.common.log.LogUtils;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -67,21 +69,11 @@ public class FragmentDelegate implements Serializable {
             throw new IllegalArgumentException("AppCompatActivity请实现IActivity接口");
         }
         iActivity = (IActivity) mActivity;
-        LogUtils.e( "mActivity " + mActivity + " , " + (mActivity == null));
     }
 
-//    public void onAttach(AppCompatActivity activity) {
-//
-//        if (!(activity instanceof IActivity)) {
-//            throw new IllegalArgumentException("AppCompatActivity请实现IActivity接口");
-//        }
-//        mActivity = activity;
-//        iActivity = (IActivity) activity;
-//    }
 
     public void onCreate(Bundle savedInstanceState) {
         mLazyDelegate.onCreate(savedInstanceState);
-//        FragmentManagerUtils.getInstance().pushFragment(mFragment);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -104,7 +96,9 @@ public class FragmentDelegate implements Serializable {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         mLazyDelegate.onActivityCreated(savedInstanceState, subPage);
-        iFragment.initView(savedInstanceState);
+        if (!subPage) {
+            setNeedsStatusBarAppearanceUpdate();
+        }
     }
 
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -137,7 +131,6 @@ public class FragmentDelegate implements Serializable {
     }
 
     public void onDestroyView() {
-//        FragmentManagerUtils.getInstance().killFragment(mFragment);
     }
 
     /**
@@ -162,41 +155,12 @@ public class FragmentDelegate implements Serializable {
                 needLogin = bindFragment.needLogin();
                 // 如果需要登录，并且处于未登录状态下，发送通知
                 if (needLogin && !ArchConfig.needLogin) {
-//                    ArchConfig.NEED_LOGIN.bus(needLogin);
+                    LiveEventBus.get("NEED_LOGIN").post(needLogin);
                 }
-            }
-            if (!subPage) {
-//                setNeedsStatusBarAppearanceUpdate();
             }
         });
 
     }
-
-    /**
-     * 获得成员变量
-     */
-//    public void initDeclaredFields() {
-//        MainThreadUtils.post(() -> {
-//            Field[] declaredFields = iFragment.getClass().getDeclaredFields();
-//            for (Field field : declaredFields) {
-//                // 允许修改反射属性
-//                field.setAccessible(true);
-//
-//                /**
-//                 *  根据 @BindViewModel 注解, 查找注解标示的变量（ViewModel）
-//                 *  并且 创建 ViewModel 实例, 注入到变量中
-//                 */
-//                BindViewModel annotation = field.getAnnotation(BindViewModel.class);
-//                if (annotation != null) {
-//                    try {
-//                        field.set(iFragment, getViewModel(field, annotation.isActivity()));
-//                    } catch (IllegalAccessException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        });
-//    }
 
     /**
      * 更新状态栏样式
@@ -207,7 +171,7 @@ public class FragmentDelegate implements Serializable {
             return;
         }
         // 侧滑返回
-//        iActivity.setSwipeBack(swipeBack);
+        iActivity.setSwipeBack(swipeBack);
 
         // 隐藏
         boolean hidden = statusBarHidden;
@@ -243,14 +207,6 @@ public class FragmentDelegate implements Serializable {
         return mActivity.getWindow();
     }
 
-//    public ViewModel getViewModel(Field field, boolean activity) {
-//        if (activity) {
-//            return ViewModelFactory.createViewModel(mActivity, field);
-//        } else {
-//            return ViewModelFactory.createViewModel(mFragment, field);
-//        }
-//    }
-
     public Bundle initArguments() {
         Bundle args = mFragment.getArguments();
         if (args == null) {
@@ -261,20 +217,23 @@ public class FragmentDelegate implements Serializable {
     }
 
     public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {
-        LogUtils.e(" mmmm " + mActivity + " , " + getActivity());
-//        Bundle bundle = initArguments();
-//        Intent intent = new Intent(mActivity, ContainerActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
-//        bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
-//        intent.putExtra(ArchConfig.BUNDLE, bundle);
-//        mActivity.startActivityForResult(intent, requestCode);
+        Bundle bundle = initArguments();
+        Intent intent = new Intent(mActivity, ContainerActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
+        bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
+        intent.putExtra(ArchConfig.BUNDLE, bundle);
+        mActivity.startActivityForResult(intent, requestCode);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         FragmentDelegate that = (FragmentDelegate) o;
         return iFragment.equals(that.iFragment);
     }
