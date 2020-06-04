@@ -4,10 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.WindowManager;
 
 import com.yyxnb.arch.base.BaseActivity;
-import com.yyxnb.arch.base.BaseFragment;
+import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.common.ArchConfig;
 import com.yyxnb.common.AppConfig;
 
@@ -25,7 +26,7 @@ public class ContainerActivity extends BaseActivity {
         return R.layout.base_nav_content;
     }
 
-    public BaseFragment initBaseFragment() {
+    public Fragment initBaseFragment() {
         return null;
     }
 
@@ -45,7 +46,7 @@ public class ContainerActivity extends BaseActivity {
                 if (intent.getBundleExtra(ArchConfig.BUNDLE) != null) {
                     initBaseFragment().setArguments(intent.getBundleExtra(ArchConfig.BUNDLE));
                 }
-                setRootFragment(initBaseFragment(), R.id.fragmentContent);
+                setRootFragment((IFragment) initBaseFragment(), R.id.fragmentContent);
                 return;
             }
 
@@ -56,13 +57,13 @@ public class ContainerActivity extends BaseActivity {
 
             Class<?> fragmentClass = Class.forName(fragmentName);
 
-            BaseFragment fragment = (BaseFragment) fragmentClass.newInstance();
+            Fragment fragment = (Fragment) fragmentClass.newInstance();
 
             if (intent.getBundleExtra(ArchConfig.BUNDLE) != null) {
                 fragment.setArguments(intent.getBundleExtra(ArchConfig.BUNDLE));
             }
 
-            setRootFragment(fragment, R.id.fragmentContent);
+            setRootFragment((IFragment) fragment, R.id.fragmentContent);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -3,7 +3,6 @@ package com.yyxnb.arch.base;
 import android.arch.lifecycle.DefaultLifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -113,7 +112,6 @@ public abstract class BaseFragment extends Fragment implements IFragment {
     public void onDestroy() {
         super.onDestroy();
         mFragmentDelegate = null;
-        result = null;
         mContext.clear();
         mContext = null;
         mRootView = null;
@@ -145,15 +143,6 @@ public abstract class BaseFragment extends Fragment implements IFragment {
 
     public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {
         mFragmentDelegate.startFragment(targetFragment, requestCode);
-    }
-
-    public int requestCode;
-    public int resultCode;
-    public Intent result;
-
-    public void setResult(int resultCode, Intent result) {
-        this.resultCode = resultCode;
-        this.result = result;
     }
 
 }

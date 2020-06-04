@@ -19,7 +19,6 @@ import com.yyxnb.arch.ContainerActivity;
 import com.yyxnb.arch.annotations.SwipeStyle;
 import com.yyxnb.arch.common.ArchConfig;
 import com.yyxnb.arch.delegate.ActivityDelegate;
-import com.yyxnb.arch.utils.FragmentManagerUtils;
 import com.yyxnb.common.KeyboardUtils;
 
 import java.lang.ref.WeakReference;
@@ -112,15 +111,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     @Override
     public void onBackPressed() {
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        FragmentManagerUtils instance = FragmentManagerUtils.getInstance();
-        if (instance.count() > 1) {
-            BaseFragment current = (BaseFragment) instance.currentFragment();
-            Fragment before = instance.beforeFragment();
-            //将回调的传入到fragment中去
-            if (current != null && before != null) {
-                before.onActivityResult(current.requestCode, current.resultCode, current.result);
-            }
-        }
         if (fragments.isEmpty()) {
             super.onBackPressed();
         } else {

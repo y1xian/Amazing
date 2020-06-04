@@ -1,8 +1,9 @@
 package com.yyxnb.amazing;
 
-import com.yyxnb.arch.ContainerActivity;
-import com.yyxnb.arch.base.BaseFragment;
+import android.support.v4.app.Fragment;
+
 import com.yyxnb.amazing.fragments.HomeFragment;
+import com.yyxnb.arch.ContainerActivity;
 
 public class MainActivity extends ContainerActivity {
 
@@ -14,7 +15,7 @@ public class MainActivity extends ContainerActivity {
 //    }
 
     @Override
-    public BaseFragment initBaseFragment() {
+    public Fragment initBaseFragment() {
         return new HomeFragment();
     }
 

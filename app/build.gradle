@@ -15,7 +15,7 @@ android {
 
         // 更新至Android Studio 3.3 gradle 4.10.1
         variant.outputs.all {
-            outputFileName = "app_${variant.versionCode}.${variant.versionName}.apk"
+            outputFileName = "app_${variant.versionName}.${variant.versionCode}.apk"
         }
 
     }
@@ -49,4 +49,12 @@ dependencies {
     releaseImplementation libs.leak_canary_release
     // Optional, if you use support library fragments:
     debugImplementation libs.leak_canary_debug_support
+}
+
+// 强制依赖指定版本
+configurations.all {
+    resolutionStrategy {
+//        force 'com.github.bumptech.glide:glide:4.2.0'
+//        force 'com.github.bumptech.glide:compiler:4.2.0'
+    }
 }
