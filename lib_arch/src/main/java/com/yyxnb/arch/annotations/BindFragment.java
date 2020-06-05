@@ -1,5 +1,7 @@
 package com.yyxnb.arch.annotations;
 
+import android.support.annotation.LayoutRes;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -28,22 +30,44 @@ RetentionPolicy.RUNTIME	注解不仅被保存到class文件中，jvm加载class�
 @Target(ElementType.TYPE)
 public @interface BindFragment {
 
-    int layoutRes() default 0;
+    /**
+     * 布局id
+     */
+    @LayoutRes int layoutRes() default 0;
 
+    /**
+     * 作用于viewpager 判定为子页面
+     */
     boolean subPage() default false;
 
+    /**
+     * 给系统窗口留出空间，xx屏
+     */
     boolean fitsSystemWindows() default false;
 
+    /**
+     * 状态栏透明
+     */
     boolean statusBarTranslucent() default true;
 
+    /**
+     * 状态栏文字颜色
+     */
     @BarStyle int statusBarStyle() default BarStyle.DarkContent;
 
+    /**
+     * 状态栏颜色
+     */
     int statusBarColor() default 0;
 
+    /**
+     * 侧滑
+     */
     @SwipeStyle int swipeBack() default SwipeStyle.Edge;
 
+    /**
+     * 页面是否需要登录
+     */
     boolean needLogin() default false;
-
-    int group() default -1;
 
 }

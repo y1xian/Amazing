@@ -1,6 +1,5 @@
 package com.yyxnb.amazing.fragments.vp;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yyxnb.amazing.R;
+import com.yyxnb.arch.annotations.BindFragment;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.common.log.LogUtils;
 
@@ -15,6 +15,7 @@ import com.yyxnb.common.log.LogUtils;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
+@BindFragment(subPage = true)
 public class Vp2Fragment extends Fragment implements IFragment {
 
     public static Vp2Fragment newInstance() {
@@ -35,25 +36,13 @@ public class Vp2Fragment extends Fragment implements IFragment {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-
+        LogUtils.e("initView 2: " + hashCode());
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         getBaseDelegate().setUserVisibleHint(isVisibleToUser);
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        getBaseDelegate().onHiddenChanged(hidden);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        getBaseDelegate().onConfigurationChanged(newConfig);
     }
 
     @Override

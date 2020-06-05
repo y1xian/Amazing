@@ -29,7 +29,7 @@ import java.util.UUID;
 public abstract class BaseFragment extends Fragment implements IFragment {
 
     protected final String TAG = getClass().getCanonicalName();
-    private FragmentDelegate mFragmentDelegate;
+    private FragmentDelegate mFragmentDelegate = getBaseDelegate();
 
     protected WeakReference<Context> mContext;
     protected WeakReference<AppCompatActivity> mActivity;
@@ -43,15 +43,10 @@ public abstract class BaseFragment extends Fragment implements IFragment {
         return mContext.get();
     }
 
-    @Override
-    public FragmentDelegate getBaseDelegate() {
-        return mFragmentDelegate;
-    }
 
     public BaseFragment() {
         java8Observer = new Java8Observer(TAG);
         getLifecycle().addObserver(java8Observer);
-        mFragmentDelegate = new FragmentDelegate(this);
     }
 
     public <B extends ViewDataBinding> B getBinding() {

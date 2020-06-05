@@ -1,9 +1,10 @@
 package com.yyxnb.arch.base;
 
+import android.arch.lifecycle.LifecycleObserver;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 
-public interface IView {
+public interface IView extends LifecycleObserver {
 
     /**
      * 初始化布局

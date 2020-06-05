@@ -1,6 +1,9 @@
 package com.yyxnb.arch.delegate;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -26,12 +29,11 @@ import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.common.ArchConfig;
 import com.yyxnb.common.MainThreadUtils;
 import com.yyxnb.common.StatusBarUtils;
-import com.yyxnb.common.log.LogUtils;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-public class FragmentDelegate implements Serializable {
+public class FragmentDelegate implements Serializable, LifecycleObserver {
 
     public FragmentDelegate(IFragment iFragment) {
         this.iFragment = iFragment;
@@ -57,7 +59,6 @@ public class FragmentDelegate implements Serializable {
     private int statusBarDarkTheme = ArchConfig.statusBarStyle;
     private int swipeBack = SwipeStyle.Edge;
     private boolean subPage = false;
-    private int group = -1;
     private boolean needLogin = false;
 
     public AppCompatActivity getActivity() {
@@ -72,17 +73,21 @@ public class FragmentDelegate implements Serializable {
         iActivity = (IActivity) mActivity;
     }
 
-
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     public void onCreate(Bundle savedInstanceState) {
-        initAttributes();
         mLazyDelegate.onCreate(savedInstanceState);
+        initAttributes();
     }
 
     @SuppressLint("ClickableViewAccessibility")
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (null == mRootView) {
-            mRootView = inflater.inflate(layoutRes == 0 ? iFragment.initLayoutResId()
-                    : layoutRes, container, false);
+            if (layoutRes != 0 || iFragment.initLayoutResId() != 0) {
+                mRootView = inflater.inflate(layoutRes == 0 ? iFragment.initLayoutResId()
+                        : layoutRes, container, false);
+            } else {
+                throw new RuntimeException("没加载页面布局id");
+            }
         } else {
             //  二次加载删除上一个子view
             ViewGroup viewGroup = (ViewGroup) mRootView;
@@ -96,34 +101,44 @@ public class FragmentDelegate implements Serializable {
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
-//        LogUtils.w( "onActivityCreated   sub " + subPage + " , " + hashCode());
         mLazyDelegate.onActivityCreated(savedInstanceState, subPage);
         if (!subPage) {
             setNeedsStatusBarAppearanceUpdate();
         }
     }
 
+    /**
+     * viewpager调用 {@link BindFragment} {@link FragmentDelegate#subPage 为 true}
+     */
     public void setUserVisibleHint(boolean isVisibleToUser) {
         mLazyDelegate.setUserVisibleHint(isVisibleToUser);
-//        LogUtils.w( "isVisibleToUser   sub " + subPage + " , " + hashCode() +  " , " + isVisibleToUser);
     }
 
+    /**
+     * show/hide调用
+     */
     public void onHiddenChanged(boolean hidden) {
         mLazyDelegate.onHiddenChanged(hidden);
     }
 
+    /**
+     * 屏幕方向发生改变时
+     */
     public void onConfigurationChanged(Configuration newConfig) {
         mLazyDelegate.onConfigurationChanged(newConfig);
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void onResume() {
         mLazyDelegate.onResume();
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     public void onPause() {
         mLazyDelegate.onPause();
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     public void onDestroy() {
         mLazyDelegate.onDestroy();
         iFragment = null;
@@ -148,7 +163,6 @@ public class FragmentDelegate implements Serializable {
                 statusBarTranslucent = bindFragment.statusBarTranslucent();
                 swipeBack = bindFragment.swipeBack();
                 subPage = bindFragment.subPage();
-                group = bindFragment.group();
                 if (bindFragment.statusBarStyle() != BarStyle.None) {
                     statusBarDarkTheme = bindFragment.statusBarStyle();
                 }
@@ -162,7 +176,6 @@ public class FragmentDelegate implements Serializable {
                 }
             }
         });
-        LogUtils.w( " sub " + subPage + " , " + hashCode());
     }
 
     /**
@@ -217,6 +230,10 @@ public class FragmentDelegate implements Serializable {
             mFragment.setArguments(args);
         }
         return args;
+    }
+
+    public void finish() {
+        mActivity.onBackPressed();
     }
 
     public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {

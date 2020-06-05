@@ -1,6 +1,5 @@
 package com.yyxnb.amazing.fragments.vp;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -37,7 +36,7 @@ public class Vp1Fragment extends Fragment implements IFragment {
 
     @Override
     public void initView(Bundle savedInstanceState) {
-//        LogUtils.e("initView 1: " + hashCode());
+        LogUtils.e("initView 1: " + hashCode());
     }
 
     @Override
@@ -55,22 +54,15 @@ public class Vp1Fragment extends Fragment implements IFragment {
         LogUtils.w("onInVisible 1: " + hashCode());
     }
 
+//    @Override
+//    public FragmentDelegate getBaseDelegate() {
+//        return new FragmentDelegate(this);
+//    }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         getBaseDelegate().setUserVisibleHint(isVisibleToUser);
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        getBaseDelegate().onHiddenChanged(hidden);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        getBaseDelegate().onConfigurationChanged(newConfig);
     }
 
 }

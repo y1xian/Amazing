@@ -37,21 +37,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     protected WeakReference<Context> mContext;
 
     private Java8Observer java8Observer;
-    protected ActivityDelegate mActivityDelegate;
+    protected ActivityDelegate mActivityDelegate = getBaseDelegate();
 
     public Context getContext() {
         return mContext.get();
     }
 
-    @Override
-    public ActivityDelegate getBaseDelegate() {
-        return mActivityDelegate;
-    }
-
     public BaseActivity() {
         java8Observer = new Java8Observer(TAG);
         getLifecycle().addObserver(java8Observer);
-        mActivityDelegate = new ActivityDelegate(this);
     }
 
     @Override

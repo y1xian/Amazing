@@ -1,6 +1,9 @@
 package com.yyxnb.arch.delegate;
 
 import android.app.Activity;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
@@ -12,7 +15,7 @@ import com.yyxnb.arch.base.IActivity;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ActivityDelegate implements Serializable {
+public class ActivityDelegate implements Serializable, LifecycleObserver {
 
     public ActivityDelegate(IActivity iActivity) {
         this.iActivity = iActivity;
@@ -27,7 +30,7 @@ public class ActivityDelegate implements Serializable {
      */
     private boolean mIsFirstVisible = true;
 
-
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     public void onCreate(@Nullable Bundle savedInstanceState) {
     }
 
@@ -39,6 +42,7 @@ public class ActivityDelegate implements Serializable {
         }
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     public void onDestroy() {
         mIsFirstVisible = true;
         iActivity = null;

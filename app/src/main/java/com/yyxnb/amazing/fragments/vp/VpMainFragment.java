@@ -10,7 +10,6 @@ import com.yyxnb.amazing.R;
 import com.yyxnb.amazing.widget.BaseFragmentPagerAdapter;
 import com.yyxnb.arch.base.BaseFragment;
 import com.yyxnb.common.DpUtils;
-import com.yyxnb.common.log.LogUtils;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -55,17 +54,9 @@ public class VpMainFragment extends BaseFragment {
 //        tabLayout = getView().findViewById(R.id.tab_layout);
 //        viewPager = getView().findViewById(R.id.page);
 
-//        fragments.add(Vp1Fragment.newInstance());
-//        fragments.add(Vp2Fragment.newInstance());
-//        fragments.add(Vp3Fragment.newInstance());
-
-//        fragments.add(new Vp3Fragment());
-//        fragments.add(new Vp3Fragment());
-//        fragments.add(new Vp3Fragment());
-
-        fragments.add(new Vp1Fragment());
-        fragments.add(new Vp1Fragment());
-        fragments.add(new Vp1Fragment());
+        fragments.add(Vp1Fragment.newInstance());
+        fragments.add(Vp2Fragment.newInstance());
+        fragments.add(Vp3Fragment.newInstance());
 
         CommonNavigator commonNavigator = new CommonNavigator(getContext());
         //ture 即标题平分屏幕宽度的模式
@@ -112,18 +103,18 @@ public class VpMainFragment extends BaseFragment {
 
     }
 
-    @Override
-    public void initViewData() {
-        LogUtils.w("initViewData m: " + hashCode());
-    }
-
-    @Override
-    public void onVisible() {
-        LogUtils.w("onVisible m: " + hashCode());
-    }
-
-    @Override
-    public void onInVisible() {
-        LogUtils.w("onInVisible m: " + hashCode());
-    }
+//    @Override
+//    public void initViewData() {
+//        LogUtils.w("initViewData m: " + hashCode());
+//    }
+//
+//    @Override
+//    public void onVisible() {
+//        LogUtils.w("onVisible m: " + hashCode());
+//    }
+//
+//    @Override
+//    public void onInVisible() {
+//        LogUtils.w("onInVisible m: " + hashCode());
+//    }
 }

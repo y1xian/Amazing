@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.IActivity;
 import com.yyxnb.arch.livedata.ViewModelFactory;
+import com.yyxnb.arch.utils.DelegateUtils;
 import com.yyxnb.common.MainThreadUtils;
 
 import java.lang.reflect.Field;
@@ -86,6 +87,7 @@ public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserve
         if (delegate != null) {
             delegate.onDestroy();
         }
+        DelegateUtils.getInstance().getActivityDelegates().remove(iActivity.hashCode());
         this.activity = null;
         this.iActivity = null;
     }

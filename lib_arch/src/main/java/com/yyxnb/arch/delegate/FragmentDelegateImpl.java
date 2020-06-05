@@ -13,6 +13,7 @@ import android.view.View;
 import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.livedata.ViewModelFactory;
+import com.yyxnb.arch.utils.DelegateUtils;
 import com.yyxnb.common.MainThreadUtils;
 
 import java.lang.reflect.Field;
@@ -111,6 +112,7 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
             delegate.onDestroy();
             delegate = null;
         }
+        DelegateUtils.getInstance().getFragmentDelegates().remove(iFragment.hashCode());
         this.fragmentManager = null;
         this.fragment = null;
         this.iFragment = null;
