@@ -7,6 +7,14 @@ public class MsgEvent implements Serializable {
     private String msg;
     private Object data;
 
+    public MsgEvent() {
+    }
+
+    public MsgEvent(int code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
     public MsgEvent(int code, String msg, Object data) {
         this.code = code;
         this.msg = msg;
