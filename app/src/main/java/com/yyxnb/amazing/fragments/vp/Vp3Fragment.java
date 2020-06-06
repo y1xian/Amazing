@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.yyxnb.amazing.R;
-import com.yyxnb.arch.annotations.BindFragment;
+import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.base.BaseFragment;
 import com.yyxnb.common.log.LogUtils;
 
@@ -12,7 +12,7 @@ import com.yyxnb.common.log.LogUtils;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-@BindFragment(subPage = true)
+@BindRes(subPage = true)
 public class Vp3Fragment extends BaseFragment {
 
 //    @Override

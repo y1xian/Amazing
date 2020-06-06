@@ -2,6 +2,7 @@ package com.yyxnb.amazing.fragments;
 
 
 import android.arch.paging.PagedListAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,16 +12,17 @@ import android.view.View;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.yyxnb.adapter.BaseViewHolder;
 import com.yyxnb.adapter.MultiItemTypePagedAdapter;
+import com.yyxnb.amazing.Test2Activity;
 import com.yyxnb.amazing.adapter.MainListAdapter;
 import com.yyxnb.amazing.bean.MainBean;
 import com.yyxnb.amazing.fragments.vp.VpMainFragment;
 import com.yyxnb.amazing.vm.MainViewModel;
-import com.yyxnb.arch.annotations.BindFragment;
+import com.yyxnb.arch.annotations.BindRes;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-@BindFragment
+@BindRes
 public class HomeFragment extends AbsListFragment<MainBean, MainViewModel> {
 
     private MainListAdapter adapter = new MainListAdapter();
@@ -67,9 +69,10 @@ public class HomeFragment extends AbsListFragment<MainBean, MainViewModel> {
                 startFragment(new VpMainFragment());
 //                startActivity(new Intent(getContext(), Test2Activity.class));
                 break;
-//            case 3:
+            case 3:
 //                startFragment(AdapterListFragment.newInstance());
-//                break;
+                startActivity(new Intent(getContext(), Test2Activity.class));
+                break;
 //            case 4:
 //                startFragment(new BehaviorFragment());
 //                break;

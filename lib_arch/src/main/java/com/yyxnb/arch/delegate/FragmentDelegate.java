@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +22,12 @@ import android.view.Window;
 import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.yyxnb.arch.ContainerActivity;
 import com.yyxnb.arch.annotations.BarStyle;
-import com.yyxnb.arch.annotations.BindFragment;
+import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.annotations.SwipeStyle;
 import com.yyxnb.arch.base.IActivity;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.common.ArchConfig;
+import com.yyxnb.arch.common.MsgEvent;
 import com.yyxnb.common.MainThreadUtils;
 import com.yyxnb.common.StatusBarUtils;
 
@@ -47,28 +48,27 @@ public class FragmentDelegate implements Serializable, LifecycleObserver {
     private View mRootView;
 
     private Fragment mFragment;
-    private AppCompatActivity mActivity;
+    private FragmentActivity mActivity;
 
     private FragmentLazyDelegate mLazyDelegate;
 
     private int layoutRes = 0;
     private boolean statusBarTranslucent = ArchConfig.statusBarTranslucent;
     private boolean fitsSystemWindows = ArchConfig.fitsSystemWindows;
-    private boolean statusBarHidden = ArchConfig.statusBarHidden;
     private int statusBarColor = ArchConfig.statusBarColor;
     private int statusBarDarkTheme = ArchConfig.statusBarStyle;
     private int swipeBack = SwipeStyle.Edge;
-    private boolean subPage = false;
-    private boolean needLogin = false;
+    private boolean subPage;
+    private boolean needLogin;
 
-    public AppCompatActivity getActivity() {
+    public FragmentActivity getActivity() {
         return mActivity;
     }
 
     public void onAttach(Context context) {
-        mActivity = (AppCompatActivity) context;
+        mActivity = (FragmentActivity) context;
         if (!(mActivity instanceof IActivity)) {
-            throw new IllegalArgumentException("AppCompatActivity请实现IActivity接口");
+            throw new IllegalArgumentException("Activity请实现IActivity接口");
         }
         iActivity = (IActivity) mActivity;
     }
@@ -85,8 +85,6 @@ public class FragmentDelegate implements Serializable, LifecycleObserver {
             if (layoutRes != 0 || iFragment.initLayoutResId() != 0) {
                 mRootView = inflater.inflate(layoutRes == 0 ? iFragment.initLayoutResId()
                         : layoutRes, container, false);
-            } else {
-                throw new RuntimeException("没加载页面布局id");
             }
         } else {
             //  二次加载删除上一个子view
@@ -108,7 +106,7 @@ public class FragmentDelegate implements Serializable, LifecycleObserver {
     }
 
     /**
-     * viewpager调用 {@link BindFragment} {@link FragmentDelegate#subPage 为 true}
+     * viewpager调用 {@link BindRes} {@link FragmentDelegate#subPage 为 true}
      */
     public void setUserVisibleHint(boolean isVisibleToUser) {
         mLazyDelegate.setUserVisibleHint(isVisibleToUser);
@@ -156,24 +154,25 @@ public class FragmentDelegate implements Serializable, LifecycleObserver {
      */
     public void initAttributes() {
         MainThreadUtils.post(() -> {
-            BindFragment bindFragment = iFragment.getClass().getAnnotation(BindFragment.class);
-            if (bindFragment != null) {
-                layoutRes = bindFragment.layoutRes();
-                fitsSystemWindows = bindFragment.fitsSystemWindows();
-                statusBarTranslucent = bindFragment.statusBarTranslucent();
-                swipeBack = bindFragment.swipeBack();
-                subPage = bindFragment.subPage();
-                if (bindFragment.statusBarStyle() != BarStyle.None) {
-                    statusBarDarkTheme = bindFragment.statusBarStyle();
+            final BindRes bindRes = iFragment.getClass().getAnnotation(BindRes.class);
+            if (bindRes != null) {
+                layoutRes = bindRes.layoutRes();
+                fitsSystemWindows = bindRes.fitsSystemWindows();
+                statusBarTranslucent = bindRes.statusBarTranslucent();
+                swipeBack = bindRes.swipeBack();
+                subPage = bindRes.subPage();
+                if (bindRes.statusBarStyle() != BarStyle.None) {
+                    statusBarDarkTheme = bindRes.statusBarStyle();
                 }
-                if (bindFragment.statusBarColor() != 0) {
-                    statusBarColor = bindFragment.statusBarColor();
+                if (bindRes.statusBarColor() != 0) {
+                    statusBarColor = bindRes.statusBarColor();
                 }
-                needLogin = bindFragment.needLogin();
+                needLogin = bindRes.needLogin();
                 // 如果需要登录，并且处于未登录状态下，发送通知
                 if (needLogin && !ArchConfig.needLogin) {
-                    LiveEventBus.get("NEED_LOGIN").post(needLogin);
+                    LiveEventBus.get(ArchConfig.NEED_LOGIN).post(new MsgEvent(ArchConfig.NEED_LOGIN_CODE, ArchConfig.NEED_LOGIN));
                 }
+
             }
         });
     }
@@ -189,16 +188,12 @@ public class FragmentDelegate implements Serializable, LifecycleObserver {
         // 侧滑返回
         iActivity.setSwipeBack(swipeBack);
 
-        // 隐藏
-        boolean hidden = statusBarHidden;
-        StatusBarUtils.setStatusBarHidden(getWindow(), hidden);
-
         // 文字颜色
         int statusBarStyle = statusBarDarkTheme;
         StatusBarUtils.setStatusBarStyle(getWindow(), statusBarStyle == BarStyle.DarkContent);
 
         // 隐藏 or 不留空间 则透明
-        if (hidden || !fitsSystemWindows) {
+        if (!fitsSystemWindows) {
             StatusBarUtils.setStatusBarColor(getWindow(), Color.TRANSPARENT);
         } else {
             int statusBarColor = this.statusBarColor;
@@ -209,7 +204,7 @@ public class FragmentDelegate implements Serializable, LifecycleObserver {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 shouldAdjustForWhiteStatusBar = shouldAdjustForWhiteStatusBar && statusBarStyle == BarStyle.LightContent;
             }
-            //如果状态栏处于白色且状态栏文字也处于白色，避免看不见
+            // 如果状态栏处于白色且状态栏文字也处于白色，避免看不见
             if (shouldAdjustForWhiteStatusBar) {
                 statusBarColor = ArchConfig.shouldAdjustForWhiteStatusBar;
             }

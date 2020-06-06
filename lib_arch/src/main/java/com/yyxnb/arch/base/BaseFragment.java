@@ -129,7 +129,7 @@ public abstract class BaseFragment extends Fragment implements IFragment {
      * 返回.
      */
     public void finish() {
-        mActivity.get().onBackPressed();
+        mFragmentDelegate.finish();
     }
 
     public <T extends IFragment> void startFragment(T targetFragment) {

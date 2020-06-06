@@ -135,19 +135,20 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
                 // 允许修改反射属性
                 field.setAccessible(true);
 
-                /**
-                 *  根据 @BindViewModel 注解, 查找注解标示的变量（ViewModel）
+                /*
+                 *  根据 {@link BindViewModel } 注解, 查找注解标示的变量（ViewModel）
                  *  并且 创建 ViewModel 实例, 注入到变量中
                  */
-                BindViewModel annotation = field.getAnnotation(BindViewModel.class);
-                if (annotation != null) {
+                final BindViewModel viewModel = field.getAnnotation(BindViewModel.class);
+                if (viewModel != null) {
                     try {
-                        field.set(iFragment, getViewModel(field, annotation.isActivity()));
+                        field.set(iFragment, getViewModel(field, viewModel.isActivity()));
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
                 }
             }
+
         });
 
     }

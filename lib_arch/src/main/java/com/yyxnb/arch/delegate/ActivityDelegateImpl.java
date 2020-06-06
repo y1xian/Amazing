@@ -23,11 +23,11 @@ import java.lang.reflect.Field;
  */
 public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserver {
 
-    private FragmentActivity activity = null;
+    private FragmentActivity mActivity = null;
     private IActivity iActivity = null;
 
     public ActivityDelegateImpl(FragmentActivity activity) {
-        this.activity = activity;
+        this.mActivity = activity;
         this.iActivity = (IActivity) activity;
     }
 
@@ -39,14 +39,11 @@ public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserve
         if (iActivity != null) {
             // 在界面未初始化之前调用的初始化窗口
             iActivity.initWindows();
-            if (iActivity.initLayoutResId() != 0) {
-                activity.setContentView(iActivity.initLayoutResId());
-            }
-            initDeclaredFields();
             delegate = iActivity.getBaseDelegate();
             if (delegate != null) {
                 delegate.onCreate(savedInstanceState);
             }
+            initDeclaredFields();
             iActivity.initView(savedInstanceState);
         }
     }
@@ -54,7 +51,7 @@ public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserve
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     @Override
     public void onStart() {
-        View view = ((ViewGroup) activity.getWindow().getDecorView()).getChildAt(0);
+        View view = ((ViewGroup) mActivity.getWindow().getDecorView()).getChildAt(0);
         view.getViewTreeObserver().addOnWindowFocusChangeListener(hasFocus -> {
             if (delegate != null) {
                 delegate.onWindowFocusChanged(hasFocus);
@@ -88,7 +85,7 @@ public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserve
             delegate.onDestroy();
         }
         DelegateUtils.getInstance().getActivityDelegates().remove(iActivity.hashCode());
-        this.activity = null;
+        this.mActivity = null;
         this.iActivity = null;
     }
 
@@ -99,14 +96,14 @@ public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserve
                 // 允许修改反射属性
                 field.setAccessible(true);
 
-                /**
-                 *  根据 @BindViewModel 注解, 查找注解标示的变量（ViewModel）
+                /*
+                 *  根据 {@link BindViewModel } 注解, 查找注解标示的变量（ViewModel）
                  *  并且 创建 ViewModel 实例, 注入到变量中
                  */
-                BindViewModel annotation = field.getAnnotation(BindViewModel.class);
-                if (annotation != null) {
+                final BindViewModel viewModel = field.getAnnotation(BindViewModel.class);
+                if (viewModel != null) {
                     try {
-                        field.set(iActivity, ViewModelFactory.createViewModel(activity, field));
+                        field.set(iActivity, ViewModelFactory.createViewModel(mActivity, field));
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }

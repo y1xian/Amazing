@@ -5,14 +5,16 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.yyxnb.amazing.fragments.TestFragment;
 import com.yyxnb.amazing.vm.TestViewModel;
+import com.yyxnb.arch.annotations.BarStyle;
+import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.IActivity;
 import com.yyxnb.arch.utils.ActivityManagerUtils;
 import com.yyxnb.common.log.LogUtils;
 
-public class Test2Activity extends AppCompatActivity implements IActivity , LoaderManager.LoaderCallbacks<Void>{
+@BindRes(layoutRes = R.layout.activity_test2, fitsSystemWindows = true, statusBarColor = R.color.black_40, statusBarStyle = BarStyle.LightContent)
+public class Test2Activity extends AppCompatActivity implements IActivity, LoaderManager.LoaderCallbacks<Void> {
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +25,10 @@ public class Test2Activity extends AppCompatActivity implements IActivity , Load
     @BindViewModel
     TestViewModel viewModel;
 
-    @Override
-    public int initLayoutResId() {
-        return R.layout.activity_test2;
-    }
+//    @Override
+//    public int initLayoutResId() {
+//        return R.layout.activity_test2;
+//    }
 
     @Override
     public void initView(Bundle savedInstanceState) {
@@ -38,9 +40,9 @@ public class Test2Activity extends AppCompatActivity implements IActivity , Load
 //            LogUtils.e(s);
         });
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mFrameLayout, new TestFragment(),"ggg")
-                .commitAllowingStateLoss();
+//        getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.mFrameLayout, new TestFragment(), "ggg")
+//                .commitAllowingStateLoss();
 
 
     }

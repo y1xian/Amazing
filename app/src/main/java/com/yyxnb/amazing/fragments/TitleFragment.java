@@ -4,16 +4,16 @@ package com.yyxnb.amazing.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.yyxnb.arch.annotations.BindFragment;
-import com.yyxnb.arch.base.BaseFragment;
 import com.yyxnb.amazing.R;
+import com.yyxnb.arch.annotations.BindRes;
+import com.yyxnb.arch.base.BaseFragment;
 import com.yyxnb.view.titlebar.TitleBar;
 
 
 /**
  * 标题栏.
  */
-@BindFragment(layoutRes = R.layout.fragment_title)
+@BindRes(layoutRes = R.layout.fragment_title)
 public class TitleFragment extends BaseFragment /*implements IFragment*/ {
 
 //    @BindViewModel(isActivity = true)

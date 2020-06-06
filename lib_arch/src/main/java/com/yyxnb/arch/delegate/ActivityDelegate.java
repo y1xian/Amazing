@@ -1,16 +1,33 @@
 package com.yyxnb.arch.delegate;
 
-import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 
+import com.github.anzewei.parallaxbacklayout.ParallaxHelper;
+import com.github.anzewei.parallaxbacklayout.widget.ParallaxBackLayout;
+import com.jeremyliao.liveeventbus.LiveEventBus;
+import com.yyxnb.arch.ContainerActivity;
+import com.yyxnb.arch.annotations.BarStyle;
+import com.yyxnb.arch.annotations.BindRes;
+import com.yyxnb.arch.annotations.SwipeStyle;
 import com.yyxnb.arch.base.IActivity;
+import com.yyxnb.arch.base.IFragment;
+import com.yyxnb.arch.common.ArchConfig;
+import com.yyxnb.arch.common.MsgEvent;
+import com.yyxnb.common.MainThreadUtils;
+import com.yyxnb.common.StatusBarUtils;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -19,11 +36,20 @@ public class ActivityDelegate implements Serializable, LifecycleObserver {
 
     public ActivityDelegate(IActivity iActivity) {
         this.iActivity = iActivity;
-        this.mActivity = (Activity) iActivity;
+        this.mActivity = (FragmentActivity) iActivity;
     }
 
     private IActivity iActivity;
-    private Activity mActivity;
+    private FragmentActivity mActivity;
+
+    private int layoutRes = 0;
+    private boolean statusBarTranslucent = ArchConfig.statusBarTranslucent;
+    private boolean fitsSystemWindows = ArchConfig.fitsSystemWindows;
+    private int statusBarColor = ArchConfig.statusBarColor;
+    private int statusBarDarkTheme = ArchConfig.statusBarStyle;
+    private boolean needLogin;
+    private boolean isExtends;
+    private boolean isContainer;
 
     /**
      * 是否第一次加载
@@ -32,7 +58,33 @@ public class ActivityDelegate implements Serializable, LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        initAttributes();
+        if (!isExtends) {
+            if (layoutRes != 0 || iActivity.initLayoutResId() != 0) {
+                mActivity.setContentView(layoutRes == 0 ? iActivity.initLayoutResId() : layoutRes);
+            }
+        }
+        initView();
     }
+
+    private void initView() {
+        if (!isContainer) {
+            // 不留空间 则透明
+            if (!fitsSystemWindows) {
+                StatusBarUtils.setStatusBarColor(getWindow(), Color.TRANSPARENT);
+            } else {
+                StatusBarUtils.setStatusBarColor(getWindow(), statusBarColor);
+            }
+            StatusBarUtils.setStatusBarStyle(getWindow(), statusBarDarkTheme == BarStyle.DarkContent);
+            StatusBarUtils.setStatusBarTranslucent(getWindow(), statusBarTranslucent, fitsSystemWindows);
+        }
+
+    }
+
+    private Window getWindow() {
+        return mActivity.getWindow();
+    }
+
 
     public void onWindowFocusChanged(boolean hasFocus) {
         if (mIsFirstVisible && hasFocus) {
@@ -64,6 +116,75 @@ public class ActivityDelegate implements Serializable, LifecycleObserver {
         }
         // 如果焦点不是EditText则忽略，这个发生在视图刚绘制完，第一个焦点不在EditText上，和用户用轨迹球选择其他的焦点
         return false;
+    }
+
+    /**
+     * 加载注解设置
+     */
+    public void initAttributes() {
+        MainThreadUtils.post(() -> {
+            final BindRes bindRes = iActivity.getClass().getAnnotation(BindRes.class);
+            if (bindRes != null) {
+                layoutRes = bindRes.layoutRes();
+                fitsSystemWindows = bindRes.fitsSystemWindows();
+                statusBarTranslucent = bindRes.statusBarTranslucent();
+                if (bindRes.statusBarStyle() != BarStyle.None) {
+                    statusBarDarkTheme = bindRes.statusBarStyle();
+                }
+                if (bindRes.statusBarColor() != 0) {
+                    statusBarColor = bindRes.statusBarColor();
+                }
+                needLogin = bindRes.needLogin();
+                isExtends = bindRes.isExtends();
+                isContainer = bindRes.isContainer();
+                // 如果需要登录，并且处于未登录状态下，发送通知
+                if (needLogin && !ArchConfig.needLogin) {
+                    LiveEventBus.get(ArchConfig.NEED_LOGIN).post(new MsgEvent(ArchConfig.NEED_LOGIN_CODE, ArchConfig.NEED_LOGIN));
+                }
+            }
+        });
+    }
+
+    public void setSwipeBack(int mSwipeBack) {
+        ParallaxBackLayout layout = ParallaxHelper.getParallaxBackLayout(mActivity, true);
+        switch (mSwipeBack) {
+            case SwipeStyle.Full:
+                ParallaxHelper.enableParallaxBack(mActivity);
+                //全屏滑动
+                layout.setEdgeMode(ParallaxBackLayout.EDGE_MODE_FULL);
+                break;
+            case SwipeStyle.Edge:
+                ParallaxHelper.enableParallaxBack(mActivity);
+                //边缘滑动
+                layout.setEdgeMode(ParallaxBackLayout.EDGE_MODE_DEFAULT);
+                break;
+            case SwipeStyle.None:
+                ParallaxHelper.disableParallaxBack(mActivity);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public <T extends IFragment> void startFragment(T targetFragment) {
+        startFragment(targetFragment, 0);
+    }
+
+    public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {
+        Intent intent = new Intent(mActivity, ContainerActivity.class);
+        Bundle bundle = targetFragment.initArguments();
+        bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
+        intent.putExtra(ArchConfig.BUNDLE, bundle);
+        mActivity.startActivityForResult(intent, requestCode);
+    }
+
+    public <T extends IFragment> void setRootFragment(T fragment, int containerId) {
+        FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
+        transaction.replace(containerId, (Fragment) fragment, fragment.sceneId());
+        transaction.addToBackStack(fragment.sceneId());
+        transaction.commitAllowingStateLoss();
     }
 
     @Override

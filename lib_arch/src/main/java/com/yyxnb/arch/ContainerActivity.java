@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.WindowManager;
 
+import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.base.BaseActivity;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.common.ArchConfig;
-import com.yyxnb.common.AppConfig;
 
 /**
  * Description: 盛装Fragment的一个容器(代理)Activity
@@ -19,6 +19,7 @@ import com.yyxnb.common.AppConfig;
  * @author : yyx
  * @date ：2018/6/9
  */
+@BindRes(isContainer = true)
 public class ContainerActivity extends BaseActivity {
 
     @Override
@@ -42,11 +43,12 @@ public class ContainerActivity extends BaseActivity {
                 throw new RuntimeException("you must provide a page info to display");
             }
 
-            if (initBaseFragment() != null) {
+            Fragment initBaseFragment = initBaseFragment();
+            if (initBaseFragment != null) {
                 if (intent.getBundleExtra(ArchConfig.BUNDLE) != null) {
-                    initBaseFragment().setArguments(intent.getBundleExtra(ArchConfig.BUNDLE));
+                    initBaseFragment.setArguments(intent.getBundleExtra(ArchConfig.BUNDLE));
                 }
-                setRootFragment((IFragment) initBaseFragment(), R.id.fragmentContent);
+                setRootFragment((IFragment) initBaseFragment, R.id.fragmentContent);
                 return;
             }
 
@@ -67,7 +69,6 @@ public class ContainerActivity extends BaseActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            AppConfig.getInstance().log(e.getMessage());
         }
     }
 }

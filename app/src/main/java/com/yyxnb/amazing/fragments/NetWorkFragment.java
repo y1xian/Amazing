@@ -16,17 +16,16 @@ import com.yyxnb.adapter.MultiItemTypeAdapter;
 import com.yyxnb.amazing.R;
 import com.yyxnb.amazing.adapter.NetWorkListAdapter;
 import com.yyxnb.amazing.vm.NetWorkViewModel;
-import com.yyxnb.arch.annotations.BindFragment;
+import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.BaseFragment;
 import com.yyxnb.common.AppConfig;
-import com.yyxnb.common.log.LogUtils;
 
 
 /**
  * 网络列表.
  */
-@BindFragment(layoutRes = R.layout.fragment_net_work)
+@BindRes(layoutRes = R.layout.fragment_net_work)
 public class NetWorkFragment extends BaseFragment/*VM<NetWorkViewModel>*/ {
 
     @BindViewModel

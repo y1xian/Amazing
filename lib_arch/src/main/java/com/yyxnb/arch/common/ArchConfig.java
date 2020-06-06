@@ -17,6 +17,8 @@ public class ArchConfig implements Serializable {
     public static final String FRAGMENT_FINISH = "FRAGMENT_FINISH";
     public static final String NEED_LOGIN = "NEED_LOGIN";
 
+    public static final int NEED_LOGIN_CODE = -100;
+
     /**
      * 侧滑
      */
@@ -33,10 +35,6 @@ public class ArchConfig implements Serializable {
      * 状态栏文字颜色
      */
     public static int statusBarStyle = BarStyle.DarkContent;
-    /**
-     * 状态栏是否隐藏
-     */
-    public static boolean statusBarHidden = false;
     /**
      * 状态栏颜色
      */

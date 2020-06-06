@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yyxnb.amazing.R;
-import com.yyxnb.arch.annotations.BindFragment;
+import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.common.log.LogUtils;
 
@@ -15,7 +15,7 @@ import com.yyxnb.common.log.LogUtils;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-@BindFragment(subPage = true)
+@BindRes(subPage = true)
 public class Vp2Fragment extends Fragment implements IFragment {
 
     public static Vp2Fragment newInstance() {
