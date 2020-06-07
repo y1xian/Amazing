@@ -3,10 +3,17 @@ package com.yyxnb.adapter;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 
-public abstract class BasePagedAdapter<T> extends MultiItemTypePagedAdapter<T> {
+import com.yyxnb.common.interfaces.IData;
+
+public abstract class BasePagedAdapter<T extends IData> extends MultiItemTypePagedAdapter<T> {
 
     public BasePagedAdapter(int mLayoutId, @NonNull DiffUtil.ItemCallback<T> diffCallback) {
         super(diffCallback);
+        this.mLayoutId = mLayoutId;
+    }
+
+    public BasePagedAdapter(int mLayoutId) {
+        super(new ItemDiffCallback<T>());
         this.mLayoutId = mLayoutId;
     }
 

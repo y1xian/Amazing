@@ -64,6 +64,7 @@ public class GsonUtils {
                     return 0;
                 }
             } catch (Exception ignore) {
+                ignore.printStackTrace();
             } finally {
                 try {
                     return json.getAsInt();
@@ -73,13 +74,11 @@ public class GsonUtils {
             }
         }
 
-
         @Override
         public JsonElement serialize(Integer src, Type typeOfSrc, JsonSerializationContext context) {
             return new JsonPrimitive(src);
         }
     }
-
 
     public static class DoubleDefault0Adapter implements JsonSerializer<Double>, JsonDeserializer<Double> {
         @Override
@@ -91,6 +90,7 @@ public class GsonUtils {
                     return 0.00;
                 }
             } catch (Exception ignore) {
+                ignore.printStackTrace();
             } finally {
                 try {
                     return json.getAsDouble();
@@ -100,15 +100,12 @@ public class GsonUtils {
             }
         }
 
-
         @Override
         public JsonElement serialize(Double src, Type typeOfSrc, JsonSerializationContext context) {
             return new JsonPrimitive(src);
         }
 
-
     }
-
 
     public static class LongDefault0Adapter implements JsonSerializer<Long>, JsonDeserializer<Long> {
         @Override
@@ -119,8 +116,7 @@ public class GsonUtils {
                     return 0L;
                 }
             } catch (Exception ignore) {
-
-
+                ignore.printStackTrace();
             } finally {
                 try {
                     return json.getAsLong();
@@ -128,7 +124,6 @@ public class GsonUtils {
                     throw new JsonSyntaxException(e);
                 }
             }
-
 
         }
 
@@ -178,7 +173,6 @@ public class GsonUtils {
 
     }
 
-
     //忽略字段id
     public static Gson getSkipIdGson(String id) {
         Gson gson = new GsonBuilder().setExclusionStrategies(
@@ -208,7 +202,6 @@ public class GsonUtils {
                         //过滤掉字段名包含"id","address"的字段
                         return f.getName().equals("id") | f.getName().equals("groupGuid");
                     }
-
 
                     @Override
                     public boolean shouldSkipClass(Class<?> clazz) {
@@ -259,14 +252,14 @@ public class GsonUtils {
      * @param cls
      * @return
      */
-    public static <T> List<T> gsonToList(String gsonString, Class<T> cls) {
-        List<T> list = null;
-        if (gson != null) {
-            list = gson.fromJson(gsonString, new TypeToken<List<T>>() {
-            }.getType());
-        }
-        return list;
-    }
+//    public static <T> List<T> gsonToList(String gsonString, Class<T> cls) {
+//        List<T> list = null;
+//        if (gson != null) {
+//            list = gson.fromJson(gsonString, new TypeToken<List<T>>() {
+//            }.getType());
+//        }
+//        return list;
+//    }
 
 
     /**

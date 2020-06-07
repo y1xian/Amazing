@@ -23,7 +23,7 @@ import com.yyxnb.arch.annotations.BindRes;
  * A simple {@link Fragment} subclass.
  */
 @BindRes
-public class HomeFragment extends AbsListFragment<MainBean, MainViewModel> {
+public class HomeFragment extends AbsGridFragment<MainBean, MainViewModel> {
 
     private MainListAdapter adapter = new MainListAdapter();
 
@@ -50,22 +50,29 @@ public class HomeFragment extends AbsListFragment<MainBean, MainViewModel> {
                 super.onItemClick(view, holder, position);
 //                ToastUtils.INSTANCE.normal("" + adapter.getData().get(position).url);
 //                Navigation.findNavController(getView()).navigate(adapter.getData().get(position).id);
-                setMenu(position);
+                setMenu(adapter.getData().get(position).id);
             }
         });
+        adapter.setSpanSizeLookup((gridLayoutManager, position) -> {
+            if (adapter.getData().get(position).type == 1){
+                return 2;
+            }
+            return 1;
+        });
 
+        mRecyclerView.setAdapter(adapter);
     }
 
     private void setMenu(int position) {
         switch (position) {
-            case 0:
+            case 41:
                 startFragment(TitleFragment.newInstance());
 //                startActivity(new Intent(getContext(), TestActivity.class));
                 break;
-            case 1:
+            case 31:
                 startFragment(NetWorkFragment.newInstance());
                 break;
-            case 2:
+            case 23:
                 startFragment(new VpMainFragment());
 //                startActivity(new Intent(getContext(), Test2Activity.class));
                 break;

@@ -2,8 +2,6 @@ package com.yyxnb.http;
 
 import android.arch.lifecycle.LiveData;
 
-import com.yyxnb.http.interfaces.IData;
-
 import java.lang.reflect.Type;
 import java.util.concurrent.atomic.AtomicBoolean;
 

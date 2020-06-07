@@ -4,7 +4,7 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
 
-import com.yyxnb.http.interfaces.IData;
+import com.yyxnb.common.interfaces.IData;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;

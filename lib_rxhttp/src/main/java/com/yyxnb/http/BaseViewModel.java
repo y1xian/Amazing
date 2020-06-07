@@ -6,7 +6,7 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.yyxnb.common.AppConfig;
-import com.yyxnb.http.interfaces.IData;
+import com.yyxnb.common.interfaces.IData;
 import com.yyxnb.http.rx.BaseHttpSubscriber;
 import com.yyxnb.rx.DisposablePool;
 

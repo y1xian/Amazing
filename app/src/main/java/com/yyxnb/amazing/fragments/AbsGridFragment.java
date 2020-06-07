@@ -5,7 +5,7 @@ import android.arch.paging.PagedList;
 import android.arch.paging.PagedListAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -21,7 +21,7 @@ import com.yyxnb.http.BasePagedViewModel;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public abstract class AbsListFragment<T, M extends BasePagedViewModel<T>> extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
+public abstract class AbsGridFragment<T, M extends BasePagedViewModel<T>> extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
     protected LayoutRefreshViewBinding binding;
     protected RecyclerView mRecyclerView;
     protected SmartRefreshLayout mRefreshLayout;
@@ -41,6 +41,7 @@ public abstract class AbsListFragment<T, M extends BasePagedViewModel<T>> extend
         binding.getRoot().setFitsSystemWindows(true);
         mRecyclerView = binding.recyclerView;
         mRefreshLayout = binding.refreshLayout;
+//        mEmptyView = binding.emptyView;
 
         mRefreshLayout.setEnableRefresh(true);
         mRefreshLayout.setEnableLoadMore(true);
@@ -49,12 +50,18 @@ public abstract class AbsListFragment<T, M extends BasePagedViewModel<T>> extend
 
         adapter = getAdapter();
 //        mRecyclerView.setAdapter(adapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setItemAnimator(null);
 
         //默认给列表中的Item 一个 10dp的ItemDecoration
         decoration = new ItemDecoration(getContext());
+//        decoration.setDividerColor(getResources().getColor(R.color.item_div_bg));
+        decoration.setDividerWidth(10);
         decoration.setDividerHeight(10);
+        decoration.setDrawBorderTopAndBottom(true);
+        decoration.setDrawBorderLeftAndRight(true);
+//        decoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.list_divider));
         mRecyclerView.addItemDecoration(decoration);
 
         genericViewModel();

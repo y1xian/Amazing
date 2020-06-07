@@ -14,8 +14,7 @@ public class ArchConfig implements Serializable {
     public static final String FRAGMENT = "FRAGMENT";
     public static final String BUNDLE = "BUNDLE";
     public static final String REQUEST_CODE = "REQUEST_CODE";
-    public static final String FRAGMENT_FINISH = "FRAGMENT_FINISH";
-    public static final String NEED_LOGIN = "NEED_LOGIN";
+    public static final String MSG_EVENT = "MSG_EVENT";
 
     public static final int NEED_LOGIN_CODE = -100;
 

@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.yyxnb.arch.ContainerActivity;
 import com.yyxnb.arch.annotations.BarStyle;
 import com.yyxnb.arch.annotations.BindRes;
@@ -27,6 +26,7 @@ import com.yyxnb.arch.annotations.SwipeStyle;
 import com.yyxnb.arch.base.IActivity;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.common.ArchConfig;
+import com.yyxnb.arch.common.Bus;
 import com.yyxnb.arch.common.MsgEvent;
 import com.yyxnb.common.MainThreadUtils;
 import com.yyxnb.common.StatusBarUtils;
@@ -170,9 +170,8 @@ public class FragmentDelegate implements Serializable, LifecycleObserver {
                 needLogin = bindRes.needLogin();
                 // 如果需要登录，并且处于未登录状态下，发送通知
                 if (needLogin && !ArchConfig.needLogin) {
-                    LiveEventBus.get(ArchConfig.NEED_LOGIN).post(new MsgEvent(ArchConfig.NEED_LOGIN_CODE, ArchConfig.NEED_LOGIN));
+                    Bus.post(new MsgEvent(ArchConfig.NEED_LOGIN_CODE));
                 }
-
             }
         });
     }
@@ -257,4 +256,5 @@ public class FragmentDelegate implements Serializable, LifecycleObserver {
     public int hashCode() {
         return Objects.hash(iFragment);
     }
+
 }

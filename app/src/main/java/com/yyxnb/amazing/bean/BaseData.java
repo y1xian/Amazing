@@ -1,6 +1,6 @@
 package com.yyxnb.amazing.bean;
 
-import com.yyxnb.http.interfaces.IData;
+import com.yyxnb.common.interfaces.IData;
 
 import java.io.Serializable;
 

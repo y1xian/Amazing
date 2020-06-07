@@ -1,13 +1,12 @@
 package com.yyxnb.amazing.vm;
 
-import android.arch.lifecycle.Lifecycle;
 import android.arch.paging.DataSource;
 import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
 
-import com.yyxnb.http.BasePagedViewModel;
 import com.yyxnb.amazing.bean.MainBean;
 import com.yyxnb.amazing.data.DataConfig;
+import com.yyxnb.http.BasePagedViewModel;
 
 import java.util.Collections;
 
@@ -17,7 +16,7 @@ public class MainViewModel extends BasePagedViewModel<MainBean> {
         return new PageKeyedDataSource<Integer, MainBean>() {
             @Override
             public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Integer, MainBean> callback) {
-                callback.onResult(DataConfig.getDataMain(), null, null);
+                callback.onResult(DataConfig.getMainBeans(), null, null);
             }
 
             @Override

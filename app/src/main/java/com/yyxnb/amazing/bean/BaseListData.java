@@ -1,7 +1,5 @@
 package com.yyxnb.amazing.bean;
 
-import com.yyxnb.http.interfaces.IData;
-
 import java.io.Serializable;
 import java.util.List;
 

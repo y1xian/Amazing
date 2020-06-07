@@ -5,8 +5,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 
+import com.yyxnb.common.interfaces.IData;
 import com.yyxnb.common.log.LogUtils;
-import com.yyxnb.http.interfaces.IData;
 
 public abstract class BaseViewModel extends ViewModel implements DefaultLifecycleObserver {
 

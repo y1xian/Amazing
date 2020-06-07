@@ -3,7 +3,7 @@ package com.yyxnb.http;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
-import com.yyxnb.http.interfaces.IData;
+import com.yyxnb.common.interfaces.IData;
 
 import java.lang.ref.WeakReference;
 
