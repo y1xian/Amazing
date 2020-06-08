@@ -7,15 +7,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.yyxnb.adapter.BaseViewHolder;
 import com.yyxnb.adapter.MultiItemTypePagedAdapter;
-import com.yyxnb.amazing.Test2Activity;
+import com.yyxnb.amazing.TestActivity;
+import com.yyxnb.amazing.TestBaseActivity;
 import com.yyxnb.amazing.adapter.MainListAdapter;
 import com.yyxnb.amazing.bean.MainBean;
-import com.yyxnb.amazing.fragments.vp.VpMainFragment;
 import com.yyxnb.amazing.vm.MainViewModel;
 import com.yyxnb.arch.annotations.BindRes;
 
@@ -23,22 +28,9 @@ import com.yyxnb.arch.annotations.BindRes;
  * A simple {@link Fragment} subclass.
  */
 @BindRes
-public class HomeFragment extends AbsGridFragment<MainBean, MainViewModel> {
+public class HomeFragment extends AbsListFragment<MainBean, MainViewModel> {
 
     private MainListAdapter adapter = new MainListAdapter();
-
-//    public HomeFragment() {
-//        // Required empty public constructor
-//    }
-//
-//
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_home, container, false);
-//    }
-
 
     @Override
     public void initView(@Nullable Bundle savedInstanceState) {
@@ -48,46 +40,69 @@ public class HomeFragment extends AbsGridFragment<MainBean, MainViewModel> {
             @Override
             public void onItemClick(View view, BaseViewHolder holder, int position) {
                 super.onItemClick(view, holder, position);
-//                ToastUtils.INSTANCE.normal("" + adapter.getData().get(position).url);
-//                Navigation.findNavController(getView()).navigate(adapter.getData().get(position).id);
                 setMenu(adapter.getData().get(position).id);
             }
         });
+
+        GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
         adapter.setSpanSizeLookup((gridLayoutManager, position) -> {
-            if (adapter.getData().get(position).type == 1){
+            if (adapter.getData().get(position).type == 1) {
                 return 2;
             }
             return 1;
         });
-
+        mRecyclerView.setLayoutManager(manager);
+        decoration.setDividerWidth(5);
+        decoration.setDividerHeight(5);
+//        decoration.setDrawBorderTopAndBottom(true);
+//        decoration.setDrawBorderLeftAndRight(true);
         mRecyclerView.setAdapter(adapter);
+
+        adapter.addHeaderView(view("头部啊"));
+        adapter.addFooterView(view("底部啊"));
+    }
+
+    private TextView view(String s) {
+        TextView textView = new TextView(getContext());
+        ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.height = 200;
+        textView.setLayoutParams(layoutParams);
+        textView.setGravity(Gravity.CENTER);
+        textView.setText(s);
+        return textView;
     }
 
     private void setMenu(int position) {
         switch (position) {
-            case 41:
-                startFragment(TitleFragment.newInstance());
-//                startActivity(new Intent(getContext(), TestActivity.class));
+            case 11:
+                startActivity(new Intent(getContext(), TestBaseActivity.class));
+                break;
+            case 12:
+                startActivity(new Intent(getContext(), TestActivity.class));
+                break;
+            case 21:
+                startFragment(new TestBaseFragment());
+                break;
+            case 22:
+                startFragment(new TestFragment());
+                break;
+            case 23:
+                startFragment(new VpMainFragment());
                 break;
             case 31:
                 startFragment(NetWorkFragment.newInstance());
                 break;
-            case 23:
-                startFragment(new VpMainFragment());
-//                startActivity(new Intent(getContext(), Test2Activity.class));
+            case 41:
+                startFragment(TitleFragment.newInstance());
                 break;
-            case 3:
-//                startFragment(AdapterListFragment.newInstance());
-                startActivity(new Intent(getContext(), Test2Activity.class));
+            case 42:
+                startFragment(new DialogFragment());
+                break;
+            case 43:
+                startFragment(new TagFragment());
                 break;
 //            case 4:
 //                startFragment(new BehaviorFragment());
-//                break;
-//            case 5:
-//                startFragment(TagFragment.newInstance());
-//                break;
-//            case 6:
-//                startFragment(DialogFragment.newInstance());
 //                break;
             default:
                 break;
@@ -109,8 +124,4 @@ public class HomeFragment extends AbsGridFragment<MainBean, MainViewModel> {
 
     }
 
-//    @Override
-//    public void initViewData() {
-//        super.initViewData();
-//    }
 }

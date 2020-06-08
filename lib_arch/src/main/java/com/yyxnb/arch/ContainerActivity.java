@@ -12,6 +12,8 @@ import com.yyxnb.arch.base.BaseActivity;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.common.ArchConfig;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Description: 盛装Fragment的一个容器(代理)Activity
  * 普通界面只需要编写Fragment,使用此Activity盛装,这样就不需要每个界面都在AndroidManifest中注册一遍
@@ -22,6 +24,7 @@ import com.yyxnb.arch.common.ArchConfig;
 @BindRes(isContainer = true)
 public class ContainerActivity extends BaseActivity {
 
+    private WeakReference<Fragment> mFragment;
     @Override
     public int initLayoutResId() {
         return R.layout.base_nav_content;
@@ -43,12 +46,13 @@ public class ContainerActivity extends BaseActivity {
                 throw new RuntimeException("you must provide a page info to display");
             }
 
-            Fragment initBaseFragment = initBaseFragment();
-            if (initBaseFragment != null) {
+            mFragment = new WeakReference<>(initBaseFragment());
+
+            if (mFragment.get() != null) {
                 if (intent.getBundleExtra(ArchConfig.BUNDLE) != null) {
-                    initBaseFragment.setArguments(intent.getBundleExtra(ArchConfig.BUNDLE));
+                    mFragment.get().setArguments(intent.getBundleExtra(ArchConfig.BUNDLE));
                 }
-                setRootFragment((IFragment) initBaseFragment, R.id.fragmentContent);
+                setRootFragment((IFragment) mFragment.get(), R.id.fragmentContent);
                 return;
             }
 
@@ -70,5 +74,11 @@ public class ContainerActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mFragment.clear();
     }
 }

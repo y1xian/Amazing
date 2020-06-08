@@ -10,7 +10,7 @@ import android.util.LruCache;
 import android.view.View;
 
 import com.yyxnb.arch.base.IFragment;
-import com.yyxnb.arch.utils.FragmentManagerUtils;
+import com.yyxnb.arch.utils.AppManager;
 
 public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallbacks {
 
@@ -32,7 +32,7 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
     @Override
     public void onFragmentAttached(@NonNull FragmentManager fm, @NonNull Fragment f, @NonNull Context context) {
         if (f != null) {
-            FragmentManagerUtils.getInstance().pushFragment(f);
+            AppManager.getInstance().addFragment(f);
         }
 
         if (f instanceof IFragment) {
@@ -107,7 +107,7 @@ public class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallback
     @Override
     public void onFragmentDestroyed(@NonNull FragmentManager fm, @NonNull Fragment f) {
         if (f != null) {
-            FragmentManagerUtils.getInstance().killFragment(f);
+            AppManager.getInstance().removeFragment(f);
         }
         if (fetchFragmentDelegateFromCache(f) != null) {
             fetchFragmentDelegateFromCache(f).onDestroyed();

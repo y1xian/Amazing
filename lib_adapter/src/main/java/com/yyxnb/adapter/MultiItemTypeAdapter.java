@@ -172,12 +172,6 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
             gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    if (isHeaderPosition(position)) {
-                        return 1;
-                    }
-                    if (isFooterPosition(position)) {
-                        return 1;
-                    }
                     if (mSpanSizeLookup == null) {
                         return isFixedViewType(position) ? gridManager.getSpanCount() : defSpanSizeLookup.getSpanSize(position);
                     } else {
@@ -193,13 +187,13 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         return isHeaderPosition(position) || isFooterPosition(position);
     }
 
-    private MultiItemTypePagedAdapter.SpanSizeLookup mSpanSizeLookup;
+    private SpanSizeLookup mSpanSizeLookup;
 
     public interface SpanSizeLookup {
         int getSpanSize(GridLayoutManager gridLayoutManager, int position);
     }
 
-    public void setSpanSizeLookup(MultiItemTypePagedAdapter.SpanSizeLookup spanSizeLookup) {
+    public void setSpanSizeLookup(SpanSizeLookup spanSizeLookup) {
         this.mSpanSizeLookup = spanSizeLookup;
     }
 

@@ -1,6 +1,7 @@
 package com.yyxnb.http;
 
 import com.yyxnb.common.AppGlobals;
+import com.yyxnb.http.interceptor.CacheInterceptor;
 import com.yyxnb.http.interceptor.HeaderInterceptor;
 import com.yyxnb.http.interceptor.LoggingInterceptor;
 import com.yyxnb.http.utils.GsonUtils;
@@ -160,7 +161,8 @@ public abstract class AbstractHttp {
         if (saveCache()) {
             final File externalCacheDir = AppGlobals.getApplication().getApplicationContext().getExternalCacheDir();
             if (null != externalCacheDir) {
-                builder.cache(new Cache(new File(externalCacheDir.getPath() + "/HttpCacheData"), 50 * 1024 * 1024));
+                builder.cache(new Cache(new File(externalCacheDir.getPath() + "/HttpCacheData"), 20 * 1024 * 1024));
+                builder.addInterceptor(new CacheInterceptor());
             }
         }
         final SSLUtils.SSLParams sslParams = SSLUtils.getSslSocketFactory(keyStore(), keyStorePassword(), certificates());

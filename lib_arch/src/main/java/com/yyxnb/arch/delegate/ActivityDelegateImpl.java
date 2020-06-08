@@ -1,9 +1,6 @@
 package com.yyxnb.arch.delegate;
 
 import android.app.Activity;
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.OnLifecycleEvent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -12,7 +9,7 @@ import android.view.ViewGroup;
 import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.IActivity;
 import com.yyxnb.arch.livedata.ViewModelFactory;
-import com.yyxnb.arch.utils.DelegateUtils;
+import com.yyxnb.arch.utils.AppManager;
 import com.yyxnb.common.MainThreadUtils;
 
 import java.lang.reflect.Field;
@@ -21,7 +18,7 @@ import java.lang.reflect.Field;
  * ActivityLifecycleCallbacks 监听 Activity 生命周期
  * PS ：先走 ActivityLifecycleCallbacks 再走 Activity
  */
-public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserver {
+public class ActivityDelegateImpl implements IActivityDelegate {
 
     private FragmentActivity mActivity = null;
     private IActivity iActivity = null;
@@ -33,7 +30,6 @@ public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserve
 
     private ActivityDelegate delegate;
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         if (iActivity != null) {
@@ -48,7 +44,6 @@ public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserve
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
     @Override
     public void onStart() {
         View view = ((ViewGroup) mActivity.getWindow().getDecorView()).getChildAt(0);
@@ -59,17 +54,14 @@ public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserve
         });
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     @Override
     public void onResume() {
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     @Override
     public void onPause() {
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     @Override
     public void onStop() {
     }
@@ -78,13 +70,12 @@ public class ActivityDelegateImpl implements IActivityDelegate, LifecycleObserve
     public void onSaveInstanceState(Activity activity, Bundle outState) {
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     @Override
     public void onDestroy() {
         if (delegate != null) {
             delegate.onDestroy();
         }
-        DelegateUtils.getInstance().getActivityDelegates().remove(iActivity.hashCode());
+        AppManager.getInstance().getActivityDelegates().remove(iActivity.hashCode());
         this.mActivity = null;
         this.iActivity = null;
     }

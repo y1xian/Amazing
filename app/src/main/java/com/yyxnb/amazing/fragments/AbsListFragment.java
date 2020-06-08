@@ -5,7 +5,6 @@ import android.arch.paging.PagedList;
 import android.arch.paging.PagedListAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -49,12 +48,12 @@ public abstract class AbsListFragment<T, M extends BasePagedViewModel<T>> extend
 
         adapter = getAdapter();
 //        mRecyclerView.setAdapter(adapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.setItemAnimator(null);
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+//        mRecyclerView.setItemAnimator(null);
 
         //默认给列表中的Item 一个 10dp的ItemDecoration
         decoration = new ItemDecoration(getContext());
-        decoration.setDividerHeight(10);
+//        decoration.setDividerHeight(10);
         mRecyclerView.addItemDecoration(decoration);
 
         genericViewModel();

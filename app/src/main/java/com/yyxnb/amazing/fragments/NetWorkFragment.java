@@ -25,8 +25,8 @@ import com.yyxnb.common.AppConfig;
 /**
  * 网络列表.
  */
-@BindRes(layoutRes = R.layout.fragment_net_work)
-public class NetWorkFragment extends BaseFragment/*VM<NetWorkViewModel>*/ {
+@BindRes(layoutRes = R.layout.fragment_net_work, subPage = true)
+public class NetWorkFragment extends BaseFragment {
 
     @BindViewModel
     NetWorkViewModel mViewModel;
@@ -161,7 +161,7 @@ public class NetWorkFragment extends BaseFragment/*VM<NetWorkViewModel>*/ {
         mViewModel.result.observe(this, t -> {
 //                    page++;
             mRefreshLayout.finishRefresh();
-            if (t != null ) {
+            if (t != null) {
                 AppConfig.getInstance().log(" SUCCESS   " + (t.list.size()));
                 //                        LogUtils.INSTANCE.list(t.data.getData());
                 mAdapter.setDataItems(t.list);

@@ -1,4 +1,4 @@
-package com.yyxnb.amazing.fragments.vp;
+package com.yyxnb.amazing.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 
 import com.yyxnb.amazing.R;
 import com.yyxnb.amazing.widget.BaseFragmentPagerAdapter;
+import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.base.BaseFragment;
 import com.yyxnb.common.DpUtils;
 
@@ -28,35 +29,27 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
+@BindRes(layoutRes = R.layout.fragment_vp_main)
 public class VpMainFragment extends BaseFragment {
 
     private MagicIndicator mIndicator;
     private ViewPager mViewPager;
     private String[] titles = {"1111", "2222", "3333"};
-    private List<Fragment> fragments = new ArrayList<>();
-
-    @Override
-    public int initLayoutResId() {
-        return R.layout.fragment_vp_main;
-    }
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_vp_main, container, false);
-//    }
+    private List<Fragment> fragments;
 
     @Override
     public void initView(Bundle savedInstanceState) {
         mIndicator = findViewById(R.id.mIndicator);
         mViewPager = findViewById(R.id.page);
-//        tabLayout = getView().findViewById(R.id.tab_layout);
-//        viewPager = getView().findViewById(R.id.page);
 
-        fragments.add(Vp1Fragment.newInstance());
-        fragments.add(Vp2Fragment.newInstance());
-        fragments.add(Vp3Fragment.newInstance());
+        if (fragments == null) {
+            fragments = new ArrayList<>();
+            fragments.add(new TestFragment());
+            fragments.add(new TestBaseFragment());
+//            fragments.add(new TestBaseFragment());
+//            fragments.add(new NetWorkFragment());
+            fragments.add(new TestFragment());
+        }
 
         CommonNavigator commonNavigator = new CommonNavigator(getContext());
         //ture 即标题平分屏幕宽度的模式

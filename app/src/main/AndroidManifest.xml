@@ -27,7 +27,7 @@
         android:supportsRtl="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/BaseAppTheme">
-        <activity android:name=".Test2Activity"></activity>
+        <activity android:name=".TestBaseActivity"></activity>
         <activity android:name=".TestActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

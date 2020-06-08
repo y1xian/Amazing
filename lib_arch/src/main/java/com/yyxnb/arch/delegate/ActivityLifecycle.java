@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.LruCache;
 
 import com.yyxnb.arch.base.IActivity;
-import com.yyxnb.arch.utils.ActivityManagerUtils;
+import com.yyxnb.arch.utils.AppManager;
 
 public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks {
 
@@ -29,7 +29,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         if (activity != null) {
-            ActivityManagerUtils.getInstance().pushActivity(activity);
+            AppManager.getInstance().addActivity(activity);
         }
 
         if (activity instanceof IActivity) {
@@ -97,7 +97,7 @@ public class ActivityLifecycle implements Application.ActivityLifecycleCallbacks
     @Override
     public void onActivityDestroyed(Activity activity) {
         if (activity != null) {
-            ActivityManagerUtils.getInstance().killActivity(activity);
+            AppManager.getInstance().removeActivity(activity);
         }
         if (fetchActivityDelegate(activity) != null) {
             fetchActivityDelegate(activity).onDestroy();

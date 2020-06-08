@@ -8,21 +8,19 @@ import android.view.ViewGroup;
 
 import com.yyxnb.amazing.R;
 import com.yyxnb.amazing.vm.TestViewModel;
+import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.common.AppConfig;
 import com.yyxnb.common.log.LogUtils;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 实现IFragment.
  */
+@BindRes(subPage = true)
 public class TestFragment extends Fragment implements IFragment {
 
-    public TestFragment() {
-        // Required empty public constructor
-    }
-
-    @BindViewModel(isActivity = true)
+    @BindViewModel
     TestViewModel viewModel;
 
     @Override
@@ -32,34 +30,40 @@ public class TestFragment extends Fragment implements IFragment {
         return inflater.inflate(R.layout.fragment_test, container, false);
     }
 
-//    @Override
-//    public int initLayoutResId() {
-//        return R.layout.fragment_test;
-//    }
-
     @Override
     public void initView(Bundle savedInstanceState) {
-        AppConfig.getInstance().log("TestFragment initView: " + 222);
+        AppConfig.getInstance().log("TestFragment initView");
+    }
 
-//        viewModel.result.setValue("333333");
+    @Override
+    public void initObservable() {
+
+        viewModel.result.postValue("333333");
 
         viewModel.result.observe(this, s -> {
-//            LogUtils.e("test : " + s);
+            LogUtils.e("test : " + s);
         });
     }
 
     @Override
     public void initViewData() {
-        LogUtils.w("initViewData : " + hashCode());
+        AppConfig.getInstance().log("initViewData : " + hashCode());
     }
 
     @Override
     public void onVisible() {
-        LogUtils.w("onVisible : " + hashCode());
+        AppConfig.getInstance().log("onVisible : " + hashCode());
     }
 
     @Override
     public void onInVisible() {
-        LogUtils.w("onInVisible : " + hashCode());
+        AppConfig.getInstance().log("onInVisible : " + hashCode());
+    }
+
+    // vp下 要自实现setUserVisibleHint
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        getBaseDelegate().setUserVisibleHint(isVisibleToUser);
     }
 }

@@ -1,8 +1,5 @@
 package com.yyxnb.arch.delegate;
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,7 +29,7 @@ import com.yyxnb.common.StatusBarUtils;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ActivityDelegate implements Serializable, LifecycleObserver {
+public class ActivityDelegate implements Serializable {
 
     public ActivityDelegate(IActivity iActivity) {
         this.iActivity = iActivity;
@@ -56,7 +53,6 @@ public class ActivityDelegate implements Serializable, LifecycleObserver {
      */
     private boolean mIsFirstVisible = true;
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     public void onCreate(@Nullable Bundle savedInstanceState) {
         initAttributes();
         if (!isExtends) {
@@ -94,7 +90,6 @@ public class ActivityDelegate implements Serializable, LifecycleObserver {
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     public void onDestroy() {
         mIsFirstVisible = true;
         iActivity = null;

@@ -1,23 +1,18 @@
 package com.yyxnb.amazing;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.yyxnb.amazing.vm.TestViewModel;
 import com.yyxnb.arch.annotations.BindViewModel;
-import com.yyxnb.arch.base.BaseActivity;
+import com.yyxnb.arch.base.IActivity;
 import com.yyxnb.common.AppConfig;
 import com.yyxnb.common.log.LogUtils;
 
-public class TestActivity extends BaseActivity {
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_test);
-//    }
+public class TestActivity extends AppCompatActivity implements IActivity {
 
     @BindViewModel
-    private TestViewModel viewModel;
+    TestViewModel viewModel;
 
     @Override
     public int initLayoutResId() {

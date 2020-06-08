@@ -1,9 +1,6 @@
 package com.yyxnb.arch.delegate;
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -34,7 +31,7 @@ import com.yyxnb.common.StatusBarUtils;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class FragmentDelegate implements Serializable, LifecycleObserver {
+public class FragmentDelegate implements Serializable {
 
     public FragmentDelegate(IFragment iFragment) {
         this.iFragment = iFragment;
@@ -73,7 +70,6 @@ public class FragmentDelegate implements Serializable, LifecycleObserver {
         iActivity = (IActivity) mActivity;
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     public void onCreate(Bundle savedInstanceState) {
         mLazyDelegate.onCreate(savedInstanceState);
         initAttributes();
@@ -126,17 +122,14 @@ public class FragmentDelegate implements Serializable, LifecycleObserver {
         mLazyDelegate.onConfigurationChanged(newConfig);
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void onResume() {
         mLazyDelegate.onResume();
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     public void onPause() {
         mLazyDelegate.onPause();
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     public void onDestroy() {
         mLazyDelegate.onDestroy();
         iFragment = null;

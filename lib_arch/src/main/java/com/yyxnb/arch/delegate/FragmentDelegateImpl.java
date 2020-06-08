@@ -1,8 +1,5 @@
 package com.yyxnb.arch.delegate;
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.OnLifecycleEvent;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,7 +10,7 @@ import android.view.View;
 import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.livedata.ViewModelFactory;
-import com.yyxnb.arch.utils.DelegateUtils;
+import com.yyxnb.arch.utils.AppManager;
 import com.yyxnb.common.MainThreadUtils;
 
 import java.lang.reflect.Field;
@@ -22,7 +19,7 @@ import java.lang.reflect.Field;
  * FragmentLifecycleCallbacks 监听 Fragment 生命周期
  * PS ：先走 Fragment 再走 FragmentLifecycleCallbacks
  */
-public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserver {
+public class FragmentDelegateImpl implements IFragmentDelegate {
 
     private Fragment fragment = null;
     private FragmentManager fragmentManager = null;
@@ -45,7 +42,6 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     @Override
     public void onCreated(Bundle savedInstanceState) {
         if (delegate != null) {
@@ -53,13 +49,11 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         initDeclaredFields();
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         if (delegate != null) {
@@ -67,12 +61,10 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
     @Override
     public void onStarted() {
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     @Override
     public void onResumed() {
         if (delegate != null) {
@@ -80,7 +72,6 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     @Override
     public void onPaused() {
         if (delegate != null) {
@@ -88,7 +79,6 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     @Override
     public void onStopped() {
     }
@@ -97,7 +87,6 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
     public void onSaveInstanceState(Bundle outState) {
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     @Override
     public void onViewDestroyed() {
         if (delegate != null) {
@@ -105,20 +94,18 @@ public class FragmentDelegateImpl implements IFragmentDelegate, LifecycleObserve
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     @Override
     public void onDestroyed() {
         if (delegate != null) {
             delegate.onDestroy();
             delegate = null;
         }
-        DelegateUtils.getInstance().getFragmentDelegates().remove(iFragment.hashCode());
+        AppManager.getInstance().getFragmentDelegates().remove(iFragment.hashCode());
         this.fragmentManager = null;
         this.fragment = null;
         this.iFragment = null;
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     @Override
     public void onDetached() {
     }

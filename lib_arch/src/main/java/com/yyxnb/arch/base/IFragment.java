@@ -5,16 +5,16 @@ import android.arch.lifecycle.OnLifecycleEvent;
 import android.os.Bundle;
 
 import com.yyxnb.arch.delegate.FragmentDelegate;
-import com.yyxnb.arch.utils.DelegateUtils;
+import com.yyxnb.arch.utils.AppManager;
 
 public interface IFragment extends IView {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     default FragmentDelegate getBaseDelegate() {
-        FragmentDelegate delegate = DelegateUtils.getInstance().getFragmentDelegates().get(hashCode());
+        FragmentDelegate delegate = AppManager.getInstance().getFragmentDelegates().get(hashCode());
         if (delegate == null) {
             delegate = new FragmentDelegate(this);
-            DelegateUtils.getInstance().getFragmentDelegates().put(hashCode(), delegate);
+            AppManager.getInstance().getFragmentDelegates().put(hashCode(), delegate);
         }
         return delegate;
     }

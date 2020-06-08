@@ -176,12 +176,6 @@ public class MultiItemTypePagedAdapter<T> extends PagedListAdapter<T, BaseViewHo
             gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    if (isHeaderPosition(position)) {
-                        return 1;
-                    }
-                    if (isFooterPosition(position)) {
-                        return 1;
-                    }
                     if (mSpanSizeLookup == null) {
                         return isFixedViewType(position) ? gridManager.getSpanCount() : defSpanSizeLookup.getSpanSize(position);
                     } else {
