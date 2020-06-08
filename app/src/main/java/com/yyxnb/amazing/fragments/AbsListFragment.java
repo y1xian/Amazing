@@ -46,7 +46,7 @@ public abstract class AbsListFragment<T, M extends BasePagedViewModel<T>> extend
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setOnLoadMoreListener(this);
 
-        adapter = getAdapter();
+        adapter = getmAdapter();
 //        mRecyclerView.setAdapter(adapter);
 //        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 //        mRecyclerView.setItemAnimator(null);
@@ -108,5 +108,5 @@ public abstract class AbsListFragment<T, M extends BasePagedViewModel<T>> extend
      *
      * @return
      */
-    public abstract PagedListAdapter getAdapter();
+    public abstract PagedListAdapter getmAdapter();
 }

@@ -50,12 +50,6 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        mActivityDelegate.onWindowFocusChanged(hasFocus);
-    }
-
-    @Override
     public void setSwipeBack(int mSwipeBack) {
         mActivityDelegate.setSwipeBack(mSwipeBack);
     }

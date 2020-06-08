@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.Gravity;
 import android.view.View;
@@ -25,28 +24,28 @@ import com.yyxnb.amazing.vm.MainViewModel;
 import com.yyxnb.arch.annotations.BindRes;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 主页.
  */
 @BindRes
-public class HomeFragment extends AbsListFragment<MainBean, MainViewModel> {
+public class MainFragment extends AbsListFragment<MainBean, MainViewModel> {
 
-    private MainListAdapter adapter = new MainListAdapter();
+    private MainListAdapter mAdapter = new MainListAdapter();
 
     @Override
     public void initView(@Nullable Bundle savedInstanceState) {
         super.initView(savedInstanceState);
         mRefreshLayout.setEnableRefresh(false).setEnableLoadMore(false);
-        adapter.setOnItemClickListener(new MultiItemTypePagedAdapter.SimpleOnItemClickListener() {
+        mAdapter.setOnItemClickListener(new MultiItemTypePagedAdapter.SimpleOnItemClickListener() {
             @Override
             public void onItemClick(View view, BaseViewHolder holder, int position) {
                 super.onItemClick(view, holder, position);
-                setMenu(adapter.getData().get(position).id);
+                setMenu(mAdapter.getData().get(position).id);
             }
         });
 
         GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
-        adapter.setSpanSizeLookup((gridLayoutManager, position) -> {
-            if (adapter.getData().get(position).type == 1) {
+        mAdapter.setSpanSizeLookup((gridLayoutManager, position) -> {
+            if (mAdapter.getData().get(position).type == 1) {
                 return 2;
             }
             return 1;
@@ -56,10 +55,10 @@ public class HomeFragment extends AbsListFragment<MainBean, MainViewModel> {
         decoration.setDividerHeight(5);
 //        decoration.setDrawBorderTopAndBottom(true);
 //        decoration.setDrawBorderLeftAndRight(true);
-        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(mAdapter);
 
-        adapter.addHeaderView(view("头部啊"));
-        adapter.addFooterView(view("底部啊"));
+        mAdapter.addHeaderView(view("头部啊"));
+        mAdapter.addFooterView(view("底部啊"));
     }
 
     private TextView view(String s) {
@@ -110,8 +109,8 @@ public class HomeFragment extends AbsListFragment<MainBean, MainViewModel> {
     }
 
     @Override
-    public PagedListAdapter getAdapter() {
-        return adapter;
+    public PagedListAdapter getmAdapter() {
+        return mAdapter;
     }
 
     @Override

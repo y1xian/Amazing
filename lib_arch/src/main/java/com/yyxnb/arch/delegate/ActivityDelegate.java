@@ -81,7 +81,6 @@ public class ActivityDelegate implements Serializable {
         return mActivity.getWindow();
     }
 
-
     public void onWindowFocusChanged(boolean hasFocus) {
         if (mIsFirstVisible && hasFocus) {
             mIsFirstVisible = false;

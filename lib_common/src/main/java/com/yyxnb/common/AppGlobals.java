@@ -25,7 +25,7 @@ public final class AppGlobals implements Serializable {
                     try {
                         sApplication = (Application) Class.forName("android.app.ActivityThread")
                                 .getMethod("currentApplication")
-                                .invoke(null, (Object[]) null);
+                                .invoke(null);
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     } catch (InvocationTargetException e) {
