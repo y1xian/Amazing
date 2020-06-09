@@ -40,7 +40,6 @@ public class LoggingInterceptor implements HttpLoggingInterceptor.Logger {
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            AppConfig.getInstance().log("Http_Error", text);
         }
 
 

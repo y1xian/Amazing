@@ -1,5 +1,5 @@
 rootProject.name = 'Amazing'
-include ':app', ':lib_annotation', ':lib_compiler'
+include ':app'
 include ':lib_arch'
 include ':lib_common'
 include ':lib_adapter'
