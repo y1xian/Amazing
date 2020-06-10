@@ -20,6 +20,8 @@ import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.BaseFragment;
 import com.yyxnb.common.AppConfig;
+import com.yyxnb.view.popup.Popup;
+import com.yyxnb.view.popup.code.BasePopup;
 
 
 /**
@@ -37,6 +39,7 @@ public class NetWorkFragment extends BaseFragment {
     private SmartRefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
     private int page = 1;
+    private BasePopup popup;
 
     @Override
     public void initView(@Nullable Bundle savedInstanceState) {
@@ -64,7 +67,7 @@ public class NetWorkFragment extends BaseFragment {
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-//                mViewModel.reqTeam();
+                mViewModel.reqTeam2();
             }
         });
 
@@ -101,7 +104,22 @@ public class NetWorkFragment extends BaseFragment {
 
         mViewModel.reqTeam2();
 
-        mViewModel.getList3();
+//        mViewModel.getList3();
+
+        popup = new Popup.Builder(getContext()).hasShadowBg(false).asLoading("loading");
+
+        mViewModel.status.observe(this,status -> {
+            switch (status){
+                case LOADING:
+                    popup.show();
+                    break;
+                case SUCCESS:
+                    popup.dismiss();
+                    break;
+                case ERROR:
+                    break;
+            }
+        });
 
 //        mViewModel.getList().observe(this,data->{
 ////            AppConfig.getInstance().log(" getList " + data.getResult().list.size());
@@ -160,9 +178,10 @@ public class NetWorkFragment extends BaseFragment {
 
         mViewModel.result.observe(this, t -> {
 //                    page++;
+            popup.dismiss();
             mRefreshLayout.finishRefresh();
             if (t != null) {
-                AppConfig.getInstance().log(" SUCCESS   " + (t.list.size()));
+                AppConfig.getInstance().log(" SUCCESS  result " + (t.list.size()));
                 //                        LogUtils.INSTANCE.list(t.data.getData());
                 mAdapter.setDataItems(t.list);
             }
@@ -176,15 +195,6 @@ public class NetWorkFragment extends BaseFragment {
 //                mAdapter.setDataItems(t.list);
 //            }
 //        });
-        mViewModel.result2.observe(this, t -> {
-//                    page++;
-            mRefreshLayout.finishRefresh();
-            if (t != null && t.list != null) {
-                AppConfig.getInstance().log(" SUCCESS1   " + (t.list.size()));
-                //                        LogUtils.INSTANCE.list(t.data.getData());
-                mAdapter.setDataItems(t.list);
-            }
-        });
 
     }
 
@@ -199,7 +209,6 @@ public class NetWorkFragment extends BaseFragment {
 
     @Override
     public void onDestroy() {
-//        CacheManager.deleteKey("getTestList");
         super.onDestroy();
     }
 }

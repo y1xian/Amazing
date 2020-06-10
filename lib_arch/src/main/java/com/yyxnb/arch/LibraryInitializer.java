@@ -14,7 +14,6 @@ import com.github.anzewei.parallaxbacklayout.ParallaxHelper;
 import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.yyxnb.arch.delegate.ActivityLifecycle;
 import com.yyxnb.common.AppConfig;
-import com.yyxnb.common.BuildConfig;
 import com.yyxnb.common.log.LogUtils;
 
 import me.jessyan.autosize.AutoSizeConfig;
@@ -45,13 +44,13 @@ public class LibraryInitializer extends ContentProvider {
 
             LiveEventBus
                     .config()
-                    .enableLogger(BuildConfig.DEBUG);
+                    .enableLogger(AppConfig.getInstance().isDebug());
 
             LogUtils.init()
                     //设置全局tag
                     .setTag("---Amazing---")
                     //是否显示日志，默认true，发布时最好关闭
-                    .setShowThreadInfo(BuildConfig.DEBUG)
+                    .setShowThreadInfo(AppConfig.getInstance().isDebug())
                     .setDebug(AppConfig.getInstance().isDebug());
 
         }

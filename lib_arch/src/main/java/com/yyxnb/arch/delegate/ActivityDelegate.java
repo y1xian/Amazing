@@ -140,7 +140,7 @@ public class ActivityDelegate implements Serializable {
     }
 
     public void setSwipeBack(int mSwipeBack) {
-        ParallaxBackLayout layout = ParallaxHelper.getParallaxBackLayout(mActivity, true);
+        final ParallaxBackLayout layout = ParallaxHelper.getParallaxBackLayout(mActivity, true);
         switch (mSwipeBack) {
             case SwipeStyle.Full:
                 ParallaxHelper.enableParallaxBack(mActivity);

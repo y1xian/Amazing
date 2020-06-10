@@ -11,6 +11,7 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
+@SuppressWarnings("ALL")
 class ObservableLiveData<T extends IData> extends LiveData<T> {
     private WeakReference<Disposable> mDisposableRef;
     private final Observable<T> mObservable;
