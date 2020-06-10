@@ -32,8 +32,6 @@ public class NetWorkFragment extends BaseFragment {
 
     @BindViewModel
     NetWorkViewModel mViewModel;
-//    @BindViewModel
-//    MsgViewModel msgViewModel;
 
     private NetWorkListAdapter mAdapter;
     private SmartRefreshLayout mRefreshLayout;
@@ -113,68 +111,11 @@ public class NetWorkFragment extends BaseFragment {
                 case LOADING:
                     popup.show();
                     break;
-                case SUCCESS:
+                case COMPLETE:
                     popup.dismiss();
-                    break;
-                case ERROR:
                     break;
             }
         });
-
-//        mViewModel.getList().observe(this,data->{
-////            AppConfig.getInstance().log(" getList " + data.getResult().list.size());
-//            LogUtils.list(data.getResult().list);
-//            mAdapter.setDataItems(data.getResult().list);
-//        });
-
-//        LogUtils.INSTANCE.e(CacheManager.cacheSize() + " 条");
-
-//        mViewModel.getTestList().observe(this, t -> {
-//            switch (t.status) {
-//                case SUCCESS:
-////                    page++;
-//                    mRefreshLayout.finishRefresh();
-//                    if (t.data != null) {
-//                        AppConfig.getInstance().log(" success   " + (t.data.getData().list.size()));
-////                        LogUtils.INSTANCE.list(t.data.getData());
-//                        mAdapter.setDataItems(t.data.getData().list);
-//                    }
-//                    break;
-//                case ERROR:
-//                    AppConfig.getInstance().log(" ERROR ");
-//                    break;
-//                case LOADING:
-////                    if (t.data != null) {
-////                        AppConfig.getInstance().log(" loading   " + (t.data.getList().size() > 0));
-////                        mAdapter.setDataItems(t.data.getList());
-////                    }
-//                    break;
-//            }
-//        });
-//        mViewModel.getTestList().observe(this, t -> {
-//            switch (t.status) {
-//                case SUCCESS:
-////                    page++;
-//                    mRefreshLayout.finishRefresh();
-//                    if (t.data != null) {
-//                        AppConfig.getInstance().log(" SUCCESS   " + (t.data.getResult().list.size()));
-////                        LogUtils.INSTANCE.list(t.data.getData());
-//                        mAdapter.setDataItems(t.data.getResult().list);
-//                    }
-//                    break;
-//                case ERROR:
-//                    AppConfig.getInstance().log(" ERROR ");
-//                    break;
-//                case LOADING:
-//                    AppConfig.getInstance().log(" LOADING ");
-////                    if (t.data != null) {
-////                        AppConfig.getInstance().log(" loading   " + (t.data.getData().list.size() > 0));
-////                        mAdapter.setDataItems(t.data.getData().list);
-////                    }
-//                    break;
-//            }
-//        });
-
 
         mViewModel.result.observe(this, t -> {
 //                    page++;

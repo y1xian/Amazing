@@ -1,5 +1,5 @@
 package com.yyxnb.http;
 
 public enum Status {
-    LOADING, SUCCESS, ERROR
+    LOADING, SUCCESS, ERROR, COMPLETE
 }

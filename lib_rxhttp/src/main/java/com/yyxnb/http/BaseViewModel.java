@@ -71,7 +71,7 @@ public abstract class BaseViewModel extends ViewModel implements DefaultLifecycl
 
                     @Override
                     public void onComplete() {
-
+                        status.postValue(Status.COMPLETE);
                     }
                 });
 
