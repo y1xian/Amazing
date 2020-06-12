@@ -1,6 +1,6 @@
 rootProject.name = 'Amazing'
 include ':app'
 include ':lib_arch'
-include ':lib_http'
+//include ':lib_http'
 include ':lib_rx'
 include ':lib_rxhttp'

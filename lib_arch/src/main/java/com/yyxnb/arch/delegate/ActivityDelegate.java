@@ -165,13 +165,17 @@ public class ActivityDelegate implements Serializable {
     }
 
     public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {
-        Intent intent = new Intent(mActivity, ContainerActivity.class);
-        Bundle bundle = targetFragment.initArguments();
-        bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
-        intent.putExtra(ArchConfig.BUNDLE, bundle);
-        mActivity.startActivityForResult(intent, requestCode);
+        try {
+            Intent intent = new Intent(mActivity, ContainerActivity.class);
+            Bundle bundle = targetFragment.initArguments();
+            bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
+            intent.putExtra(ArchConfig.BUNDLE, bundle);
+            mActivity.startActivityForResult(intent, requestCode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public <T extends IFragment> void setRootFragment(T fragment, int containerId) {

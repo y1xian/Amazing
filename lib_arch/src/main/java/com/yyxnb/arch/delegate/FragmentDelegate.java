@@ -223,14 +223,22 @@ public class FragmentDelegate implements Serializable {
         mActivity.onBackPressed();
     }
 
+    public <T extends IFragment> void startFragment(T targetFragment) {
+        startFragment(targetFragment, 0);
+    }
+
     public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {
-        Bundle bundle = initArguments();
-        Intent intent = new Intent(mActivity, ContainerActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
-        bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
-        intent.putExtra(ArchConfig.BUNDLE, bundle);
-        mActivity.startActivityForResult(intent, requestCode);
+        try {
+            Bundle bundle = initArguments();
+            Intent intent = new Intent(mActivity, ContainerActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
+            bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
+            intent.putExtra(ArchConfig.BUNDLE, bundle);
+            mActivity.startActivityForResult(intent, requestCode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
