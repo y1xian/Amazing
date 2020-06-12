@@ -109,7 +109,7 @@ public class MainFragment extends AbsListFragment<MainBean, MainViewModel> {
     }
 
     @Override
-    public PagedListAdapter getmAdapter() {
+    public PagedListAdapter getAdapter() {
         return mAdapter;
     }
 

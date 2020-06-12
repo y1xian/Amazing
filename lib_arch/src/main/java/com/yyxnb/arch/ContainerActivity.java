@@ -4,8 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.base.BaseActivity;
@@ -25,9 +28,13 @@ import java.lang.ref.WeakReference;
 public class ContainerActivity extends BaseActivity {
 
     private WeakReference<Fragment> mFragment;
+
     @Override
-    public int initLayoutResId() {
-        return R.layout.base_nav_content;
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        final FrameLayout mFrameLayout = new FrameLayout(this);
+        mFrameLayout.setId(android.R.id.content);
+        setContentView(mFrameLayout);
     }
 
     public Fragment initBaseFragment() {
@@ -52,7 +59,7 @@ public class ContainerActivity extends BaseActivity {
                 if (intent.getBundleExtra(ArchConfig.BUNDLE) != null) {
                     mFragment.get().setArguments(intent.getBundleExtra(ArchConfig.BUNDLE));
                 }
-                setRootFragment((IFragment) mFragment.get(), R.id.fragmentContent);
+                setRootFragment((IFragment) mFragment.get(), android.R.id.content);
                 return;
             }
 
@@ -69,7 +76,7 @@ public class ContainerActivity extends BaseActivity {
                 fragment.setArguments(intent.getBundleExtra(ArchConfig.BUNDLE));
             }
 
-            setRootFragment((IFragment) fragment, R.id.fragmentContent);
+            setRootFragment((IFragment) fragment, android.R.id.content);
 
         } catch (Exception e) {
             e.printStackTrace();

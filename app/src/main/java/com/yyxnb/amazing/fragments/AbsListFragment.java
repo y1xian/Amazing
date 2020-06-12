@@ -24,7 +24,6 @@ public abstract class AbsListFragment<T, M extends BasePagedViewModel<T>> extend
     protected LayoutRefreshViewBinding binding;
     protected RecyclerView mRecyclerView;
     protected SmartRefreshLayout mRefreshLayout;
-//    protected EmptyView mEmptyView;
     protected PagedListAdapter<T, RecyclerView.ViewHolder> adapter;
     protected M mViewModel;
     protected ItemDecoration decoration;
@@ -46,14 +45,11 @@ public abstract class AbsListFragment<T, M extends BasePagedViewModel<T>> extend
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setOnLoadMoreListener(this);
 
-        adapter = getmAdapter();
-//        mRecyclerView.setAdapter(adapter);
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-//        mRecyclerView.setItemAnimator(null);
+        adapter = getAdapter();
 
-        //默认给列表中的Item 一个 10dp的ItemDecoration
+        //默认给列表中的Item 一个 1dp的ItemDecoration
         decoration = new ItemDecoration(getContext());
-//        decoration.setDividerHeight(10);
+        decoration.setDividerHeight(1);
         mRecyclerView.addItemDecoration(decoration);
 
         genericViewModel();
@@ -94,12 +90,6 @@ public abstract class AbsListFragment<T, M extends BasePagedViewModel<T>> extend
         } else if (state.isHeader && state.isOpening) {
             mRefreshLayout.finishRefresh();
         }
-
-//        if (hasData) {
-//            mEmptyView.setVisibility(View.GONE);
-//        } else {
-//            mEmptyView.setVisibility(View.VISIBLE);
-//        }
     }
 
     /**
@@ -108,5 +98,5 @@ public abstract class AbsListFragment<T, M extends BasePagedViewModel<T>> extend
      *
      * @return
      */
-    public abstract PagedListAdapter getmAdapter();
+    public abstract PagedListAdapter getAdapter();
 }
