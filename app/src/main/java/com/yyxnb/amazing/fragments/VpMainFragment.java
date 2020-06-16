@@ -11,6 +11,7 @@ import com.yyxnb.amazing.R;
 import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.base.BaseFragment;
 import com.yyxnb.common.DpUtils;
+import com.yyxnb.common.log.LogUtils;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -26,10 +27,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * create an instance of this fragment.
+ * viewPager 切换.
  */
-@BindRes(layoutRes = R.layout.fragment_vp_main)
+@BindRes(layoutRes = R.layout.fragment_vp_main, subPage = true)
 public class VpMainFragment extends BaseFragment {
 
     private MagicIndicator mIndicator;
@@ -99,13 +99,13 @@ public class VpMainFragment extends BaseFragment {
 //        LogUtils.w("initViewData m: " + hashCode());
 //    }
 //
-//    @Override
-//    public void onVisible() {
-//        LogUtils.w("onVisible m: " + hashCode());
-//    }
-//
-//    @Override
-//    public void onInVisible() {
-//        LogUtils.w("onInVisible m: " + hashCode());
-//    }
+    @Override
+    public void onVisible() {
+        LogUtils.w("onVisible vp: " );
+    }
+
+    @Override
+    public void onInVisible() {
+        LogUtils.w("onInVisible vp: " );
+    }
 }

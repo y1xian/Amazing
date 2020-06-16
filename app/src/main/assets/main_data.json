@@ -63,6 +63,13 @@
     "url": ""
   },
   {
+    "id": 24,
+    "type": 0,
+    "title": "底部show/hide",
+    "des": "",
+    "url": ""
+  },
+  {
     "id": 30,
     "type": 1,
     "title": "网络",

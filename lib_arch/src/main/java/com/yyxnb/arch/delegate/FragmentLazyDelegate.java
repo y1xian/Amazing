@@ -4,8 +4,8 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 
-import com.yyxnb.arch.base.BaseFragment;
 import com.yyxnb.arch.base.IFragment;
 
 import java.util.List;
@@ -40,9 +40,8 @@ public class FragmentLazyDelegate {
      * 可见状态
      */
     private boolean mCurrentVisibleState = false;
-
     /**
-     * 可见状态
+     * 是否子页面
      */
     private boolean mIsSubPage = false;
 
@@ -125,7 +124,8 @@ public class FragmentLazyDelegate {
     private void dispatchUserVisibleHint(boolean visible) {
         //当前 Fragment 是 child 时候 作为缓存 Fragment 的子 fragment getUserVisibleHint = true
         //但当父 fragment 不可见所以 mCurrentVisibleState = false 直接 return 掉
-        //        LogUtils.e(getClass().getSimpleName() + "  dispatchUserVisibleHint isParentInvisible() " + isParentInvisible());
+        Log.e("-----", "  dispatchUserVisibleHint : " + visible + " , isParentInvisible() "
+                + isParentInvisible() + " ,mIsSubPage :" + mIsSubPage );
         // 这里限制则可以限制多层嵌套的时候子 Fragment 的分发
         if (visible && isParentInvisible() && !mIsSubPage) {
             return;
@@ -192,13 +192,12 @@ public class FragmentLazyDelegate {
      *
      * @param visible
      */
-    @SuppressWarnings("RedundantOperationOnEmptyContainer")
     private void dispatchChildVisibleState(boolean visible) {
         FragmentManager childFragmentManager = mFragment.getChildFragmentManager();
-        List<Fragment> fragments = (childFragmentManager).getFragments();
-        if (fragments.isEmpty()) {
+        List<Fragment> fragments = childFragmentManager.getFragments();
+        if (!fragments.isEmpty()) {
             for (Fragment child : fragments) {
-                if (child instanceof BaseFragment && !child.isHidden() && child.getUserVisibleHint()) {
+                if (!child.isHidden() && child.getUserVisibleHint()) {
                     dispatchUserVisibleHint(visible);
                 }
             }

@@ -10,6 +10,7 @@ import com.yyxnb.amazing.R;
 import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.common.AppConfig;
+import com.yyxnb.common.log.LogUtils;
 import com.yyxnb.view.text.FlowlayoutTags;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Tag标签.
  */
-@BindRes
+@BindRes(subPage = true)
 public class TagFragment extends Fragment implements IFragment {
 
     @Override
@@ -83,4 +84,21 @@ public class TagFragment extends Fragment implements IFragment {
         flowlayoutTags.setTagsUncheckedColorAnimal(false);
 
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        getBaseDelegate().onHiddenChanged(hidden);
+    }
+
+    @Override
+    public void onVisible() {
+        LogUtils.e("onVisible tag");
+    }
+
+    @Override
+    public void onInVisible() {
+        LogUtils.e("onInVisible tag");
+    }
+
 }

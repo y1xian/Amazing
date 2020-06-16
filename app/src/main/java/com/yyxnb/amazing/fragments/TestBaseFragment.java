@@ -33,16 +33,16 @@ public class TestBaseFragment extends BaseFragment {
 
     @Override
     public void initViewData() {
-        AppConfig.getInstance().log("initViewData : " + hashCode());
+        AppConfig.getInstance().log("initViewData testbase: " + hashCode());
     }
 
     @Override
     public void onVisible() {
-        AppConfig.getInstance().log("onVisible : " + hashCode());
+        AppConfig.getInstance().log("onVisible testbase: " );
     }
 
     @Override
     public void onInVisible() {
-        AppConfig.getInstance().log("onInVisible : " + hashCode());
+        AppConfig.getInstance().log("onInVisible testbase: " );
     }
 }

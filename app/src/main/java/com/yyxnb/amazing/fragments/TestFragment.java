@@ -1,5 +1,6 @@
 package com.yyxnb.amazing.fragments;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.annotations.BindViewModel;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.common.AppConfig;
-import com.yyxnb.common.log.LogUtils;
 
 /**
  * 实现IFragment.
@@ -38,11 +38,11 @@ public class TestFragment extends Fragment implements IFragment {
     @Override
     public void initObservable() {
 
-        viewModel.result.postValue("333333");
-
-        viewModel.result.observe(this, s -> {
-            LogUtils.e("test : " + s);
-        });
+//        viewModel.result.postValue("333333");
+//
+//        viewModel.result.observe(this, s -> {
+//            LogUtils.e("test : " + s);
+//        });
     }
 
     @Override
@@ -52,12 +52,12 @@ public class TestFragment extends Fragment implements IFragment {
 
     @Override
     public void onVisible() {
-        AppConfig.getInstance().log("onVisible : " + hashCode());
+        AppConfig.getInstance().log("onVisible test: " + hashCode());
     }
 
     @Override
     public void onInVisible() {
-        AppConfig.getInstance().log("onInVisible : " + hashCode());
+        AppConfig.getInstance().log("onInVisible test: " + hashCode());
     }
 
     // vp下 要自实现setUserVisibleHint
@@ -65,5 +65,17 @@ public class TestFragment extends Fragment implements IFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         getBaseDelegate().setUserVisibleHint(isVisibleToUser);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        getBaseDelegate().onHiddenChanged(hidden);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        getBaseDelegate().onConfigurationChanged(newConfig);
     }
 }

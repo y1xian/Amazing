@@ -88,6 +88,9 @@ public class MainFragment extends AbsListFragment<MainBean, MainViewModel> {
             case 23:
                 startFragment(new VpMainFragment());
                 break;
+            case 24:
+                startFragment(new BottomFragment());
+                break;
             case 31:
                 startFragment(NetWorkFragment.newInstance());
                 break;
