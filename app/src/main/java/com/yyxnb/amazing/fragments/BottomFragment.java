@@ -75,7 +75,7 @@ public class BottomFragment extends BaseFragment implements View.OnClickListener
         if (!fragments.get(index).isAdded()) {
             transaction.add(R.id.mFrameLayout, fragments.get(index));
         }
-        if (current != -1){
+        if (current != -1) {
             transaction.hide(fragments.get(current));
         }
         current = index;

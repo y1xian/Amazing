@@ -46,7 +46,7 @@ public class VpMainFragment extends BaseFragment {
             fragments = new ArrayList<>();
             fragments.add(new TestFragment());
             fragments.add(new TestBaseFragment());
-            fragments.add(new NetWorkFragment());
+            fragments.add(new BottomFragment());
         }
 
         CommonNavigator commonNavigator = new CommonNavigator(getContext());

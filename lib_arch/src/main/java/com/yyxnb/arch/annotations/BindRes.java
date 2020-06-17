@@ -38,7 +38,7 @@ public @interface BindRes {
     int layoutRes() default 0;
 
     /**
-     * 作用于Fragment#ViewPager 判定为子页面
+     * 作用于Fragment判定为子页面，不处理状态栏
      */
     boolean subPage() default false;
 

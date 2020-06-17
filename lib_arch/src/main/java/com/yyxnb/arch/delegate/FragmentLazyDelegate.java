@@ -4,7 +4,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 
 import com.yyxnb.arch.base.IFragment;
 
@@ -40,10 +39,6 @@ public class FragmentLazyDelegate {
      * 可见状态
      */
     private boolean mCurrentVisibleState = false;
-    /**
-     * 是否子页面
-     */
-    private boolean mIsSubPage = false;
 
     private IFragment iFragment;
 
@@ -67,8 +62,7 @@ public class FragmentLazyDelegate {
         mIsFirstVisible = true;
     }
 
-    void onActivityCreated(Bundle savedInstanceState, boolean subPage) {
-        mIsSubPage = subPage;
+    void onActivityCreated(Bundle savedInstanceState) {
         isViewCreated = true;
         iFragment.initView(savedInstanceState);
         // !isHidden() 默认为 true  在调用 hide show 的时候可以使用
@@ -124,10 +118,9 @@ public class FragmentLazyDelegate {
     private void dispatchUserVisibleHint(boolean visible) {
         //当前 Fragment 是 child 时候 作为缓存 Fragment 的子 fragment getUserVisibleHint = true
         //但当父 fragment 不可见所以 mCurrentVisibleState = false 直接 return 掉
-        Log.e("-----", "  dispatchUserVisibleHint : " + visible + " , isParentInvisible() "
-                + isParentInvisible() + " ,mIsSubPage :" + mIsSubPage );
+//        Log.e("-----", "  dispatchUserVisibleHint : " + visible + " , isParentInvisible() " + isParentInvisible());
         // 这里限制则可以限制多层嵌套的时候子 Fragment 的分发
-        if (visible && isParentInvisible() && !mIsSubPage) {
+        if (visible && isParentInvisible()) {
             return;
         }
 
@@ -162,14 +155,17 @@ public class FragmentLazyDelegate {
      */
     private boolean isParentInvisible() {
         Fragment fragment = mFragment.getParentFragment();
-        return fragment != null && !isSupportVisible();
+        if (fragment instanceof IFragment) {
+            return !((IFragment) fragment).getBaseDelegate().getLazyDelegate().isSupportVisible();
+        }
+        return fragment != null && !fragment.isVisible();
 
     }
 
     /**
      * 可见状态
      */
-    private boolean isSupportVisible() {
+    public boolean isSupportVisible() {
         return mCurrentVisibleState;
     }
 
@@ -197,8 +193,8 @@ public class FragmentLazyDelegate {
         List<Fragment> fragments = childFragmentManager.getFragments();
         if (!fragments.isEmpty()) {
             for (Fragment child : fragments) {
-                if (!child.isHidden() && child.getUserVisibleHint()) {
-                    dispatchUserVisibleHint(visible);
+                if (child instanceof IFragment && !child.isHidden() && child.getUserVisibleHint()) {
+                    ((IFragment) child).getBaseDelegate().getLazyDelegate().dispatchUserVisibleHint(visible);
                 }
             }
         }

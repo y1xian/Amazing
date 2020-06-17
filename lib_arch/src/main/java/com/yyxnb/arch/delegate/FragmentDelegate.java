@@ -95,10 +95,8 @@ public class FragmentDelegate implements Serializable {
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
-        mLazyDelegate.onActivityCreated(savedInstanceState, subPage);
-        if (!subPage) {
+        mLazyDelegate.onActivityCreated(savedInstanceState);
             setNeedsStatusBarAppearanceUpdate();
-        }
     }
 
     /**
@@ -174,6 +172,7 @@ public class FragmentDelegate implements Serializable {
      */
     public void setNeedsStatusBarAppearanceUpdate() {
 
+        // 子页面不作做处理
         if (subPage) {
             return;
         }
@@ -239,6 +238,10 @@ public class FragmentDelegate implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public FragmentLazyDelegate getLazyDelegate() {
+        return mLazyDelegate;
     }
 
     @Override
