@@ -29,6 +29,9 @@ import com.yyxnb.common.StatusBarUtils;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Fragment 代理
+ */
 public class FragmentDelegate implements Serializable {
 
     public FragmentDelegate(IFragment iFragment) {

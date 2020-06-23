@@ -73,11 +73,6 @@ public @interface BindRes {
     boolean needLogin() default false;
 
     /**
-     * 是否已继承第三方父类
-     */
-    boolean isExtends() default false;
-
-    /**
      * Activity是否作为容器
      */
     boolean isContainer() default false;

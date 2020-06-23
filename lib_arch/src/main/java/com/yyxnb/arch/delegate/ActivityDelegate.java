@@ -21,6 +21,9 @@ import com.yyxnb.common.StatusBarUtils;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Activity 代理
+ */
 public class ActivityDelegate implements Serializable {
 
     public ActivityDelegate(IActivity iActivity) {
@@ -37,7 +40,6 @@ public class ActivityDelegate implements Serializable {
     private int statusBarColor = ArchConfig.statusBarColor;
     private int statusBarDarkTheme = ArchConfig.statusBarStyle;
     private boolean needLogin;
-    private boolean isExtends;
     private boolean isContainer;
 
     /**
@@ -47,10 +49,8 @@ public class ActivityDelegate implements Serializable {
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         initAttributes();
-        if (!isExtends) {
-            if (layoutRes != 0 || iActivity.initLayoutResId() != 0) {
-                mActivity.setContentView(layoutRes == 0 ? iActivity.initLayoutResId() : layoutRes);
-            }
+        if (layoutRes != 0 || iActivity.initLayoutResId() != 0) {
+            mActivity.setContentView(layoutRes == 0 ? iActivity.initLayoutResId() : layoutRes);
         }
         initView();
     }
@@ -121,7 +121,6 @@ public class ActivityDelegate implements Serializable {
                     statusBarColor = bindRes.statusBarColor();
                 }
                 needLogin = bindRes.needLogin();
-                isExtends = bindRes.isExtends();
                 isContainer = bindRes.isContainer();
                 // 如果需要登录，并且处于未登录状态下，发送通知
                 if (needLogin && !ArchConfig.needLogin) {
@@ -129,27 +128,6 @@ public class ActivityDelegate implements Serializable {
                 }
             }
         });
-    }
-
-    public void setSwipeBack(int mSwipeBack) {
-//        final ParallaxBackLayout layout = ParallaxHelper.getParallaxBackLayout(mActivity, true);
-//        switch (mSwipeBack) {
-//            case SwipeStyle.Full:
-//                ParallaxHelper.enableParallaxBack(mActivity);
-//                //全屏滑动
-//                layout.setEdgeMode(ParallaxBackLayout.EDGE_MODE_FULL);
-//                break;
-//            case SwipeStyle.Edge:
-//                ParallaxHelper.enableParallaxBack(mActivity);
-//                //边缘滑动
-//                layout.setEdgeMode(ParallaxBackLayout.EDGE_MODE_DEFAULT);
-//                break;
-//            case SwipeStyle.None:
-//                ParallaxHelper.disableParallaxBack(mActivity);
-//                break;
-//            default:
-//                break;
-//        }
     }
 
     @Override
