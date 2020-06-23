@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 
+import com.github.anzewei.parallaxbacklayout.ParallaxHelper;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
 import com.scwang.smart.refresh.header.ClassicsHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -15,6 +16,9 @@ import com.scwang.smart.refresh.layout.listener.DefaultRefreshFooterCreator;
 import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator;
 import com.scwang.smart.refresh.layout.listener.DefaultRefreshInitializer;
 import com.squareup.leakcanary.LeakCanary;
+import com.yyxnb.common.AppConfig;
+
+import me.jessyan.autosize.AutoSizeConfig;
 
 public class MyApp extends Application {
 
@@ -22,8 +26,10 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-//        ImageHelper.INSTANCE.init(new GlideImage());
-//        HttpHelper.INSTANCE.init(new OkHttp()).setBaseUrl("http://www.mocky.io/");
+        // 布局
+        AutoSizeConfig.getInstance().setCustomFragment(true);
+        // 侧滑监听
+        AppConfig.getInstance().getApp().registerActivityLifecycleCallbacks(ParallaxHelper.getInstance());
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.

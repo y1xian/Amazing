@@ -18,7 +18,7 @@ import com.yyxnb.amazing.adapter.NetWorkListAdapter;
 import com.yyxnb.amazing.vm.NetWorkViewModel;
 import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.annotations.BindViewModel;
-import com.yyxnb.arch.base.BaseFragment;
+import com.yyxnb.amazing.base.BaseFragment;
 import com.yyxnb.common.AppConfig;
 import com.yyxnb.view.popup.Popup;
 import com.yyxnb.view.popup.code.BasePopup;

@@ -14,7 +14,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.yyxnb.adapter.ItemDecoration;
 import com.yyxnb.amazing.R;
 import com.yyxnb.amazing.databinding.LayoutRefreshViewBinding;
-import com.yyxnb.arch.base.BaseFragment;
+import com.yyxnb.amazing.base.BaseFragment;
 import com.yyxnb.http.BasePagedViewModel;
 
 import java.lang.reflect.ParameterizedType;

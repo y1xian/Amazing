@@ -2,7 +2,6 @@ package com.yyxnb.arch.delegate;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import com.yyxnb.arch.ContainerActivity;
 import com.yyxnb.arch.annotations.BarStyle;
 import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.annotations.SwipeStyle;
@@ -220,24 +218,6 @@ public class FragmentDelegate implements Serializable {
 
     public void finish() {
         mActivity.onBackPressed();
-    }
-
-    public <T extends IFragment> void startFragment(T targetFragment) {
-        startFragment(targetFragment, 0);
-    }
-
-    public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {
-        try {
-            Bundle bundle = initArguments();
-            Intent intent = new Intent(mActivity, ContainerActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
-            bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
-            intent.putExtra(ArchConfig.BUNDLE, bundle);
-            mActivity.startActivityForResult(intent, requestCode);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public FragmentLazyDelegate getLazyDelegate() {

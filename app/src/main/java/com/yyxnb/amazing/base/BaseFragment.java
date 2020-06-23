@@ -1,8 +1,9 @@
-package com.yyxnb.arch.base;
+package com.yyxnb.amazing.base;
 
 import android.arch.lifecycle.DefaultLifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -16,6 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yyxnb.arch.base.IFragment;
+import com.yyxnb.arch.base.Java8Observer;
+import com.yyxnb.arch.common.ArchConfig;
 import com.yyxnb.arch.delegate.FragmentDelegate;
 
 import java.lang.ref.WeakReference;
@@ -137,7 +141,17 @@ public abstract class BaseFragment extends Fragment implements IFragment {
     }
 
     public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {
-        mFragmentDelegate.startFragment(targetFragment, requestCode);
+        try {
+            Bundle bundle = initArguments();
+            Intent intent = new Intent(mActivity.get(), ContainerActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
+            bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
+            intent.putExtra(ArchConfig.BUNDLE, bundle);
+            mActivity.get().startActivityForResult(intent, requestCode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

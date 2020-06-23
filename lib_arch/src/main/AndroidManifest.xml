@@ -20,7 +20,7 @@
         tools:targetApi="N">
 
         <activity
-            android:name=".ContainerActivity"
+            android:name="com.yyxnb.amazing.base.ContainerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="盛装Fragment的一个容器(代理)Activity"
             android:screenOrientation="portrait"

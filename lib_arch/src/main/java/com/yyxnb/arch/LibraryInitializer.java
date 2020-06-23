@@ -10,13 +10,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
 
-import com.github.anzewei.parallaxbacklayout.ParallaxHelper;
 import com.jeremyliao.liveeventbus.LiveEventBus;
 import com.yyxnb.arch.delegate.ActivityLifecycle;
 import com.yyxnb.common.AppConfig;
 import com.yyxnb.common.log.LogUtils;
-
-import me.jessyan.autosize.AutoSizeConfig;
 
 /**
  * 使用ContentProvider初始化三方库
@@ -29,16 +26,11 @@ public class LibraryInitializer extends ContentProvider {
 
         if (context != null) {
 
-            // 布局
-            AutoSizeConfig.getInstance().setCustomFragment(true);
-
             // 突破65535的限制
             MultiDex.install(context);
 
             // 系统会在每个 Activity 执行完对应的生命周期后都调用这个实现类中对应的方法
             AppConfig.getInstance().getApp().registerActivityLifecycleCallbacks(ActivityLifecycle.getInstance());
-            // 侧滑监听
-            AppConfig.getInstance().getApp().registerActivityLifecycleCallbacks(ParallaxHelper.getInstance());
             // 应用监听
             ProcessLifecycleOwner.get().getLifecycle().addObserver(new AppLifeObserver());
 

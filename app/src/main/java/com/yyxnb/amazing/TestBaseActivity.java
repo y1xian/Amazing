@@ -6,7 +6,7 @@ import com.yyxnb.amazing.vm.TestViewModel;
 import com.yyxnb.arch.annotations.BarStyle;
 import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.annotations.BindViewModel;
-import com.yyxnb.arch.base.BaseActivity;
+import com.yyxnb.amazing.base.BaseActivity;
 import com.yyxnb.common.log.LogUtils;
 
 @BindRes(layoutRes = R.layout.activity_test_base, fitsSystemWindows = true, statusBarColor = R.color.black_40, statusBarStyle = BarStyle.LightContent)

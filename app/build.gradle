@@ -50,6 +50,11 @@ dependencies {
 
     //https://github.com/hackware1993/MagicIndicator
     implementation 'com.github.hackware1993:MagicIndicator:1.6.0'
+
+    //https://github.com/JessYanCoding/AndroidAutoSize
+    implementation libs.autosize
+    //侧滑
+    implementation libs.parallaxbacklayout
 }
 
 // 强制依赖指定版本

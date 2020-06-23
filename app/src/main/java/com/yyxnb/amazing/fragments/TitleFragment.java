@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.yyxnb.amazing.R;
 import com.yyxnb.arch.annotations.BindRes;
-import com.yyxnb.arch.base.BaseFragment;
+import com.yyxnb.amazing.base.BaseFragment;
 import com.yyxnb.common.log.LogUtils;
 import com.yyxnb.view.titlebar.TitleBar;
 

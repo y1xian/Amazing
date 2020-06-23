@@ -1,4 +1,4 @@
-package com.yyxnb.arch;
+package com.yyxnb.amazing.base;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.yyxnb.arch.annotations.BindRes;
-import com.yyxnb.arch.base.BaseActivity;
 import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.common.ArchConfig;
 

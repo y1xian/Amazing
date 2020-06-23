@@ -3,7 +3,7 @@ package com.yyxnb.amazing;
 import android.support.v4.app.Fragment;
 
 import com.yyxnb.amazing.fragments.MainFragment;
-import com.yyxnb.arch.ContainerActivity;
+import com.yyxnb.amazing.base.ContainerActivity;
 
 public class MainActivity extends ContainerActivity {
 

@@ -9,7 +9,7 @@ import android.widget.RadioButton;
 
 import com.yyxnb.amazing.R;
 import com.yyxnb.arch.annotations.BindRes;
-import com.yyxnb.arch.base.BaseFragment;
+import com.yyxnb.amazing.base.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;

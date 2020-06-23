@@ -1,17 +1,25 @@
-package com.yyxnb.arch.base;
+package com.yyxnb.amazing.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.github.anzewei.parallaxbacklayout.ParallaxBack;
-import com.yyxnb.arch.ContainerActivity;
+import com.github.anzewei.parallaxbacklayout.ParallaxHelper;
+import com.github.anzewei.parallaxbacklayout.widget.ParallaxBackLayout;
+import com.yyxnb.arch.annotations.SwipeStyle;
+import com.yyxnb.arch.base.IActivity;
+import com.yyxnb.arch.base.IFragment;
+import com.yyxnb.arch.base.Java8Observer;
+import com.yyxnb.arch.common.ArchConfig;
 import com.yyxnb.arch.delegate.ActivityDelegate;
 import com.yyxnb.common.KeyboardUtils;
 
@@ -51,7 +59,24 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
 
     @Override
     public void setSwipeBack(int mSwipeBack) {
-        mActivityDelegate.setSwipeBack(mSwipeBack);
+        final ParallaxBackLayout layout = ParallaxHelper.getParallaxBackLayout(this, true);
+        switch (mSwipeBack) {
+            case SwipeStyle.Full:
+                ParallaxHelper.enableParallaxBack(this);
+                //全屏滑动
+                layout.setEdgeMode(ParallaxBackLayout.EDGE_MODE_FULL);
+                break;
+            case SwipeStyle.Edge:
+                ParallaxHelper.enableParallaxBack(this);
+                //边缘滑动
+                layout.setEdgeMode(ParallaxBackLayout.EDGE_MODE_DEFAULT);
+                break;
+            case SwipeStyle.None:
+                ParallaxHelper.disableParallaxBack(this);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -105,10 +130,23 @@ public abstract class BaseActivity extends AppCompatActivity implements IActivit
     }
 
     public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {
-        mActivityDelegate.startFragment(targetFragment, requestCode);
+        try {
+            Intent intent = new Intent(this, ContainerActivity.class);
+            Bundle bundle = targetFragment.initArguments();
+            bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
+            intent.putExtra(ArchConfig.BUNDLE, bundle);
+            startActivityForResult(intent, requestCode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public <T extends IFragment> void setRootFragment(T fragment, int containerId) {
-        mActivityDelegate.setRootFragment(fragment, containerId);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(containerId, (Fragment) fragment, fragment.sceneId());
+        transaction.addToBackStack(fragment.sceneId());
+        transaction.commitAllowingStateLoss();
     }
 }

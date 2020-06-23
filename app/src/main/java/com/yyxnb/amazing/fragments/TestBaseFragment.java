@@ -6,7 +6,7 @@ import com.yyxnb.amazing.R;
 import com.yyxnb.amazing.vm.TestViewModel;
 import com.yyxnb.arch.annotations.BindRes;
 import com.yyxnb.arch.annotations.BindViewModel;
-import com.yyxnb.arch.base.BaseFragment;
+import com.yyxnb.amazing.base.BaseFragment;
 import com.yyxnb.common.AppConfig;
 import com.yyxnb.common.log.LogUtils;
 

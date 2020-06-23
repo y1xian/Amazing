@@ -1,25 +1,17 @@
 package com.yyxnb.arch.delegate;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 
-import com.github.anzewei.parallaxbacklayout.ParallaxHelper;
-import com.github.anzewei.parallaxbacklayout.widget.ParallaxBackLayout;
-import com.yyxnb.arch.ContainerActivity;
 import com.yyxnb.arch.annotations.BarStyle;
 import com.yyxnb.arch.annotations.BindRes;
-import com.yyxnb.arch.annotations.SwipeStyle;
 import com.yyxnb.arch.base.IActivity;
-import com.yyxnb.arch.base.IFragment;
 import com.yyxnb.arch.common.ArchConfig;
 import com.yyxnb.arch.common.Bus;
 import com.yyxnb.arch.common.MsgEvent;
@@ -140,49 +132,24 @@ public class ActivityDelegate implements Serializable {
     }
 
     public void setSwipeBack(int mSwipeBack) {
-        final ParallaxBackLayout layout = ParallaxHelper.getParallaxBackLayout(mActivity, true);
-        switch (mSwipeBack) {
-            case SwipeStyle.Full:
-                ParallaxHelper.enableParallaxBack(mActivity);
-                //全屏滑动
-                layout.setEdgeMode(ParallaxBackLayout.EDGE_MODE_FULL);
-                break;
-            case SwipeStyle.Edge:
-                ParallaxHelper.enableParallaxBack(mActivity);
-                //边缘滑动
-                layout.setEdgeMode(ParallaxBackLayout.EDGE_MODE_DEFAULT);
-                break;
-            case SwipeStyle.None:
-                ParallaxHelper.disableParallaxBack(mActivity);
-                break;
-            default:
-                break;
-        }
-    }
-
-    public <T extends IFragment> void startFragment(T targetFragment) {
-        startFragment(targetFragment, 0);
-    }
-
-    public <T extends IFragment> void startFragment(T targetFragment, int requestCode) {
-        try {
-            Intent intent = new Intent(mActivity, ContainerActivity.class);
-            Bundle bundle = targetFragment.initArguments();
-            bundle.putInt(ArchConfig.REQUEST_CODE, requestCode);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(ArchConfig.FRAGMENT, targetFragment.getClass().getCanonicalName());
-            intent.putExtra(ArchConfig.BUNDLE, bundle);
-            mActivity.startActivityForResult(intent, requestCode);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public <T extends IFragment> void setRootFragment(T fragment, int containerId) {
-        FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
-        transaction.replace(containerId, (Fragment) fragment, fragment.sceneId());
-        transaction.addToBackStack(fragment.sceneId());
-        transaction.commitAllowingStateLoss();
+//        final ParallaxBackLayout layout = ParallaxHelper.getParallaxBackLayout(mActivity, true);
+//        switch (mSwipeBack) {
+//            case SwipeStyle.Full:
+//                ParallaxHelper.enableParallaxBack(mActivity);
+//                //全屏滑动
+//                layout.setEdgeMode(ParallaxBackLayout.EDGE_MODE_FULL);
+//                break;
+//            case SwipeStyle.Edge:
+//                ParallaxHelper.enableParallaxBack(mActivity);
+//                //边缘滑动
+//                layout.setEdgeMode(ParallaxBackLayout.EDGE_MODE_DEFAULT);
+//                break;
+//            case SwipeStyle.None:
+//                ParallaxHelper.disableParallaxBack(mActivity);
+//                break;
+//            default:
+//                break;
+//        }
     }
 
     @Override
