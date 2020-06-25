@@ -31,7 +31,6 @@ import me.jessyan.autosize.AutoSizeCompat;
 /**
  * 建议 {@link ContainerActivity#initBaseFragment()}  }
  */
-@Deprecated
 @ParallaxBack(edgeMode = ParallaxBack.EdgeMode.EDGE)
 public abstract class BaseActivity extends AppCompatActivity implements IActivity {
 

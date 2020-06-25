@@ -58,9 +58,9 @@ dependencies {
 }
 
 // 强制依赖指定版本
-configurations.all {
-    resolutionStrategy {
-//        force 'com.github.bumptech.glide:glide:4.2.0'
-//        force 'com.github.bumptech.glide:compiler:4.2.0'
-    }
-}
+//configurations.all {
+//    resolutionStrategy {
+////        force 'com.github.bumptech.glide:glide:4.2.0'
+////        force 'com.github.bumptech.glide:compiler:4.2.0'
+//    }
+//}
