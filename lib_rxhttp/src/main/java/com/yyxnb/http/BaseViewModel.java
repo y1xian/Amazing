@@ -10,6 +10,9 @@ import com.yyxnb.http.rx.BaseHttpSubscriber;
 import com.yyxnb.http.rx.RetryWithDelay;
 import com.yyxnb.rx.DisposablePool;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -20,8 +23,8 @@ import io.reactivex.schedulers.Schedulers;
 @SuppressWarnings("rawtypes")
 public abstract class BaseViewModel extends ViewModel implements DefaultLifecycleObserver {
 
-    private final AppExecutors mAppExecutors = new AppExecutors();
     public final MutableLiveData<Status> status = new MutableLiveData<>();
+    private final List<Integer> mDisposable = new ArrayList<>();
 
     public <T extends IData> BaseHttpSubscriber<T> request(Flowable<T> flowable) {
         final BaseHttpSubscriber<T> baseHttpSubscriber = new BaseHttpSubscriber<T>();
@@ -43,12 +46,14 @@ public abstract class BaseViewModel extends ViewModel implements DefaultLifecycl
     ) {
         status.postValue(Status.LOADING);
         call.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(new RetryWithDelay())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<T>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        DisposablePool.get().add(d, call.getClass().getSimpleName());
+                        mDisposable.add(call.hashCode());
+                        DisposablePool.get().add(d, call.hashCode());
                     }
 
                     @Override
@@ -58,7 +63,7 @@ public abstract class BaseViewModel extends ViewModel implements DefaultLifecycl
                             onHandleException.success(t);
                         } else {
                             status.postValue(Status.ERROR);
-                            onHandleException.error("code ：" + t.getCode());
+                            onHandleException.error(t.getCode());
                         }
                     }
 
@@ -74,7 +79,6 @@ public abstract class BaseViewModel extends ViewModel implements DefaultLifecycl
                         status.postValue(Status.COMPLETE);
                     }
                 });
-
     }
 
     public interface OnHandleException<T> {
@@ -88,6 +92,9 @@ public abstract class BaseViewModel extends ViewModel implements DefaultLifecycl
     @Override
     protected void onCleared() {
         super.onCleared();
-        DisposablePool.get().removeAll();
+        for (Integer i : mDisposable) {
+            DisposablePool.get().remove(i);
+        }
+        mDisposable.clear();
     }
 }

@@ -16,7 +16,9 @@ public class LoggingInterceptor implements HttpLoggingInterceptor.Logger {
     @Override
     public void log(String text) {
         try {
-            String message = URLDecoder.decode(text, "utf-8").replace("\\", "");
+            String message = URLDecoder.decode(text, "utf-8")
+                    .replace("\\", "")
+                    .replace("%", "%25");
 //            StringEscapeUtils.unescapeJavaScript(jsDataStr)
 
             if (message.startsWith("--> POST")) {

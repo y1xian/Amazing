@@ -1,7 +1,8 @@
 package com.yyxnb.http.rx;
 
-import com.yyxnb.common.AppConfig;
+import android.util.Log;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -28,8 +29,8 @@ public class RetryWithDelay implements
         return observable
                 .flatMap((Function<Throwable, ObservableSource<?>>) throwable -> {
                     if (++retryCount <= maxRetries) {
-                        AppConfig.getInstance().log("get error, it will try after " + retryDelayMillis * retryCount
-                                + " millisecond, retry count " + retryCount);
+                        Log.e("RetryWithDelay", "get error, it will try after " + retryDelayMillis * retryCount
+                                + " millisecond, retry count " + retryCount + String.format(", 时间：%tT", new Date()));
                         // When this Observable calls onNext, the original Observable will be retried (i.e. re-subscribed).
                         return Observable.timer(retryDelayMillis * retryCount,
                                 TimeUnit.MILLISECONDS);
