@@ -3,7 +3,6 @@ package com.yyxnb.http.interceptor;
 import com.yyxnb.common.AppConfig;
 import com.yyxnb.http.utils.JsonUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -40,7 +39,7 @@ public class LoggingInterceptor implements HttpLoggingInterceptor.Logger {
             if (message.startsWith("<-- END HTTP")) {
                 AppConfig.getInstance().log("Http", mMessage.toString());
             }
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
