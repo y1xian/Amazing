@@ -15,10 +15,13 @@ public class LoggingInterceptor implements HttpLoggingInterceptor.Logger {
     @Override
     public void log(String text) {
         try {
-            String message = URLDecoder.decode(text, "utf-8")
-                    .replace("\\", "")
-                    .replace("%", "%25");
-//            StringEscapeUtils.unescapeJavaScript(jsDataStr)
+            String message = text
+                    .replaceAll("\\+", "")
+                    .replaceAll("%", "%%");
+            message = message.replaceAll("%(?![0-9a-fA-F]{2})", "%%");
+            message = message.replaceAll("%%", "");
+            message = message.replaceAll("\\+", "");
+            message = URLDecoder.decode(message, "utf-8");
 
             if (message.startsWith("--> POST")) {
                 mMessage.setLength(0);
@@ -42,7 +45,6 @@ public class LoggingInterceptor implements HttpLoggingInterceptor.Logger {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
     }
 }
